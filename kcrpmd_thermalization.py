@@ -181,6 +181,7 @@ if args.fix == 'y':
     dyn_params.update({"kcrpmd_gamma":0.0})
 elif args.fix == 's':
     dyn_params.update({"kcrpmd_gamma":0.005})
+    dyn_params.update({"kcrpmd_gammaKP":0.005})
     dyn_params.update({"constrained_dofs":[0]})
     dyn_params.update({"quantum_dofs":[]})
     dyn_params["thermostat_dofs"].pop(0)
