@@ -42,23 +42,33 @@ rnd = Random()
 # ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION =======
 
 with h5py.File("mem_data.hdf", 'r') as f:
-        q = list(f["q/data"][args.isample,0,:])
-        p = list(f["p/data"][args.isample,0,:])
+    q = list(f["q/data"][args.isample,0,:])
+    p = list(f["p/data"][args.isample,0,:])
+    if control_params["use_kcrpmd"] == 1:
         y = f["y_aux_var/data"][args.isample,0]
         py = f["p_aux_var/data"][args.isample,0]
 
-nucl_params = {"q":q, "p":p, "mass":[model_params["ms"]] + model_params["Mj"] + [model_params["ms"]],
-               "force_constant":[0] * len(q),
-               "init_type":0, "ntraj":control_params["ntraj"], "ndof": len(q)}
+if model_params["sys_type"] == 0:
+    nucl_params = {"q":q, "p":p, "mass":[model_params["ms"]] + model_params["Mj"],
+                   "force_constant":[0] * len(q),
+                   "init_type":0, "ntraj":control_params["ntraj"], "ndof": len(q)}
+else:
+    nucl_params = {"q":q, "p":p, "mass":[model_params["ms"]] + model_params["Mj"] + [model_params["mq"]],
+                   "force_constant":[0] * len(q),
+                   "init_type":0, "ntraj":control_params["ntraj"], "ndof": len(q)}
 
-elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.,0.0],
-               "rep":0, "ntraj":control_params["ntraj"],
-               "ndia":control_params["nstates"], "nadi":control_params["nstates"],
-               "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[control_params["kcrpmd_my"]]}
-    
+if control_params["use_kcrpmd"] != 1:
+    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
+                   "rep":0, "ntraj":control_params["ntraj"],
+                   "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
+else:
+    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
+                   "rep":0, "ntraj":control_params["ntraj"],
+                   "ndia":control_params["nstates"], "nadi":control_params["nstates"],
+                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[control_params["kcrpmd_my"]]}
+
 pref = F"_nsteps_{args.nsteps}_dt_{args.dt}_isample_{args.isample}"
 control_params.update({ "prefix":pref, "prefix2":pref })
-print(F"Computing {pref}")
 
 res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, elec_params, nucl_params, rnd)
 
