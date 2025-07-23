@@ -1,13 +1,25 @@
 #!/bin/bash
-nstep=1000
-dt=1.0
-a_list=(0.002 0.05 0.1 0.1 0.1 0.1 0.1)
 K0_list=(0.0000095 0.0001710 0.0005320 0.0009500 0.0016911 0.0030021 0.0094909)
 
-for ((i=0; i<${#a_list[@]}; i++))
-do
-    sed -i "s/python.*/kcrpmd_thermalization.py --nsteps $nstep --dt $dt --a ${a_list[$i]} --temp 300.0 --K0 ${K0_list[$i]} --bq 3.0 --eps 0.0 --systype B --fix y /g" submit_template.slm
-    echo "python kcrpmd_thermalization.py --nsteps $nstep --dt $dt --a ${a_list[$i]} --temp 300.0 --K0 ${K0_list[$i]} --bq 3.0 --eps 0.0 --systype B --fix y /g"
-    
+#python kcrpmd_thermalization.py --sys 1 --method 1 --fix s --K0 0.00285 --leps 0.015 --hw 0
+
+# System A BO rate at K=0
+sed -i "s/python.*/python kcrpmd_thermalization.py --sys 1 --method 1 --fix s --K0 1e-10 --leps 0.015 --hw 0 /g" submit_template.slm
+sbatch submit_template.slm 
+
+# System A BO rates
+for K0 in "${K0_list[@]}"; do
+  sed -i "s/python.*/python kcrpmd_thermalization.py --sys 1 --method 1 --fix s --K0 $K0 --leps 0.015 --hw 0 /g" submit_template.slm
+  sbatch submit_template.slm 
+done
+
+# System A KC-RPMD rates
+for method in 2 3 ; do
+  for fix in s y ; do
+    for K0 in "${K0_list[@]}"; do
+      sed -i "s/python.*/python kcrpmd_thermalization.py --sys 1 --method $method --fix $fix --K0 $K0 --leps 0.015 --hw 0 /g" submit_template.slm
+      sbatch submit_template.slm 
+    done
+  done
 done
 
