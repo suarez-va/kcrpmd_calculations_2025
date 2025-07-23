@@ -28,7 +28,7 @@ parser.add_argument('--b', default=1000.0, type=float)
 parser.add_argument('--c', default=0.5, type=float)
 parser.add_argument('--d', default=3.0, type=float)
 parser.add_argument('--temp', default=300.0, type=float, help='Temperature in K')
-parser.add_argument('--nsteps', default=100000, type=int)
+parser.add_argument('--nsteps', default=1000000, type=int)
 parser.add_argument('--dt', default=41.34, type=float)
 #parser.add_argument('--K0', default=4.0e-4, type=float)
 parser.add_argument('--K0', default=2.85e-3, type=float)
@@ -99,9 +99,6 @@ if args.method == 2:
     kcrpmd_tst.c = 0.0
     kcrpmd_tst.d = 0.0
 
-kcrpmd_tst.s_pts = 236
-kcrpmd_tst.q_pts = 231
-
 Fg = kcrpmd_tst.Fg(); F = kcrpmd_tst.F()
 if model_params["hard_wall"] == -1:
     kcrpmd_tst.q_low = qhw
@@ -120,7 +117,7 @@ else:
     Fhw = kcrpmd_tst.F()
     Phw = np.exp(-beta * (Fhw - F)) 
 
-s_arr = np.linspace(-4.0, 4.0, 1250)
+s_arr = np.linspace(-4.0, 4.0, 2500)
 q_arr = np.linspace(-1.2, 2.5, 678)
 y_arr = np.linspace(-1.6, 1.6, 752)
 
@@ -228,7 +225,6 @@ elif args.fix == 's':
 # ======= CHOOSE INITIAL CONDITIONS =======
 
 n_therm = 1000
-
 if args.sys == 3 and args.hw == -1:
     Kref = K0 * np.exp(-bq * 2.1)
 else:
@@ -247,7 +243,7 @@ elec_params = {"init_type":0, "nstates":nstates, "istates":[1.0,0.0], "rep":0, "
                "y_aux_var":[0.0], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
 
  
-pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0}_hw_{args.hw}"
+pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0}_leps_{args.leps}_hw_{args.hw}"
 
 dyn_params.update({ "prefix":pref, "prefix2":pref })
 

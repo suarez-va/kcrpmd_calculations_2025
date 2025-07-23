@@ -89,9 +89,9 @@ elif method == 2 or method == 3:
 #    y = f["y_aux_var/data"][:,0]
 
 icutoff = 50000
-plt.plot(time[icutoff:], q[icutoff:,0])
+#plt.plot(time[icutoff:], q[icutoff:,0])
 #plt.plot(time[icutoff:], y[icutoff:])
-#plt.plot(time[icutoff:], q[icutoff:,-1])
+plt.plot(time[icutoff:], q[icutoff:,-1])
 plt.show()
 #exit()
 if method == 1: 
@@ -119,7 +119,7 @@ else:
     ax1.spines['bottom'].set(linewidth=3)
     ax1.spines['left'].set(linewidth=3)
     ax1.legend(loc='upper left', fontsize=9, frameon=False)
-    #ax1.set_xlim([-0.001, 0.001])
+    ax1.set_xlim([-0.1, 0.1])
     ax2.tick_params(axis='both', which='major', direction='in', labelsize = 12, size = 4, width = 1.5)
     ax2.set_ylabel("Probability", fontsize = 15)
     ax2.spines['top'].set(linewidth=3)
@@ -131,7 +131,7 @@ else:
     ax2.hist(q[icutoff:,-1], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
     if fix == "y":
         ax1.set_xlabel("s coordinate", fontsize = 15)
-        ax1.hist(q[icutoff:,0], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
+        #ax1.hist(q[icutoff:,0], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(s_arr, Pydags, color='k', label='exact', linewidth=2)
         ax2.plot(q_arr, Pydagq, color='k', label='exact', linewidth=2)
     elif fix == "s":
