@@ -15,8 +15,6 @@ from libra_py import data_conv
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 import libra_py.data_savers as data_savers
 
-from kcrpmdtst import KcrpmdTst
-from kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_system_bath
 import json
 
 # Get current directory name (last component of the path)
@@ -37,36 +35,36 @@ if method == 1:
     with h5py.File("mem_data.hdf", 'r') as f:
         time = f["time/data"][:]
         q = f["q/data"][:,0,:]
-    Fsq = np.loadtxt("Fsq.txt")
+    Fsq = np.loadtxt("tst_data/Fsq.txt")
     if fix == "s":
-        Psdagq_data = np.loadtxt("Psdagq.txt")
+        Psdagq_data = np.loadtxt("tst_data/Psdagq.txt")
         q_arr = Psdagq_data[:,0]
         Psdagq = Psdagq_data[:,1]
-        ktsts = np.loadtxt("ktsts.txt")
+        ktsts = np.loadtxt("tst_data/ktsts.txt")
 elif method == 2 or method == 3:
     with h5py.File("mem_data.hdf", 'r') as f:
         time = f["time/data"][:]
         q = f["q/data"][:,0,:]
         y = f["y_aux_var/data"][:,0]
-    Fys = np.loadtxt("Fys.txt")
-    Fyq = np.loadtxt("Fyq.txt")
-    Fsq = np.loadtxt("Fsq.txt")
+    Fys = np.loadtxt("tst_data/Fys.txt")
+    Fyq = np.loadtxt("tst_data/Fyq.txt")
+    Fsq = np.loadtxt("tst_data/Fsq.txt")
     if fix == "y":
-        Pydags_data = np.loadtxt("Pydags.txt")
+        Pydags_data = np.loadtxt("tst_data/Pydags.txt")
         s_arr = Pydags_data[:,0]
         Pydags = Pydags_data[:,1]
-        Pydagq_data = np.loadtxt("Pydagq.txt")
+        Pydagq_data = np.loadtxt("tst_data/Pydagq.txt")
         q_arr = Pydagq_data[:,0]
         Pydagq = Pydagq_data[:,1]
-        ktsty = np.loadtxt("ktsty.txt")
+        ktsty = np.loadtxt("tst_data/ktsty.txt")
     elif fix == "s":
-        Pysdag_data = np.loadtxt("Pysdag.txt")
+        Pysdag_data = np.loadtxt("tst_data/Pysdag.txt")
         y_arr = Pysdag_data[:,0]
         Pysdag = Pysdag_data[:,1]
-        Psdagq_data = np.loadtxt("Psdagq.txt")
+        Psdagq_data = np.loadtxt("tst_data/Psdagq.txt")
         q_arr = Psdagq_data[:,0]
         Psdagq = Psdagq_data[:,1]
-        ktsts = np.loadtxt("ktsts.txt")
+        ktsts = np.loadtxt("tst_data/ktsts.txt")
 
 #if char_after_fix == "y":
 #    Pydags_data = np.loadtxt("Pydags.txt")
@@ -90,7 +88,7 @@ elif method == 2 or method == 3:
 #    q = f["q/data"][:,0,:]
 #    y = f["y_aux_var/data"][:,0]
 
-icutoff = 250000
+icutoff = 50000
 plt.plot(time[icutoff:], q[icutoff:,0])
 #plt.plot(time[icutoff:], y[icutoff:])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
@@ -121,6 +119,7 @@ else:
     ax1.spines['bottom'].set(linewidth=3)
     ax1.spines['left'].set(linewidth=3)
     ax1.legend(loc='upper left', fontsize=9, frameon=False)
+    #ax1.set_xlim([-0.001, 0.001])
     ax2.tick_params(axis='both', which='major', direction='in', labelsize = 12, size = 4, width = 1.5)
     ax2.set_ylabel("Probability", fontsize = 15)
     ax2.spines['top'].set(linewidth=3)

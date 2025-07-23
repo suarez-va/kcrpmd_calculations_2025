@@ -15,8 +15,8 @@ from libra_py import data_conv
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 import libra_py.data_savers as data_savers
 
-from kcrpmdtst import KcrpmdTst
-from kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_system_bath
+from kcrpmd_utils.kcrpmdtst import KcrpmdTst
+from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_system_bath
 import json
 
 parser = argparse.ArgumentParser()
@@ -28,10 +28,11 @@ parser.add_argument('--b', default=1000.0, type=float)
 parser.add_argument('--c', default=0.5, type=float)
 parser.add_argument('--d', default=3.0, type=float)
 parser.add_argument('--temp', default=300.0, type=float, help='Temperature in K')
-parser.add_argument('--nsteps', default=1000000, type=int)
+parser.add_argument('--nsteps', default=100000, type=int)
 parser.add_argument('--dt', default=41.34, type=float)
-parser.add_argument('--K0', default=4.0e-4, type=float)
-parser.add_argument('--leps', default=-3e-3, type=float)
+#parser.add_argument('--K0', default=4.0e-4, type=float)
+parser.add_argument('--K0', default=2.85e-3, type=float)
+parser.add_argument('--leps', default=-1.5e-2, type=float)
 parser.add_argument('--hw', default=0, type=int, help='left side (-1), right side (1), no hard wall (0)')
 args = parser.parse_args()
 
@@ -90,22 +91,37 @@ elif model_params["sys_type"] == 3:
                                  lambda q: Dq * (1 - np.exp(-np.sqrt(Cq / Dq) * q))**2])
 
 kcrpmd_tst = KcrpmdTst(beta, args.a, args.b, args.c, args.d, 1., ms, ws, s0, s1, eps, Kq, Vq)
-kcrpmd_tst.q_low = -1.2
-kcrpmd_tst.q_high = 3.
-kcrpmd_tst.set_eta_my_gammay()
 sdag = kcrpmd_tst.sdag
+kcrpmd_tst.set_eta_my_gammay()
+if args.method == 2:
+    kcrpmd_tst.eta = 2 * kcrpmd_tst.eta - np.sqrt(np.pi / kcrpmd_tst.a)
+    kcrpmd_tst.a = 2 * kcrpmd_tst.a
+    kcrpmd_tst.c = 0.0
+    kcrpmd_tst.d = 0.0
 
+kcrpmd_tst.s_pts = 236
+kcrpmd_tst.q_pts = 231
+
+Fg = kcrpmd_tst.Fg(); F = kcrpmd_tst.F()
 if model_params["hard_wall"] == -1:
+    kcrpmd_tst.q_low = qhw
     Vhw = lambda q: np.piecewise(q, [q >= qhw, q < qhw], [lambda q: np.full_like(q, 0.), lambda q: khw * (q - qhw)**6])
     kcrpmd_tst.Vq = lambda q: Vq(q) + Vhw(q) 
 elif model_params["hard_wall"] == 1:
+    kcrpmd_tst.q_high = qhw
     Vhw = lambda q: np.piecewise(q, [q >= qhw, q < qhw], [lambda q: khw * (q - qhw)**6, lambda q: np.full_like(q, 0.)])
     kcrpmd_tst.Vq = lambda q: Vq(q) + Vhw(q) 
 else:
     Vhw = lambda q: np.full_like(q, 0.)
+if args.method == 1:
+    Fghw = kcrpmd_tst.Fg()
+    Phw = np.exp(-beta * (Fghw - Fg)) 
+else:
+    Fhw = kcrpmd_tst.F()
+    Phw = np.exp(-beta * (Fhw - F)) 
 
-s_arr = np.linspace(-4.0, 4.0, 250)
-q_arr = np.linspace(-1.2, 2.5, 249)
+s_arr = np.linspace(-4.0, 4.0, 1250)
+q_arr = np.linspace(-1.2, 2.5, 678)
 y_arr = np.linspace(-1.6, 1.6, 752)
 
 if args.method == 1:
@@ -116,11 +132,6 @@ if args.method == 1:
         Psdagq = np.exp(-beta * (Fsdagq - Fsdag))[:,0]
         ktsts = kcrpmd_tst.kBO()
 elif args.method == 2 or args.method == 3:
-    if args.method == 2:
-        kcrpmd_tst.eta = 2 * kcrpmd_tst.eta - np.sqrt(np.pi / kcrpmd_tst.a)
-        kcrpmd_tst.a = 2 * kcrpmd_tst.a
-        kcrpmd_tst.c = 0.0
-        kcrpmd_tst.d = 0.0
     Fys = kcrpmd_tst.Fys(y_arr, s_arr)
     Fyq = kcrpmd_tst.Fyq(y_arr, q_arr)
     Fsq = kcrpmd_tst.Fsq(s_arr, q_arr)
@@ -138,7 +149,6 @@ elif args.method == 2 or args.method == 3:
         Pysdag = np.exp(-beta * (Fysdag - Fsdag))[0,:] 
         Psdagq = np.exp(-beta * (Fsdagq - Fsdag))[:,0] 
         ktsts = kcrpmd_tst.tst_s()
-
 
 # ======= CHOOSE NON-ADIABATIC METHOD =======
 nstates = model_params["nstates"]
@@ -219,13 +229,11 @@ elif args.fix == 's':
 
 n_therm = 1000
 
-#print(2*args.a/beta*(n_therm*ms*ws**2*(s0-s1)*args.dt/(2*np.pi*K0))**2)
-#print(2*args.a*beta*(n_therm*ms*ws**2*(s0-s1)*args.dt/(2*np.pi*beta*K0))**2)
-#print(args.a*beta*(1+np.tanh(-args.c*(beta*K0-1)))*(n_therm*ms*ws**2*(s0-s1)*args.dt/(2*np.pi*beta*K0))**2)
-#exit()
-#print((n_therm*args.dt/(2*np.pi))**2)
-#ms_therm = [ms * ws**2 / 1.0e-8]
-ms_therm = [max(ms*ws**2*(n_therm*args.dt/(2*np.pi))**2, 2*args.a*beta*(n_therm*ms*ws**2*(s0-s1)*args.dt/(2*np.pi*beta*K0))**2)]
+if args.sys == 3 and args.hw == -1:
+    Kref = K0 * np.exp(-bq * 2.1)
+else:
+    Kref = K0
+ms_therm = [max(ms*ws**2*(n_therm*args.dt/(2*np.pi))**2, 2*args.a*beta*(n_therm*ms*ws**2*(s0-s1)*args.dt/(2*np.pi*beta*Kref))**2)]
 mj_therm = [model_params["Mj"][i]*omega[i]**2*(n_therm*args.dt/(2*np.pi))**2 for i in range(len(omega))]
 mq_therm = [mq*wq**2*(n_therm*args.dt/(2*np.pi))**2]
 mass_therm = ms_therm + mj_therm + mq_therm
@@ -249,21 +257,25 @@ res = tsh_dynamics.generic_recipe(dyn_params, kcrpmd_system_bath, model_params, 
 with open(pref + "/_control_params.txt", "w") as f:
     f.write(str(control_params_save))
 
+os.makedirs(pref + "/tst_data", exist_ok=True)
+
 if args.method == 1:
-    np.savetxt(pref + "/Fsq.txt", Fsq)
+    np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
+    np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
     if args.fix == "s":
-        np.savetxt(pref + "/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
-        np.savetxt(pref + "/ktsts.txt", [ktsts])
+        np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
+        np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
 elif args.method == 2 or args.method == 3:
-    np.savetxt(pref + "/Fys.txt", Fys)
-    np.savetxt(pref + "/Fyq.txt", Fyq)
-    np.savetxt(pref + "/Fsq.txt", Fsq)
+    np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
+    np.savetxt(pref + "/tst_data/Fys.txt", Fys)
+    np.savetxt(pref + "/tst_data/Fyq.txt", Fyq)
+    np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
     if args.fix == "y":
-        np.savetxt(pref + "/Pydags.txt", np.column_stack((s_arr, Pydags)))
-        np.savetxt(pref + "/Pydagq.txt", np.column_stack((q_arr, Pydagq)))
-        np.savetxt(pref + "/ktsty.txt", [ktsty])
+        np.savetxt(pref + "/tst_data/Pydags.txt", np.column_stack((s_arr, Pydags)))
+        np.savetxt(pref + "/tst_data/Pydagq.txt", np.column_stack((q_arr, Pydagq)))
+        np.savetxt(pref + "/tst_data/ktsty.txt", [ktsty])
     elif args.fix == "s":
-        np.savetxt(pref + "/Pysdag.txt", np.column_stack((y_arr, Pysdag)))
-        np.savetxt(pref + "/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
-        np.savetxt(pref + "/ktsts.txt", [ktsts])
+        np.savetxt(pref + "/tst_data/Pysdag.txt", np.column_stack((y_arr, Pysdag)))
+        np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
+        np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
 
