@@ -15,7 +15,7 @@ from libra_py import data_conv
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 import libra_py.data_savers as data_savers
 
-import json
+#import json
 
 # Get current directory name (last component of the path)
 current_dir = os.path.basename(os.getcwd())
@@ -66,10 +66,11 @@ elif method == 2 or method == 3:
         Psdagq = Psdagq_data[:,1]
         ktsts = np.loadtxt("tst_data/ktsts.txt")
 
-icutoff = 50000
+#icutoff = 24999000
+icutoff = 10000
 #plt.plot(time[icutoff:], q[icutoff:,0])
-#plt.plot(time[icutoff:], y[icutoff:])
-plt.plot(time[icutoff:], q[icutoff:,-1])
+plt.plot(time[icutoff:], y[icutoff:])
+#plt.plot(time[icutoff:], q[icutoff:,-1])
 plt.show()
 #exit()
 if method == 1: 
@@ -97,7 +98,7 @@ else:
     ax1.spines['bottom'].set(linewidth=3)
     ax1.spines['left'].set(linewidth=3)
     ax1.legend(loc='upper left', fontsize=9, frameon=False)
-    #ax1.set_xlim([-0.1, 0.1])
+    #ax1.set_xlim([-0.01, 0.01])
     ax2.tick_params(axis='both', which='major', direction='in', labelsize = 12, size = 4, width = 1.5)
     ax2.set_ylabel("Probability", fontsize = 15)
     ax2.spines['top'].set(linewidth=3)

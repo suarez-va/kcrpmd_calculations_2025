@@ -15,16 +15,28 @@ from libra_py import data_conv
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 import libra_py.data_savers as data_savers
 
-from kcrpmdtst import KcrpmdTst
-from kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_system_bath
-import json
+# Add the parent directory to sys.path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, parent_dir)
+
+from kcrpmd_utils.kcrpmdmodel import kcrpmd_system_bath
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--nsteps', default=1000, type=int)
-parser.add_argument('--dt', default=1.0, type=float)
-parser.add_argument('--isample', default=1000, type=int)
+parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
+parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
+parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
+parser.add_argument('--nsteps', default=5000000, type=int)
+parser.add_argument('--dt', default=0.0008268, type=float)
 args = parser.parse_args()
 
+# check current directory name
+current_dir = os.path.basename(os.getcwd())
+if current_dir.startswith("_sys_"):
+    idx = current_dir.find("_fix_")
+    fix = current_dir[idx + len("_fix_")]
+else:
+    print("not in correct directory, directory should start with '_sys_'.")
+    exit()
 
 # ======= READ IN MODEL AND KC-RPMD RECIPE =======
 
@@ -34,42 +46,45 @@ with open("_model_params.txt") as f:
 with open("_control_params.txt") as f:
     control_params = eval(f.read())
 
+model_params.update({"hw": 0})
 control_params.update({"nsteps": args.nsteps})
 control_params.update({"dt": args.dt})
+
+control_params.update({"kcrpmd_gamma": control_params["kcrpmd_gammay"]})
 
 rnd = Random()
 
 # ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION =======
-
 with h5py.File("mem_data.hdf", 'r') as f:
-    q = list(f["q/data"][args.isample,0,:])
-    p = list(f["p/data"][args.isample,0,:])
+    q = list(f["q/data"][args.itraj * args.iskip + args.istart, 0, :])
     if control_params["use_kcrpmd"] == 1:
-        y = f["y_aux_var/data"][args.isample,0]
-        py = f["p_aux_var/data"][args.isample,0]
+        y = f["y_aux_var/data"][args.itraj * args.iskip + args.istart, 0]
 
-if model_params["sys_type"] == 0:
-    nucl_params = {"q":q, "p":p, "mass":[model_params["ms"]] + model_params["Mj"],
-                   "force_constant":[0] * len(q),
-                   "init_type":0, "ntraj":control_params["ntraj"], "ndof": len(q)}
-else:
-    nucl_params = {"q":q, "p":p, "mass":[model_params["ms"]] + model_params["Mj"] + [model_params["mq"]],
-                   "force_constant":[0] * len(q),
-                   "init_type":0, "ntraj":control_params["ntraj"], "ndof": len(q)}
+beta = units.hartree / (units.boltzmann * control_params["Temperature"])
+mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
+p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
+if fix == 's':
+    p[0] = abs(p[0])
+
+nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
+               "ntraj":control_params["ntraj"], "ndof": len(q)}
 
 if control_params["use_kcrpmd"] != 1:
     elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
                    "rep":0, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
 else:
+    my = control_params["kcrpmd_my"]
+    py = np.random.normal(scale = np.sqrt(my / beta))
+    if fix == 'y':
+        py = abs(py)
     elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
                    "rep":0, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"],
-                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[control_params["kcrpmd_my"]]}
+                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
 
-pref = F"_nsteps_{args.nsteps}_dt_{args.dt}_isample_{args.isample}"
+pref = F"_itraj_{args.itraj}"
 control_params.update({ "prefix":pref, "prefix2":pref })
 
 res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, elec_params, nucl_params, rnd)
-
 
