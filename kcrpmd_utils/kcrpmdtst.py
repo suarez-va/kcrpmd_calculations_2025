@@ -92,7 +92,7 @@ class KcrpmdTst:
         q_ar = self.q_array()
         exp_arg = -self.beta * (self.Vq(q_ar))
         exp_shift = np.max(exp_arg) - 500.
-        return np.exp(-self.beta * self.Vq(q) - exp_shift) / np.trapezoid(np.exp(exp_arg - exp_shift), q_ar)
+        return np.exp(-self.beta * self.Vq(q) - exp_shift) / np.trapz(np.exp(exp_arg - exp_shift), q_ar)
 
     ############################################################
     ####### general potentials, free energies, and rates #######
@@ -119,26 +119,26 @@ class KcrpmdTst:
         q_ar = self.q_array()
         exp_arg = -self.beta * self.Vg(s, q_ar)
         exp_shift = np.max(exp_arg, axis=0, keepdims=True) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
 
     def Fg(self):
         s_ar = self.s_array()
         exp_arg = -self.beta * self.Fgs(s_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), s_ar)) / self.beta - exp_shift / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), s_ar)) / self.beta - exp_shift / self.beta
 
     def kGR(self):
         q_ar = self.q_array()
         k_ar = 2 * np.pi * self.Kq(q_ar)**2 * (np.sqrt(self.beta / (4 * np.pi * self.lam))
                                                * np.exp(-self.beta * (self.lam + self.eps)**2 / (4 * self.lam)))
         Pq_ar = self.Pq(q_ar)
-        return np.trapezoid(k_ar * Pq_ar, q_ar)
+        return np.trapz(k_ar * Pq_ar, q_ar)
 
     def kBO(self):
         s_ar = self.s_array(); s_ar = s_ar[:1+np.argwhere(s_ar == self.sdag)[0,0]]
         exp_arg = -self.beta * self.Fgs(s_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return 1 / np.sqrt(2 * np.pi * self.beta * self.ms) * np.exp(exp_arg[-1] - exp_shift) / np.trapezoid(np.exp(exp_arg - exp_shift), s_ar)
+        return 1 / np.sqrt(2 * np.pi * self.beta * self.ms) * np.exp(exp_arg[-1] - exp_shift) / np.trapz(np.exp(exp_arg - exp_shift), s_ar)
 
     ############################################################
     ####### KC-RPMD potentials, free energies, and rates #######
@@ -149,12 +149,12 @@ class KcrpmdTst:
         exp_shift = np.max(exp_arg) - 500.
         Pq_ar = self.Pq(q_ar)
         Kq_ar = abs(self.Kq(q_ar))
-        self.eta = 2 * np.pi * (np.trapezoid(Kq_ar * Pq_ar, q_ar) * np.trapezoid(Kq_ar**2 * Pq_ar, q_ar)
-                                / np.trapezoid(Kq_ar**3 * Pq_ar, q_ar))
-        self.my = self.beta**3 * self.eta**2 / ((2*np.pi)**3) * (np.trapezoid(Kq_ar**3 * Pq_ar, q_ar)
-                                                                 / np.trapezoid(Kq_ar**2 * Pq_ar, q_ar))**2
+        self.eta = 2 * np.pi * (np.trapz(Kq_ar * Pq_ar, q_ar) * np.trapz(Kq_ar**2 * Pq_ar, q_ar)
+                                / np.trapz(Kq_ar**3 * Pq_ar, q_ar))
+        self.my = self.beta**3 * self.eta**2 / ((2*np.pi)**3) * (np.trapz(Kq_ar**3 * Pq_ar, q_ar)
+                                                                 / np.trapz(Kq_ar**2 * Pq_ar, q_ar))**2
         self.gammay = 0.5 * np.sqrt((1 + np.abs(-2 * np.log(np.sqrt(self.a / np.pi) * self.eta * self.beta**2)
-                                                - 4 * np.trapezoid(np.log(Kq_ar) * Pq_ar, q_ar))) / (self.beta * self.my))
+                                                - 4 * np.trapz(np.log(Kq_ar) * Pq_ar, q_ar))) / (self.beta * self.my))
         return None
 
     def VKP(self, s, q):
@@ -241,31 +241,31 @@ class KcrpmdTst:
         q_ar = self.q_array()
         exp_arg = -self.beta * self.Fsq(s, q_ar)
         exp_shift = np.max(exp_arg, axis=0, keepdims=True) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
 
     def Fq(self, q):
         s_ar = self.s_array()
         exp_arg = -self.beta * self.Fsq(s_ar, q)
         exp_shift = np.max(exp_arg, axis=1, keepdims=True) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), s_ar, axis = 1)) / self.beta - exp_shift[:,0] / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), s_ar, axis = 1)) / self.beta - exp_shift[:,0] / self.beta
 
     def Ftheta(self, theta):
         s_ar = self.s_array(); q_ar = self.q_array()
         exp_arg = -self.beta * self.VKC(theta, s_ar, q_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return -np.log(np.trapezoid(np.trapezoid(np.exp(exp_arg - exp_shift), s_ar, axis = 1), q_ar)) / self.beta - exp_shift / self.beta
+        return -np.log(np.trapz(np.trapz(np.exp(exp_arg - exp_shift), s_ar, axis = 1), q_ar)) / self.beta - exp_shift / self.beta
 
     def Fthetas(self, theta, s):
         q_ar = self.q_array()
         exp_arg = -self.beta * self.VKC(theta, s, q_ar)
         exp_shift = np.max(exp_arg, axis=0, keepdims=True) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), q_ar, axis = 0)) / self.beta - exp_shift[0,:] / self.beta
 
     def Fthetaq(self, theta, q):
         s_ar = self.s_array()
         exp_arg = -self.beta * self.VKC(theta, s_ar, q)
         exp_shift = np.max(exp_arg, axis=1, keepdims=True) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), s_ar, axis = 1)) / self.beta - exp_shift[:,0] / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), s_ar, axis = 1)) / self.beta - exp_shift[:,0] / self.beta
 
     def Vr(self, theta, y):
         return np.piecewise(y, [np.abs(y - theta) < 0.5, np.abs(y - theta) >= 0.5],
@@ -298,17 +298,17 @@ class KcrpmdTst:
         y_ar = self.y_array()
         exp_arg = -self.beta * self.Fy(y_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return -np.log(np.trapezoid(np.exp(exp_arg - exp_shift), y_ar)) / self.beta - exp_shift / self.beta
+        return -np.log(np.trapz(np.exp(exp_arg - exp_shift), y_ar)) / self.beta - exp_shift / self.beta
 
     def tst_y(self):
         y_ar = self.y_array(); y_ar = y_ar[:1+np.argwhere(y_ar == 0.)[0,0]]
         exp_arg = -self.beta * self.Fy(y_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return 1 / np.sqrt(2 * np.pi * self.beta * self.my) * np.exp(exp_arg[-1] - exp_shift) / np.trapezoid(np.exp(exp_arg - exp_shift), y_ar)
+        return 1 / np.sqrt(2 * np.pi * self.beta * self.my) * np.exp(exp_arg[-1] - exp_shift) / np.trapz(np.exp(exp_arg - exp_shift), y_ar)
 
     def tst_s(self):
         s_ar = self.s_array(); s_ar = s_ar[:1+np.argwhere(s_ar == self.sdag)[0,0]]
         exp_arg = -self.beta * self.Fs(s_ar)
         exp_shift = np.max(exp_arg) - 500.
-        return 1 / np.sqrt(2 * np.pi * self.beta * self.ms) * np.exp(exp_arg[-1] - exp_shift) / np.trapezoid(np.exp(exp_arg - exp_shift), s_ar)
+        return 1 / np.sqrt(2 * np.pi * self.beta * self.ms) * np.exp(exp_arg[-1] - exp_shift) / np.trapz(np.exp(exp_arg - exp_shift), s_ar)
  

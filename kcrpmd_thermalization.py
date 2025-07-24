@@ -28,7 +28,7 @@ parser.add_argument('--b', default=1000.0, type=float)
 parser.add_argument('--c', default=0.5, type=float)
 parser.add_argument('--d', default=3.0, type=float)
 parser.add_argument('--temp', default=300.0, type=float, help='Temperature in K')
-parser.add_argument('--nsteps', default=1000000, type=int)
+parser.add_argument('--nsteps', default=25000000, type=int)
 parser.add_argument('--dt', default=41.34, type=float)
 #parser.add_argument('--K0', default=4.0e-4, type=float)
 parser.add_argument('--K0', default=2.85e-3, type=float)
@@ -243,7 +243,7 @@ elec_params = {"init_type":0, "nstates":nstates, "istates":[1.0,0.0], "rep":0, "
                "y_aux_var":[0.0], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
 
  
-pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0}_leps_{args.leps}_hw_{args.hw}"
+pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}_leps_{args.leps:.2e}_hw_{args.hw}"
 
 dyn_params.update({ "prefix":pref, "prefix2":pref })
 
