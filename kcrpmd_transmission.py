@@ -26,7 +26,7 @@ parser.add_argument('--itraj', default=1, type=int, help='transmission trajector
 parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
 parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
 parser.add_argument('--nsteps', default=5000000, type=int)
-parser.add_argument('--dt', default=0.0008268, type=float)
+parser.add_argument('--dt', default=0.08268, type=float)
 args = parser.parse_args()
 
 # check current directory name
@@ -49,15 +49,15 @@ with open("_control_params.txt") as f:
 model_params.update({"hw": 0})
 control_params.update({"nsteps": args.nsteps})
 control_params.update({"dt": args.dt})
-
-control_params.update({"kcrpmd_gamma": control_params["kcrpmd_gammay"]})
+#control_params.update({"kcrpmd_gamma": 0.0})
+#control_params.update({"kcrpmd_gammaKP": 0.0})
 
 rnd = Random()
 
 # ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION =======
 with h5py.File("mem_data.hdf", 'r') as f:
     q = list(f["q/data"][args.itraj * args.iskip + args.istart, 0, :])
-    if control_params["use_kcrpmd"] == 1:
+    if "use_kcrpmd" in control_params:
         y = f["y_aux_var/data"][args.itraj * args.iskip + args.istart, 0]
 
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
@@ -69,12 +69,10 @@ if fix == 's':
 nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
                "ntraj":control_params["ntraj"], "ndof": len(q)}
 
-if control_params["use_kcrpmd"] != 1:
-    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
-                   "rep":0, "ntraj":control_params["ntraj"],
-                   "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
-else:
+if "use_kcrpmd" in control_params:
     my = control_params["kcrpmd_my"]
+    #my = 10.
+    control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
     py = np.random.normal(scale = np.sqrt(my / beta))
     if fix == 'y':
         py = abs(py)
@@ -82,6 +80,10 @@ else:
                    "rep":0, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"],
                    "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
+else:
+    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
+                   "rep":0, "ntraj":control_params["ntraj"],
+                   "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
 
 pref = F"_itraj_{args.itraj}"
 control_params.update({ "prefix":pref, "prefix2":pref })

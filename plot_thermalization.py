@@ -67,7 +67,8 @@ elif method == 2 or method == 3:
         ktsts = np.loadtxt("tst_data/ktsts.txt")
 
 #icutoff = 24999000
-icutoff = 10000
+#print(time[icutoff:].shape)
+icutoff = 1000000
 #plt.plot(time[icutoff:], q[icutoff:,0])
 plt.plot(time[icutoff:], y[icutoff:])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
