@@ -263,7 +263,7 @@ my_therm = 500000.0
 nucl_params = {"q":[sdag] + [0.0]*(ndof-2) + [qhw], "p":[0.0]*ndof, "mass": mass_therm,
                "force_constant":force_therm, "init_type":1, "ntraj":ntraj, "ndof": ndof}
 
-elec_params = {"init_type":0, "nstates":nstates, "istates":[1.0,0.0], "rep":0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
+elec_params = {"init_type":0, "nstates":nstates, "istates":[1.0,0.0], "rep":1, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
                "y_aux_var":[0.0], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
 
 res = tsh_dynamics.generic_recipe(dyn_params, kcrpmd_system_bath, model_params, elec_params, nucl_params, rnd)

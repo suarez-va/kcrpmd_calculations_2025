@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
 parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
 parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
-parser.add_argument('--nsteps', default=5000000, type=int)
+parser.add_argument('--nsteps', default=25000, type=int)
 parser.add_argument('--dt', default=0.08268, type=float)
 args = parser.parse_args()
 
@@ -49,8 +49,8 @@ with open("_control_params.txt") as f:
 model_params.update({"hw": 0})
 control_params.update({"nsteps": args.nsteps})
 control_params.update({"dt": args.dt})
-#control_params.update({"kcrpmd_gamma": 0.0})
-#control_params.update({"kcrpmd_gammaKP": 0.0})
+
+control_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave","Cdia","Cadi"]})
 
 rnd = Random()
 
@@ -70,8 +70,8 @@ nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_t
                "ntraj":control_params["ntraj"], "ndof": len(q)}
 
 if "use_kcrpmd" in control_params:
-    my = control_params["kcrpmd_my"]
-    #my = 10.
+    #my = control_params["kcrpmd_my"]
+    my = 10.
     control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
     py = np.random.normal(scale = np.sqrt(my / beta))
     if fix == 'y':
