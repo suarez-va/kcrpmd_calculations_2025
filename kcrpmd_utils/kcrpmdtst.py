@@ -129,16 +129,23 @@ class KcrpmdTst:
 
     def kGR(self):
         q_ar = self.q_array()
-        k_ar = 2 * np.pi * self.Kq(q_ar)**2 * (np.sqrt(self.beta / (4 * np.pi * self.lam))
-                                               * np.exp(-self.beta * (self.lam + self.eps)**2 / (4 * self.lam)))
+        Kq_ar = self.Kq(q_ar)
         Pq_ar = self.Pq(q_ar)
-        return np.trapz(k_ar * Pq_ar, q_ar)
+        kMT_ar = 2 * np.pi * self.Kq(q_ar)**2 * np.sqrt(self.beta / (4 * np.pi * self.lam)) * np.exp(-self.beta * (self.lam + self.eps)**2 / (4 * self.lam)) * Pq_ar
+        return np.trapz(kMT_ar, q_ar)
 
     def kBO(self):
         s_ar = self.s_array(); s_ar = s_ar[:1+np.argwhere(s_ar == self.sdag)[0,0]]
         exp_arg = -self.beta * self.Fgs(s_ar)
         exp_shift = np.max(exp_arg) - 500.
         return 1 / np.sqrt(2 * np.pi * self.beta * self.ms) * np.exp(exp_arg[-1] - exp_shift) / np.trapz(np.exp(exp_arg - exp_shift), s_ar)
+
+    def kIF(self, kBO, kBO_0):
+        q_ar = self.q_array()
+        Kq_ar = self.Kq(q_ar)
+        Pq_ar = self.Pq(q_ar)
+        kMT_ar = 2 * np.pi * self.Kq(q_ar)**2 * np.sqrt(self.beta / (4 * np.pi * self.lam)) * np.exp(-self.beta * (self.lam + self.eps)**2 / (4 * self.lam)) * Pq_ar
+        return np.trapz(kMT_ar * kBO / (kMT_ar + kBO_0), q_ar)
 
     ############################################################
     ####### KC-RPMD potentials, free energies, and rates #######

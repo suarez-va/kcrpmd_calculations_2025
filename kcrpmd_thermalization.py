@@ -127,6 +127,7 @@ y_arr = kcrpmd_tst.y_array()
 
 if args.method == 1:
     Fsq = kcrpmd_tst.Vg(s_arr, q_arr)
+    kGR = kcrpmd_tst.kGR()
     if args.fix == "s":
         Fsdag = kcrpmd_tst.Fgs(np.array([sdag]))
         Fsdagq = kcrpmd_tst.Vg(np.array([sdag]), q_arr)
@@ -155,6 +156,7 @@ os.makedirs(pref + "/tst_data", exist_ok=True)
 if args.method == 1:
     np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
     np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
+    np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
     if args.fix == "s":
         np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
         np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
@@ -171,6 +173,8 @@ elif args.method == 2 or args.method == 3:
         np.savetxt(pref + "/tst_data/Pysdag.txt", np.column_stack((y_arr, Pysdag)))
         np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
         np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
+
+exit()
 
 # ======= CHOOSE NON-ADIABATIC METHOD =======
 nstates = model_params["nstates"]
@@ -263,7 +267,7 @@ my_therm = 500000.0
 nucl_params = {"q":[sdag] + [0.0]*(ndof-2) + [qhw], "p":[0.0]*ndof, "mass": mass_therm,
                "force_constant":force_therm, "init_type":1, "ntraj":ntraj, "ndof": ndof}
 
-elec_params = {"init_type":0, "nstates":nstates, "istates":[1.0,0.0], "rep":1, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
+elec_params = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
                "y_aux_var":[0.0], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
 
 res = tsh_dynamics.generic_recipe(dyn_params, kcrpmd_system_bath, model_params, elec_params, nucl_params, rnd)

@@ -21,7 +21,7 @@ sys.path.insert(0, parent_dir)
 from kcrpmd_utils.kcrpmdtst import KcrpmdTst
 
 beta = units.hartree / (units.boltzmann * 300.0)
-a = 1.0
+a = 0.1
 b = 1000.0
 c = 0.5
 d = 3.0
@@ -31,17 +31,22 @@ ws = 2.28e-3
 s0 = -2.4
 s1 = 2.4
 eps = 0.0
-
 K0_low = 4.0e-5
-#K0_high = 4.0e-3
-K0_high = 5.62e-3
-bq = 0.0
+#K0_high = 0.00949
+#K0_high = 5.62e-3
+K0_high = 6.00e-3
+#K0_high = 7.12e-3
+print(beta*K0_high)
+print(beta)
+bq = 3.0
 mq = 5e4
 wq = 5e-4
+Dq = 1.0e-3
 
 Kq_low = lambda q: K0_low * np.exp(-bq * q)
 Kq_high = lambda q: K0_high * np.exp(-bq * q)
-Vq = lambda q: 0.5 * mq * wq**2 * q**2
+#Vq = lambda q: 0.5 * mq * wq**2 * q**2
+Vq = lambda q: np.piecewise(q, [q >= 0., q < 0.], [lambda q: 0.5 * mq * wq**2 * q**2, lambda q: Dq * (1 - np.exp(-np.sqrt(0.5 * mq * wq**2 / Dq) * q))**2])
 
 adiabatic_tst_low = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_low,Vq) 
 newkcrpmd_tst_low = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_low,Vq); newkcrpmd_tst_low.set_eta_my_gammay() 
@@ -65,8 +70,6 @@ print(newkcrpmd_tst_low.Fy(y_arr))
 #print(newkcrpmd_tst_low.Fys(y_arr, s_arr))
 # EXTRA #
 
-print(newkcrpmd_tst_low.kGR())
-
 Fgs_low = adiabatic_tst_low.Fgs(s_arr)
 newFs_low = newkcrpmd_tst_low.Fs(s_arr)
 oldFs_low = oldkcrpmd_tst_low.Fs(s_arr)
@@ -74,6 +77,7 @@ oldFs_low = oldkcrpmd_tst_low.Fs(s_arr)
 Fgs_high = adiabatic_tst_high.Fgs(s_arr)
 newFs_high = newkcrpmd_tst_high.Fs(s_arr)
 oldFs_high = oldkcrpmd_tst_high.Fs(s_arr)
+testFsy0_high = newkcrpmd_tst_high.Fthetas(0,s_arr)
 
 gridspec_kw={'left':None,'bottom':None,'right':None,'top':None,'wspace':0.2,'hspace':0.2}
 fig_kw={'figsize':(9.0,3.0),'dpi':150.0,'facecolor':"white",'edgecolor':"white",'linewidth':1}
@@ -99,6 +103,7 @@ ax1.plot(s_arr, oldFs_low, color='b', label='old KC-RPMD', linewidth=2)
 ax2.plot(s_arr, Fgs_high, color='k', label='adiabatic', linewidth=2)
 ax2.plot(s_arr, newFs_high, color='r', label='new KC-RPMD', linewidth=2)
 ax2.plot(s_arr, oldFs_high, color='b', label='old KC-RPMD', linewidth=2)
+ax2.plot(s_arr, testFsy0_high, color='g', label='test', linewidth=2)
 plt.show()
 
 

@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
 parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
 parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
-parser.add_argument('--nsteps', default=25000, type=int)
+parser.add_argument('--nsteps', default=50000, type=int)
 parser.add_argument('--dt', default=0.08268, type=float)
 args = parser.parse_args()
 
@@ -49,8 +49,6 @@ with open("_control_params.txt") as f:
 model_params.update({"hw": 0})
 control_params.update({"nsteps": args.nsteps})
 control_params.update({"dt": args.dt})
-
-control_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave","Cdia","Cadi"]})
 
 rnd = Random()
 
@@ -76,13 +74,13 @@ if "use_kcrpmd" in control_params:
     py = np.random.normal(scale = np.sqrt(my / beta))
     if fix == 'y':
         py = abs(py)
-    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
-                   "rep":0, "ntraj":control_params["ntraj"],
+    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
+                   "rep":1, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"],
                    "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
 else:
-    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
-                   "rep":0, "ntraj":control_params["ntraj"],
+    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
+                   "rep":1, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
 
 pref = F"_itraj_{args.itraj}"

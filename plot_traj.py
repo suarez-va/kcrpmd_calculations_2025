@@ -22,8 +22,8 @@ if method == 1:
         time = f["time/data"][:]
         Etot = f["Etot_ave/data"][:]
         q = f["q/data"][:,0,:]
-        Cdia = f["Cdia/data"][:,0,:]
-        Cadi = f["Cadi/data"][:,0,:]
+        #Cdia = f["Cdia/data"][:,0,:]
+        #Cadi = f["Cadi/data"][:,0,:]
     E = Etot
 elif method == 2 or method == 3:
     with h5py.File("mem_data.hdf", 'r') as f:
@@ -35,16 +35,16 @@ elif method == 2 or method == 3:
     E = Etot + ekin
 
 print(E)
-print(Cadi.shape)
-plt.plot(time[:], (Cdia[:,0].real)**2)
-plt.plot(time[:], (Cdia[:,1].real)**2)
+#print(Cadi.shape)
+#plt.plot(time[:], (Cdia[:,0].real)**2)
+#plt.plot(time[:], (Cdia[:,1].real)**2)
 #plt.plot(time[:], (Cadi[:,0].real)**2)
 #plt.plot(time[:], (Cadi[:,1].real)**2)
 icutoff = 0
 icutoff2 = 100
 #plt.plot(time[icutoff:], E[icutoff:])
 #plt.plot(time[icutoff:icutoff2], q[icutoff:icutoff2,0])
-#plt.plot(time[icutoff:], q[icutoff:,0])
+plt.plot(time[icutoff:], q[icutoff:,0])
 #plt.plot(time[icutoff:], q[icutoff:,2])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
 #plt.plot(time[icutoff:], y[icutoff:])

@@ -46,8 +46,7 @@ for i, d in enumerate(itraj_dirs):
             py = f["p_aux_var/data"][:, 0]
         pos_data_list.append(y)
         mom_data_list.append(py)
-    #print(time.shape)
-    #print(s.shape)
+
 pos_data = np.vstack(pos_data_list)
 mom_data = np.vstack(mom_data_list)
 
@@ -98,64 +97,4 @@ np.savetxt("kappa_data/pos.txt", pos_data)
 np.savetxt("kappa_data/mom.txt", mom_data)
 np.savetxt("kappa_data/kappa_avg.txt", kappa_avg)
 np.savetxt("kappa_data/kappa_se.txt", kappa_se)
-
-exit()
-
-
-#print(itraj_dirs)
-#print(len(itraj_dirs))
-#print(os.listdir())
-#print(sorted(os.listdir()))
-# Loop through directories named 0, 1, 2, ...
-#for dirname in sorted(os.listdir())
-#
-## ======= READ IN MODEL AND KC-RPMD RECIPE =======
-#
-#with open("_model_params.txt") as f:
-#    model_params = eval(f.read())
-#
-#with open("_control_params.txt") as f:
-#    control_params = eval(f.read())
-#
-#model_params.update({"hw": 0})
-#control_params.update({"nsteps": args.nsteps})
-#control_params.update({"dt": args.dt})
-#
-#rnd = Random()
-#
-## ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION =======
-#with h5py.File("mem_data.hdf", 'r') as f:
-#    q = list(f["q/data"][args.itraj * args.iskip + args.istart, 0, :])
-#    if "use_kcrpmd" in control_params:
-#        y = f["y_aux_var/data"][args.itraj * args.iskip + args.istart, 0]
-#
-#beta = units.hartree / (units.boltzmann * control_params["Temperature"])
-#mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
-#p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
-#if fix == 's':
-#    p[0] = abs(p[0])
-#
-#nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
-#               "ntraj":control_params["ntraj"], "ndof": len(q)}
-#
-#if "use_kcrpmd" in control_params:
-#    #my = control_params["kcrpmd_my"]
-#    my = 10.
-#    control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
-#    py = np.random.normal(scale = np.sqrt(my / beta))
-#    if fix == 'y':
-#        py = abs(py)
-#    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
-#                   "rep":0, "ntraj":control_params["ntraj"],
-#                   "ndia":control_params["nstates"], "nadi":control_params["nstates"],
-#                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
-#else:
-#    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istates":[1.0,0.0],
-#                   "rep":0, "ntraj":control_params["ntraj"],
-#                   "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
-#
-#pref = F"_itraj_{args.itraj}"
-#control_params.update({ "prefix":pref, "prefix2":pref })
-#
-#res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, elec_params, nucl_params, rnd)
 
