@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir in _sys_*/; do
+for dir in _sys_1_*/; do
   cd $dir
   pwd
   sed -i "s|python.*|python ../kcrpmd_kappacalc.py|g" ../submit_template.slm

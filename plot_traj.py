@@ -15,7 +15,8 @@ from libra_py import data_conv
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 import libra_py.data_savers as data_savers
 
-method = 1
+#method = 1
+method = 2
 #method = 3
 if method == 1:
     with h5py.File("mem_data.hdf", 'r') as f:
@@ -47,7 +48,7 @@ icutoff2 = 100
 plt.plot(time[icutoff:], q[icutoff:,0])
 #plt.plot(time[icutoff:], q[icutoff:,2])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
-#plt.plot(time[icutoff:], y[icutoff:])
+plt.plot(time[icutoff:], y[icutoff:])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
 plt.show()
 #exit()

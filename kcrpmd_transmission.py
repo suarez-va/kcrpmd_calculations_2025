@@ -61,19 +61,17 @@ with h5py.File("mem_data.hdf", 'r') as f:
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
 p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
-if fix == 's':
-    p[0] = abs(p[0])
 
 nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
                "ntraj":control_params["ntraj"], "ndof": len(q)}
 
 if "use_kcrpmd" in control_params:
-    #my = control_params["kcrpmd_my"]
-    my = 10.
+    my = control_params["kcrpmd_my"]
+    if my < 10.:
+        my = 10.
     control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
     py = np.random.normal(scale = np.sqrt(my / beta))
-    if fix == 'y':
-        py = abs(py)
+
     elec_params = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
                    "rep":1, "ntraj":control_params["ntraj"],
                    "ndia":control_params["nstates"], "nadi":control_params["nstates"],

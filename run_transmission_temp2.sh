@@ -2,7 +2,7 @@
 
 ntraj=1000
 
-for dir in _sys_*/; do
+for dir in _sys_2_*/; do
   cd $dir
   pwd
   for ((itraj=1; itraj<=ntraj; itraj++)); do

@@ -70,9 +70,9 @@ elif method == 2 or method == 3:
 #print(time[icutoff:].shape)
 icutoff = 1000000
 #plt.plot(time[icutoff:], q[icutoff:,0])
-plt.plot(time[icutoff:], y[icutoff:])
+#plt.plot(time[icutoff:], y[icutoff:])
 #plt.plot(time[icutoff:], q[icutoff:,-1])
-plt.show()
+#plt.show()
 #exit()
 if method == 1: 
     gridspec_kw={'left':None,'bottom':None,'right':None,'top':None,'wspace':0.2,'hspace':0.2}

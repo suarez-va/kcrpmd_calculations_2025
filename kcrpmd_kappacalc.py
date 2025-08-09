@@ -36,6 +36,11 @@ for i, d in enumerate(itraj_dirs):
         with h5py.File(d + "/mem_data.hdf", 'r') as f:
             time = f["time/data"][:]
             s = f["q/data"][:, 0, 0]
+            #y = f["y_aux_var/data"][:, 0]
+            #py = f["p_aux_var/data"][:, 0]
+            #if ((y[0] >= -0.5) & (y[0] <= 0.5)):
+            #    print(d)
+            #    print(py[0])
             ps = f["p/data"][:, 0, 0]
         pos_data_list.append(s)
         mom_data_list.append(ps)

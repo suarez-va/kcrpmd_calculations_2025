@@ -34,6 +34,8 @@ mom_data = np.loadtxt("kappa_data/mom.txt")
 kappa_avg = np.loadtxt("kappa_data/kappa_avg.txt")
 kappa_se = np.loadtxt("kappa_data/kappa_se.txt")
 
+print(np.argwhere((pos_data[:,0] >= -0.5) & (pos_data[:,0] <= 0.5)))
+
 icutoff = 0
 itraj = 20
 plt.plot(time[icutoff:], pos_data[itraj,icutoff:])

@@ -174,8 +174,6 @@ elif args.method == 2 or args.method == 3:
         np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
         np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
 
-exit()
-
 # ======= CHOOSE NON-ADIABATIC METHOD =======
 nstates = model_params["nstates"]
 ndia = nstates
