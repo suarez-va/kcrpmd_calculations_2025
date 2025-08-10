@@ -58,6 +58,7 @@ class KcrpmdTst:
         self.Kq = Kq
         self.Vq = Vq
 
+        self.ydag = 0.0
         self.sdag = 0.5 * (self.s0 + self.s1) - self.eps / (self.ms * self.ws**2 * (self.s0 - self.s1))
         self.lam = 0.5 * self.ms * self.ws**2 * (self.s0 - self.s1)**2
         self.V0s = lambda s: 0.5 * self.ms * self.ws**2 * (s - self.s0)**2
