@@ -21,7 +21,7 @@ sys.path.insert(0, parent_dir)
 from kcrpmd_utils.kcrpmdtst import KcrpmdTst
 
 beta = units.hartree / (units.boltzmann * 300.0)
-a = 1.0
+a = 0.1
 b = 1000.0
 c = 0.5
 d = 3.0
@@ -34,7 +34,7 @@ eps = 0.0
 
 K0_low = 4.0e-5
 #K0_high = 4.0e-3
-K0_high = 5.62e-3
+K0_high = 7.62e-3
 bq = 0.0
 mq = 5e4
 wq = 5e-4

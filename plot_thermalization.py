@@ -111,6 +111,7 @@ else:
     ax2.hist(q[icutoff:,-1], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
     if fix == "y":
         ax1.set_xlabel("s coordinate", fontsize = 15)
+        #ax1.set_xlim([-0.1,0.1])
         ax1.hist(q[icutoff:,0], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(s_arr, Pydags, color='k', label='exact', linewidth=2)
         ax2.plot(q_arr, Pydagq, color='k', label='exact', linewidth=2)

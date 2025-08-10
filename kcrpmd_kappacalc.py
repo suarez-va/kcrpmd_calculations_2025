@@ -62,8 +62,9 @@ Num_blocks = np.zeros((N_blocks, t_pts))
 Den_blocks = np.zeros(N_blocks)
 
 block_index = np.arange(xi_pts).astype(int)
-np.random.shuffle(block_index)
+#np.random.shuffle(block_index)
 block_index = block_index.reshape(N_blocks, int(xi_pts / N_blocks))
+print(block_index)
 
 for i in range(N_blocks):
     for j in range(t_pts):

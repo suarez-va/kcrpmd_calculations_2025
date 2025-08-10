@@ -9,7 +9,7 @@ for dir in _sys_1_*/; do
     while true; do
       [[ -d _itraj_$itraj ]] && break
       njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
-      if [ "$njobs" -lt 475 ]; then
+      if [ "$njobs" -lt 500 ]; then
         sed -i "s|python.*|python ../kcrpmd_transmission.py --itraj=$itraj|g" ../submit_template.slm
         echo "$itraj"
         sbatch ../submit_template.slm
