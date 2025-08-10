@@ -29,6 +29,10 @@ class KcrpmdTst:
             Kq ( vectorized function ): q coordinate coupling [ units: a.u. ]
             Vq ( vectorized function ): q coordinate potential [ units: a.u. ]
         """
+        #self.lin_pts = 2000
+        #self.log_pts = 2001
+        #self.q_pts = 1500
+        #self.y_pts = 1500
         # grid parameters for s (log points centered around sdagger)
         self.lin_pts = 10000
         self.lin_width = 8

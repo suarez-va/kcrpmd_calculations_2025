@@ -23,11 +23,10 @@ parser.add_argument('--sys', default=1, type=int, help='KCRPMD system type A (1)
 parser.add_argument('--fix', default='s', type=str, help='fix y or s')
 parser.add_argument('--method', default=3, type=int, help='Adiabatic (1), Original KC-RPMD (2), New KC-RPMD (3)')
 parser.add_argument('--a', default=0.1, type=float)
-parser.add_argument('--nsteps', default=25000000, type=int)
-parser.add_argument('--dt', default=41.34, type=float)
 parser.add_argument('--K0', default=2.85e-3, type=float)
 parser.add_argument('--leps', default=-1.43e-2, type=float)
 parser.add_argument('--hw', default=0, type=int, help='left side (-1), right side (1), no hard wall (0)')
+parser.add_argument('--temp', default=300, type=int, help='Temperature in K')
 args = parser.parse_args()
 
 if (args.sys != 1 and args.sys != 2 and args.sys != 3): print("Invalid System Type!"); exit() 
@@ -49,7 +48,7 @@ else:
 os.makedirs(pref, exist_ok=True)
 
 # ======= TST code to evaluate eta, gamma, and mass of auxiliary variable =======
-T = 300 # Temperature in K
+T = args.temp # Temperature in K
 beta = units.hartree / (units.boltzmann * T)
 a = args.a
 b = 1000.0
@@ -68,7 +67,7 @@ K0 = args.K0
 bq = 0.0 if args.sys==1 else 3.0
 mq = 5.0e4 
 wq = 5.0e-4
-Dq = 1.0e-4
+Dq = 1.0e-4 if args.sys==2 else 1.0e-3
 (q0, Ea, leps) = (2.1, 6.65e-3, args.leps)
 (Aq, Bq, Cq) = get_ABC(q0, leps, Ea)
 qhw = 1.0
@@ -99,7 +98,7 @@ if args.method == 2:
     kcrpmd_tst.c = 0.0
     kcrpmd_tst.d = 0.0
 
-Fg = kcrpmd_tst.Fg(); FKC = kcrpmd_tst.FKC()
+Fg = kcrpmd_tst.Fg(); FKC = kcrpmd_tst.F()
 
 if args.hw == -1:
     kcrpmd_tst.q_low = qhw - (100 / (khw * beta))**(1/6)
@@ -112,12 +111,12 @@ elif args.hw == 1:
 
 os.makedirs(pref + "/tst_data", exist_ok=True)
 
-#s_arr = kcrpmd_tst.s_array()
-#q_arr = kcrpmd_tst.q_array()
-#y_arr = kcrpmd_tst.y_array()
-s_arr = np.linspace(kcrpmd_tst.s_low, kcrpmd_tst.s_high, 1000.)
-q_arr = np.linspace(kcrpmd_tst.q_low, kcrpmd_tst.q_high, 1000.)
-y_arr = np.linspace(kcrpmd_tst.y_low, kcrpmd_tst.y_high, 1000.)
+s_arr = kcrpmd_tst.s_array()
+q_arr = kcrpmd_tst.q_array()
+y_arr = kcrpmd_tst.y_array()
+#s_arr = np.linspace(-4.0, 4.0, 1000)
+#q_arr = np.linspace(kcrpmd_tst.q_low, kcrpmd_tst.q_high, 1000)
+#y_arr = np.linspace(kcrpmd_tst.y_low, kcrpmd_tst.y_high, 1000)
 
 if args.method == 1:
     Phw = np.exp(-beta * (kcrpmd_tst.Fg() - Fg)) 
@@ -129,8 +128,6 @@ if args.method == 1:
     ktsts = kcrpmd_tst.kBO()
     np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
     np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
-    #np.savetxt(pref + "/tst_data/Fsdag.txt", Fsdag)
-    #np.savetxt(pref + "/tst_data/Fsdagq.txt", Fsdagq)
     np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
     np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
     np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
@@ -145,6 +142,7 @@ elif args.method == 2 or args.method == 3:
     np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
     if args.fix == "y":
         Fydag = kcrpmd_tst.Fy(np.array([ydag]))
+        np.savetxt(pref + "/tst_data/Fydag.txt", [Fydag])
         Fydags = kcrpmd_tst.Fys(np.array([ydag]), s_arr)
         Fydagq = kcrpmd_tst.Fyq(np.array([ydag]), q_arr)
         Pydags = np.exp(-beta * (Fydags - Fydag))[:,0]
@@ -167,6 +165,8 @@ elif args.method == 2 or args.method == 3:
 
 # ======= SAVE LIBRA RELATED PARAMETERS  =======
 nstates = 2 
+ndia = 2 
+nadi = 2 
 ndof = 1 + len(mj) + int(args.sys != 0)
 ntraj = 1
 
@@ -184,7 +184,8 @@ with open(pref +  "/_model_params.txt", "w") as f:
 
 # ======= CHOOSE NON-ADIABATIC METHOD =======
 
-dyn_params = {"dt":args.dt, "num_electronic_substeps":1, "nsteps":args.nsteps, "prefix":pref, "prefix2":pref,
+dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000,
+              "prefix":"libra_data", "prefix2":"libra_data",
               "hdf5_output_level":-1, "mem_output_level":3, "txt_output_level":-1,
               "use_compression":0, "compression_level":[0,0,0], "progress_frequency":0.05,
               "ntraj":ntraj, "nstates":nstates}
@@ -255,4 +256,29 @@ _control_params_thermalization = dyn_params.copy()
 with open(pref +  "/_control_params_thermalization.txt", "w") as f:
     f.write(str(_control_params_thermalization))
 
+# compute initial conditions for thermalization using dt=41.34
+n_therm = 1000
+if args.sys == 3 and args.hw == -1:
+    Kref = K0 * np.exp(-bq * 2.1)
+else:
+    Kref = K0
+ms_therm = [max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)]
+mj_therm = [mj[i]*wj[i]**2*(n_therm*41.34/(2*np.pi))**2 for i in range(len(wj))]
+mq_therm = [mq*wq**2*(n_therm*41.34/(2*np.pi))**2]
+mass_therm = ms_therm + mj_therm + mq_therm
+force_therm = [4 * mass_therm[i] / (beta**2) for i in range(len(mass_therm))]
+my_therm = 500000.0
+
+_nucl_params = {"q":[sdag] + [0.0]*(ndof-2) + [qhw], "p":[0.0]*ndof, "mass": mass_therm,
+                "force_constant":force_therm, "init_type":1, "ntraj":ntraj, "ndof": ndof}
+
+_elec_params = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
+                "y_aux_var":[ydag], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
+
+# save initial conditions for thermalization
+with open(pref +  "/_init_nucl_thermalization.txt", "w") as f:
+    f.write(str(_nucl_params))
+
+with open(pref +  "/_init_elec_thermalization.txt", "w") as f:
+    f.write(str(_elec_params))
 
