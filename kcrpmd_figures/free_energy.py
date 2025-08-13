@@ -101,4 +101,3 @@ ax2.plot(s_arr, newFs_high, color='r', label='new KC-RPMD', linewidth=2)
 ax2.plot(s_arr, oldFs_high, color='b', label='old KC-RPMD', linewidth=2)
 plt.show()
 
-

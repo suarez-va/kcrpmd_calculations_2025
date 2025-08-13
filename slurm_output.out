@@ -1,1727 +1,249 @@
 ---------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
----------------------------------------
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
----------------------------------------
-Job ID:    6783252
----------------------------------------
----------------------------------------
-Job ID:    6783230
----------------------------------------
----------------------------------------
-Job ID:    6783251
----------------------------------------
----------------------------------------
----------------------------------------
-Job ID:    6783229
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
+Begin Slurm Prolog: Aug-12-2025 14:32:10
+Job ID:    6967604
 User ID:   vsuarez6
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
----------------------------------------
-Job ID:    6783231
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-User ID:   vsuarez6
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
----------------------------------------
-User ID:   vsuarez6
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Account:   gts-jkretchmer3-chemx
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-User ID:   vsuarez6
-Job ID:    6783245
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Account:   gts-jkretchmer3-chemx
-Job ID:    6783240
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-User ID:   vsuarez6
-Job ID:    6783247
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Job name:  kcrpmd_therm
-Job ID:    6783239
-Job ID:    6783242
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Account:   gts-jkretchmer3-chemx
-Job ID:    6783246
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Job name:  kcrpmd_therm
-Job ID:    6783241
-Job ID:    6783243
-Job ID:    6783249
-Account:   gts-jkretchmer3-chemx
-User ID:   vsuarez6
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Partition: cpu-large
-User ID:   vsuarez6
-Job ID:    6783244
-Job ID:    6783248
-Account:   gts-jkretchmer3-chemx
-User ID:   vsuarez6
-Begin Slurm Prolog: Aug-10-2025 16:40:26
-Partition: cpu-large
-User ID:   vsuarez6
-User ID:   vsuarez6
-Job ID:    6783250
-Job name:  kcrpmd_therm
-User ID:   vsuarez6
-Job ID:    6783238
-QOS:       inferno
-User ID:   vsuarez6
-User ID:   vsuarez6
-User ID:   vsuarez6
-Job name:  kcrpmd_therm
-Account:   gts-jkretchmer3-chemx
-Job ID:    6783237
-QOS:       inferno
-Account:   gts-jkretchmer3-chemx
-User ID:   vsuarez6
-User ID:   vsuarez6
-Job name:  kcrpmd_therm
-Account:   gts-jkretchmer3-chemx
-Job ID:    6783233
----------------------------------------
-Account:   gts-jkretchmer3-chemx
-Account:   gts-jkretchmer3-chemx
-User ID:   vsuarez6
-Partition: cpu-large
-Account:   gts-jkretchmer3-chemx
-Job ID:    6783232
----------------------------------------
-Account:   gts-jkretchmer3-chemx
-Account:   gts-jkretchmer3-chemx
-Account:   gts-jkretchmer3-chemx
-Partition: cpu-large
-Job name:  kcrpmd_therm
-Job ID:    6783234
-Job name:  kcrpmd_therm
-Account:   gts-jkretchmer3-chemx
-Account:   gts-jkretchmer3-chemx
-Partition: cpu-large
-Job name:  kcrpmd_therm
-Job ID:    6783236
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Account:   gts-jkretchmer3-chemx
-QOS:       inferno
-Job name:  kcrpmd_therm
-Job ID:    6783235
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-QOS:       inferno
-Partition: cpu-large
-User ID:   vsuarez6
-Partition: cpu-large
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-QOS:       inferno
-Partition: cpu-large
-User ID:   vsuarez6
-Partition: cpu-large
-Partition: cpu-large
-Job name:  kcrpmd_therm
----------------------------------------
-Partition: cpu-large
-User ID:   vsuarez6
-Partition: cpu-large
-Partition: cpu-large
-Partition: cpu-large
----------------------------------------
-QOS:       inferno
-User ID:   vsuarez6
-QOS:       inferno
-Partition: cpu-large
-Partition: cpu-large
----------------------------------------
-QOS:       inferno
-User ID:   vsuarez6
-QOS:       inferno
-QOS:       inferno
-Partition: cpu-large
-QOS:       inferno
-User ID:   vsuarez6
-QOS:       inferno
-QOS:       inferno
-QOS:       inferno
----------------------------------------
-User ID:   vsuarez6
----------------------------------------
-QOS:       inferno
-QOS:       inferno
----------------------------------------
-Account:   gts-jkretchmer3-chemx
----------------------------------------
----------------------------------------
-QOS:       inferno
----------------------------------------
-Account:   gts-jkretchmer3-chemx
----------------------------------------
----------------------------------------
----------------------------------------
-Account:   gts-jkretchmer3-chemx
----------------------------------------
----------------------------------------
-Account:   gts-jkretchmer3-chemx
----------------------------------------
-Account:   gts-jkretchmer3-chemx
-Account:   gts-jkretchmer3-chemx
 Account:   gts-jkretchmer3-chemx
 Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Job name:  kcrpmd_therm
-Partition: cpu-large
-Partition: cpu-large
-Partition: cpu-large
-Partition: cpu-large
-Partition: cpu-large
-Partition: cpu-large
 Partition: cpu-large
 QOS:       inferno
-QOS:       inferno
-QOS:       inferno
-QOS:       inferno
-QOS:       inferno
-QOS:       inferno
-QOS:       inferno
 ---------------------------------------
 ---------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783127
+Begin Slurm Epilog: Aug-12-2025 14:35:25
+Job ID:        6967596
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:29,vmem=0,walltime=00:02:29,mem=6283684K,energy_used=0
+Rsrc Used:     cput=00:03:17,vmem=0,walltime=00:03:17,mem=7494712K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-01-006-15-1
+Nodes:         atl1-1-01-006-14-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783129
+Begin Slurm Epilog: Aug-12-2025 14:35:25
+Job ID:        6967593
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:26,vmem=0,walltime=00:02:26,mem=6216548K,energy_used=0
+Rsrc Used:     cput=00:03:17,vmem=0,walltime=00:03:17,mem=7490428K,energy_used=0
+Partition:     cpu-large
+QOS:           inferno
+Nodes:         atl1-1-01-006-13-1
+---------------------------------------
+---------------------------------------
+Begin Slurm Epilog: Aug-12-2025 14:35:25
+Job ID:        6967591
+User ID:       vsuarez6
+Account:       gts-jkretchmer3-chemx
+Job name:      kcrpmd_therm
+Resources:     cpu=1,mem=64G,node=1
+Rsrc Used:     cput=00:03:20,vmem=0,walltime=00:03:20,mem=7497592K,energy_used=0
+Partition:     cpu-large
+QOS:           inferno
+Nodes:         atl1-1-01-006-13-1
+---------------------------------------
+---------------------------------------
+Begin Slurm Epilog: Aug-12-2025 14:35:26
+Job ID:        6967598
+User ID:       vsuarez6
+Account:       gts-jkretchmer3-chemx
+Job name:      kcrpmd_therm
+Resources:     cpu=1,mem=64G,node=1
+Rsrc Used:     cput=00:03:18,vmem=0,walltime=00:03:18,mem=7494668K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
 Nodes:         atl1-1-01-006-16-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783132
+Begin Slurm Epilog: Aug-12-2025 14:35:27
+Job ID:        6967601
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:26,vmem=0,walltime=00:02:26,mem=6208416K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-01-006-16-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783128
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:26,vmem=0,walltime=00:02:26,mem=6266056K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-01-006-16-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783131
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:26,vmem=0,walltime=00:02:26,mem=6327396K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-01-006-16-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:11
-Job ID:        6783130
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:26,vmem=0,walltime=00:02:26,mem=6205124K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-01-006-16-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:18
-Job ID:        6783134
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:31,vmem=0,walltime=00:02:31,mem=6297808K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:18
-Job ID:        6783133
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:31,vmem=0,walltime=00:02:31,mem=6230620K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:24
-Job ID:        6783135
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:37,vmem=0,walltime=00:02:37,mem=6205668K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:24
-Job ID:        6783136
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:37,vmem=0,walltime=00:02:37,mem=6185588K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:42:25
-Job ID:        6783137
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:02:38,vmem=0,walltime=00:02:38,mem=6173600K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:10
-Job ID:        6783196
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7080856K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:10
-Job ID:        6783201
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7079268K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:10
-Job ID:        6783194
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7071500K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:10
-Job ID:        6783195
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7077216K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:10
-Job ID:        6783202
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7073532K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:11
-Job ID:        6783193
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7087108K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:11
-Job ID:        6783200
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7075020K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:11
-Job ID:        6783198
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7074416K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:11
-Job ID:        6783197
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7083636K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:11
-Job ID:        6783199
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7078244K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:16
-Job ID:        6783192
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:11,vmem=0,walltime=00:03:11,mem=7070136K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:20
-Job ID:        6783225
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:09,vmem=0,walltime=00:03:09,mem=7558100K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:21
-Job ID:        6783227
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:10,vmem=0,walltime=00:03:10,mem=7553556K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:28
-Job ID:        6783223
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:18,vmem=0,walltime=00:03:18,mem=7489484K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:29
-Job ID:        6783226
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:18,vmem=0,walltime=00:03:18,mem=7540872K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:29
-Job ID:        6783228
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:18,vmem=0,walltime=00:03:18,mem=7544300K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:30
-Job ID:        6783229
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:05,vmem=0,walltime=00:03:05,mem=7489060K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:31
-Job ID:        6783231
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:06,vmem=0,walltime=00:03:06,mem=7487760K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:34
-Job ID:        6783224
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:23,vmem=0,walltime=00:03:23,mem=7488364K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:36
-Job ID:        6783241
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:11,vmem=0,walltime=00:03:11,mem=7490288K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-6-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:36
-Job ID:        6783237
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:11,vmem=0,walltime=00:03:11,mem=7490148K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:36
-Job ID:        6783235
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:11,vmem=0,walltime=00:03:11,mem=7488700K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:36
-Job ID:        6783239
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:11,vmem=0,walltime=00:03:11,mem=7491984K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-6-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:37
-Job ID:        6783233
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:12,vmem=0,walltime=00:03:12,mem=7488636K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:38
-Job ID:        6783230
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:13,vmem=0,walltime=00:03:13,mem=7487980K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:43
-Job ID:        6783236
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:18,vmem=0,walltime=00:03:18,mem=7490004K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:44
-Job ID:        6783238
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:19,vmem=0,walltime=00:03:19,mem=7488600K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:44
-Job ID:        6783240
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:19,vmem=0,walltime=00:03:19,mem=7490624K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-6-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:45
-Job ID:        6783232
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:20,vmem=0,walltime=00:03:20,mem=7488540K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:45
-Job ID:        6783234
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:20,vmem=0,walltime=00:03:20,mem=7489644K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-29-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:43:48
-Job ID:        6783242
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:03:23,vmem=0,walltime=00:03:23,mem=7490144K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:41
-Job ID:        6783160
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:47,vmem=0,walltime=00:05:47,mem=7968200K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:41
-Job ID:        6783158
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:49,vmem=0,walltime=00:05:49,mem=7968208K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:41
-Job ID:        6783159
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:49,vmem=0,walltime=00:05:49,mem=7967780K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:47
-Job ID:        6783145
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:58,vmem=0,walltime=00:05:58,mem=7966972K,energy_used=0
+Rsrc Used:     cput=00:03:19,vmem=0,walltime=00:03:19,mem=7495620K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
 Nodes:         atl1-1-02-004-1-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:47
-Job ID:        6783146
+Begin Slurm Epilog: Aug-12-2025 14:35:29
+Job ID:        6967603
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:58,vmem=0,walltime=00:05:58,mem=7970868K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:49
-Job ID:        6783140
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:02,vmem=0,walltime=00:06:02,mem=7968228K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:51
-Job ID:        6783141
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:04,vmem=0,walltime=00:06:04,mem=7974340K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:51
-Job ID:        6783147
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:02,vmem=0,walltime=00:06:02,mem=7967712K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:51
-Job ID:        6783138
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:04,vmem=0,walltime=00:06:04,mem=7970660K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-35-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:51
-Job ID:        6783139
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:04,vmem=0,walltime=00:06:04,mem=7969176K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:52
-Job ID:        6783161
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:58,vmem=0,walltime=00:05:58,mem=7975040K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:52
-Job ID:        6783163
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:58,vmem=0,walltime=00:05:58,mem=7969308K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:53
-Job ID:        6783162
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:59,vmem=0,walltime=00:05:59,mem=7966920K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-3-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:45:53
-Job ID:        6783164
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:05:59,vmem=0,walltime=00:05:59,mem=7974404K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-4-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:02
-Job ID:        6783143
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:13,vmem=0,walltime=00:06:13,mem=7969152K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:02
-Job ID:        6783144
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:13,vmem=0,walltime=00:06:13,mem=7969008K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:02
-Job ID:        6783142
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:13,vmem=0,walltime=00:06:13,mem=7967816K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-020-36-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:43
-Job ID:        6783175
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:38,vmem=0,walltime=00:06:38,mem=7966624K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:44
-Job ID:        6783172
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:47,vmem=0,walltime=00:06:47,mem=7969352K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:44
-Job ID:        6783173
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:47,vmem=0,walltime=00:06:47,mem=7969780K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:44
-Job ID:        6783174
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:38,vmem=0,walltime=00:06:38,mem=7967780K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:51
-Job ID:        6783180
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:46,vmem=0,walltime=00:06:46,mem=7967020K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:53
-Job ID:        6783179
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:48,vmem=0,walltime=00:06:48,mem=7967640K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:55
-Job ID:        6783178
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:50,vmem=0,walltime=00:06:50,mem=7967992K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:55
-Job ID:        6783181
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:50,vmem=0,walltime=00:06:50,mem=7966696K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:56
-Job ID:        6783177
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:51,vmem=0,walltime=00:06:51,mem=7966716K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:46:57
-Job ID:        6783176
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:06:52,vmem=0,walltime=00:06:52,mem=7968376K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:20
-Job ID:        6783203
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:15,vmem=0,walltime=00:07:15,mem=8884940K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:27
-Job ID:        6783169
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:30,vmem=0,walltime=00:07:30,mem=7971460K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:27
-Job ID:        6783170
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:31,vmem=0,walltime=00:07:31,mem=7968624K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:29
-Job ID:        6783148
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:40,vmem=0,walltime=00:07:40,mem=7966660K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:29
-Job ID:        6783150
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:37,vmem=0,walltime=00:07:37,mem=7967604K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:30
-Job ID:        6783149
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:40,vmem=0,walltime=00:07:40,mem=7968132K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:30
-Job ID:        6783167
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:34,vmem=0,walltime=00:07:34,mem=7971976K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-4-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:31
-Job ID:        6783168
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:34,vmem=0,walltime=00:07:34,mem=8161088K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-4-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:31
-Job ID:        6783151
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:39,vmem=0,walltime=00:07:39,mem=7967660K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-004-1-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:33
-Job ID:        6783152
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:41,vmem=0,walltime=00:07:41,mem=8174152K,energy_used=0
+Rsrc Used:     cput=00:03:21,vmem=0,walltime=00:03:21,mem=7498492K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
 Nodes:         atl1-1-02-004-2-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:34
-Job ID:        6783165
+Begin Slurm Epilog: Aug-12-2025 14:35:29
+Job ID:        6967592
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:38,vmem=0,walltime=00:07:38,mem=7968384K,energy_used=0
+Rsrc Used:     cput=00:03:24,vmem=0,walltime=00:03:24,mem=7492380K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-4-1
+Nodes:         atl1-1-01-006-13-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:46
-Job ID:        6783157
+Begin Slurm Epilog: Aug-12-2025 14:35:31
+Job ID:        6967595
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:54,vmem=0,walltime=00:07:54,mem=7967832K,energy_used=0
+Rsrc Used:     cput=00:03:22,vmem=0,walltime=00:03:22,mem=7491052K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-2-2
+Nodes:         atl1-1-01-006-13-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:48
-Job ID:        6783154
+Begin Slurm Epilog: Aug-12-2025 14:35:31
+Job ID:        6967590
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:56,vmem=0,walltime=00:07:56,mem=7967436K,energy_used=0
+Rsrc Used:     cput=00:03:26,vmem=0,walltime=00:03:26,mem=7497164K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-2-2
+Nodes:         atl1-1-01-006-13-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:49
-Job ID:        6783156
+Begin Slurm Epilog: Aug-12-2025 14:35:31
+Job ID:        6967597
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:57,vmem=0,walltime=00:07:57,mem=7966824K,energy_used=0
+Rsrc Used:     cput=00:03:23,vmem=0,walltime=00:03:23,mem=7494072K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-2-2
+Nodes:         atl1-1-01-006-15-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:49
-Job ID:        6783166
+Begin Slurm Epilog: Aug-12-2025 14:35:32
+Job ID:        6967585
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:53,vmem=0,walltime=00:07:53,mem=7967052K,energy_used=0
+Rsrc Used:     cput=00:03:27,vmem=0,walltime=00:03:27,mem=7522560K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-4-1
+Nodes:         atl1-1-02-020-35-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:49
-Job ID:        6783155
+Begin Slurm Epilog: Aug-12-2025 14:35:33
+Job ID:        6967602
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:07:57,vmem=0,walltime=00:07:57,mem=8168772K,energy_used=0
+Rsrc Used:     cput=00:03:25,vmem=0,walltime=00:03:25,mem=7493296K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-2-2
+Nodes:         atl1-1-02-004-1-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:47:53
-Job ID:        6783153
+Begin Slurm Epilog: Aug-12-2025 14:35:35
+Job ID:        6967599
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:00,vmem=0,walltime=00:08:00,mem=8168740K,energy_used=0
+Rsrc Used:     cput=00:03:27,vmem=0,walltime=00:03:27,mem=7500572K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-004-2-2
+Nodes:         atl1-1-02-004-1-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:24
-Job ID:        6783206
+Begin Slurm Epilog: Aug-12-2025 14:35:35
+Job ID:        6967604
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:17,vmem=0,walltime=00:08:17,mem=8878840K,energy_used=0
+Rsrc Used:     cput=00:03:25,vmem=0,walltime=00:03:25,mem=7497816K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-004-2-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:25
-Job ID:        6783207
+Begin Slurm Epilog: Aug-12-2025 14:35:36
+Job ID:        6967589
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:18,vmem=0,walltime=00:08:18,mem=8879820K,energy_used=0
+Rsrc Used:     cput=00:03:31,vmem=0,walltime=00:03:31,mem=7494744K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-020-36-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783211
+Begin Slurm Epilog: Aug-12-2025 14:35:38
+Job ID:        6967582
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:22,vmem=0,walltime=00:08:22,mem=8887136K,energy_used=0
+Rsrc Used:     cput=00:03:35,vmem=0,walltime=00:03:35,mem=7495872K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-020-27-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783205
+Begin Slurm Epilog: Aug-12-2025 14:35:40
+Job ID:        6967588
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:24,vmem=0,walltime=00:08:24,mem=8886800K,energy_used=0
+Rsrc Used:     cput=00:03:35,vmem=0,walltime=00:03:35,mem=7495716K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-020-35-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783212
+Begin Slurm Epilog: Aug-12-2025 14:35:40
+Job ID:        6967583
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:22,vmem=0,walltime=00:08:22,mem=8878760K,energy_used=0
+Rsrc Used:     cput=00:03:35,vmem=0,walltime=00:03:35,mem=7529176K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-020-35-1
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783204
+Begin Slurm Epilog: Aug-12-2025 14:35:41
+Job ID:        6967587
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:24,vmem=0,walltime=00:08:24,mem=8882016K,energy_used=0
+Rsrc Used:     cput=00:03:36,vmem=0,walltime=00:03:36,mem=7490836K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
+Nodes:         atl1-1-02-020-35-2
 ---------------------------------------
 ---------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783208
+Begin Slurm Epilog: Aug-12-2025 14:35:44
+Job ID:        6967586
 User ID:       vsuarez6
 Account:       gts-jkretchmer3-chemx
 Job name:      kcrpmd_therm
 Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:22,vmem=0,walltime=00:08:22,mem=8879860K,energy_used=0
+Rsrc Used:     cput=00:03:39,vmem=0,walltime=00:03:39,mem=7501344K,energy_used=0
 Partition:     cpu-large
 QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:29
-Job ID:        6783209
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:22,vmem=0,walltime=00:08:22,mem=8879432K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:30
-Job ID:        6783210
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:23,vmem=0,walltime=00:08:23,mem=8904472K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:50
-Job ID:        6783171
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:53,vmem=0,walltime=00:08:53,mem=7968792K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-17-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:54
-Job ID:        6783184
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:49,vmem=0,walltime=00:08:49,mem=8132592K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:56
-Job ID:        6783185
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:50,vmem=0,walltime=00:08:50,mem=7966844K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:56
-Job ID:        6783183
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:51,vmem=0,walltime=00:08:51,mem=7966916K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:48:58
-Job ID:        6783182
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:08:53,vmem=0,walltime=00:08:53,mem=7968916K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:10
-Job ID:        6783190
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:05,vmem=0,walltime=00:09:05,mem=7967348K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:12
-Job ID:        6783191
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:07,vmem=0,walltime=00:09:07,mem=7967288K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:12
-Job ID:        6783186
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:07,vmem=0,walltime=00:09:07,mem=7973044K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:14
-Job ID:        6783188
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:09,vmem=0,walltime=00:09:09,mem=8170100K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:14
-Job ID:        6783189
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:09,vmem=0,walltime=00:09:09,mem=8170444K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:15
-Job ID:        6783187
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:10,vmem=0,walltime=00:09:10,mem=8171160K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-18-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:44
-Job ID:        6783244
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:19,vmem=0,walltime=00:09:19,mem=9779360K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:45
-Job ID:        6783243
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:20,vmem=0,walltime=00:09:20,mem=9779812K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:47
-Job ID:        6783245
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:22,vmem=0,walltime=00:09:22,mem=9777632K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:47
-Job ID:        6783247
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:22,vmem=0,walltime=00:09:22,mem=9778536K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:48
-Job ID:        6783246
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:23,vmem=0,walltime=00:09:23,mem=9779820K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-7-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:54
-Job ID:        6783215
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:45,vmem=0,walltime=00:09:45,mem=8880880K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-27-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:54
-Job ID:        6783217
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:45,vmem=0,walltime=00:09:45,mem=8879848K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-27-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:49:58
-Job ID:        6783216
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:09:48,vmem=0,walltime=00:09:48,mem=8881500K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-27-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:50:13
-Job ID:        6783222
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:04,vmem=0,walltime=00:10:04,mem=8880424K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:50:14
-Job ID:        6783221
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:05,vmem=0,walltime=00:10:05,mem=9085996K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:50:15
-Job ID:        6783220
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:06,vmem=0,walltime=00:10:06,mem=9091632K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:50:15
-Job ID:        6783218
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:06,vmem=0,walltime=00:10:06,mem=8879468K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:50:17
-Job ID:        6783219
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:08,vmem=0,walltime=00:10:08,mem=8880076K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-28-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:51:01
-Job ID:        6783213
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:54,vmem=0,walltime=00:10:54,mem=8878876K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:51:06
-Job ID:        6783214
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:10:59,vmem=0,walltime=00:10:59,mem=8880972K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-02-003-20-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:55:18
-Job ID:        6783251
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:14:53,vmem=0,walltime=00:14:53,mem=9832728K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-8-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:55:19
-Job ID:        6783252
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:14:54,vmem=0,walltime=00:14:54,mem=9830784K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-8-2
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:55:21
-Job ID:        6783250
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:14:56,vmem=0,walltime=00:14:56,mem=9830408K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-8-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:55:25
-Job ID:        6783248
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:15:00,vmem=0,walltime=00:15:00,mem=9833280K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-8-1
----------------------------------------
----------------------------------------
-Begin Slurm Epilog: Aug-10-2025 16:55:29
-Job ID:        6783249
-User ID:       vsuarez6
-Account:       gts-jkretchmer3-chemx
-Job name:      kcrpmd_therm
-Resources:     cpu=1,mem=64G,node=1
-Rsrc Used:     cput=00:15:04,vmem=0,walltime=00:15:04,mem=9831184K,energy_used=0
-Partition:     cpu-large
-QOS:           inferno
-Nodes:         atl1-1-03-004-8-1
+Nodes:         atl1-1-02-020-35-1
 ---------------------------------------

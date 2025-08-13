@@ -26,26 +26,29 @@ from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_sys
 set_style()
 
 calc_dirs = [d for d in os.listdir('../') if d.startswith('_sys_')]
-_sys_2_method_1 = sorted([k for k in calc_dirs if k.startswith("_sys_2_method_1")], key=lambda s: float(s.split('_')[8]))
-_sys_2_method_3_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_2_method_3_fix_y")], key=lambda s: float(s.split('_')[8]))
-_sys_2_method_3_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_2_method_3_fix_s")], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_1_hw_p1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_1" in k], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_1_hw_n1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_-1" in k], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_3_hw_p1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_1" in k], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_3_hw_n1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_-1" in k], key=lambda s: float(s.split('_')[8]))
 
-with open("../" + _sys_2_method_1[0] + "/_model_params.txt") as f:
+with open("../" + _sys_3_method_1_hw_p1[0] + "/_model_params.txt") as f:
     model_params = eval(f.read())
 
-with open("../" + _sys_2_method_1[0] + "/_control_params_dynamics.txt") as f:
+with open("../" + _sys_3_method_1_hw_p1[0] + "/_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
 
 # ======= Pull in all the rate data =======
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 
-ktst0 = np.loadtxt("../" + _sys_2_method_1[0] + "/tst_data/ktsts.txt")
-kappa0_avg = np.loadtxt("../" + _sys_2_method_1[0] + "/kappa_data/kappa_avg.txt")[-1]
-kappa0_se = np.loadtxt("../" + _sys_2_method_1[0] + "/kappa_data/kappa_se.txt")[-1]
+Phw_p1 = np.loadtxt("../" + _sys_3_method_1_hw_p1[0] + "/tst_data/ktsts.txt")
+ktst0 = np.loadtxt("../" + _sys_3_method_1_hw_p1[0] + "/tst_data/ktsts.txt")
+kappa0_avg = np.loadtxt("../" + _sys_3_method_1[0] + "/kappa_data/kappa_avg.txt")[-1]
+kappa0_se = np.loadtxt("../" + _sys_3_method_1[0] + "/kappa_data/kappa_se.txt")[-1]
 kBO0 = ktst0 * kappa0_avg
 kBO0_se = ktst0 * kappa0_se
 
-K0_arr = np.array([key.split('_')[8] for key in _sys_2_method_1], dtype=float)[1:]
+leps_arr = np.array([key.split('_')[8] for key in _sys_3_method_1_hw_p1], dtype=float)[:]
+K0_arr = np.array([key.split('_')[8] for key in _sys_3_method_1], dtype=float)[1:]
 kGR_arr = np.zeros(K0_arr.shape)
 kBO_arr = np.zeros(K0_arr.shape)
 kBO_se_arr = np.zeros(K0_arr.shape)
@@ -54,21 +57,21 @@ kIF_se_arr = np.zeros(K0_arr.shape)
 knew_arr = np.zeros(K0_arr.shape)
 knew_se_arr = np.zeros(K0_arr.shape)
 
-for i, d in enumerate(_sys_2_method_1[1:]):
-    kGR_arr[i] = np.loadtxt("../" + _sys_2_method_1[i+1] + "/tst_data/kGR.txt")
-    kBO_arr[i] = np.loadtxt("../" + _sys_2_method_1[i+1] + "/tst_data/ktsts.txt")
-    kBO_se_arr[i] = kBO_arr[i] * np.loadtxt("../" + _sys_2_method_1[i+1] + "/kappa_data/kappa_se.txt")[-1]
-    kBO_arr[i] *= np.loadtxt("../" + _sys_2_method_1[i+1] + "/kappa_data/kappa_avg.txt")[-1]
+for i, d in enumerate(_sys_3_method_1[1:]):
+    kGR_arr[i] = np.loadtxt("../" + _sys_3_method_1[i+1] + "/tst_data/kGR.txt")
+    kBO_arr[i] = np.loadtxt("../" + _sys_3_method_1[i+1] + "/tst_data/ktsts.txt")
+    kBO_se_arr[i] = kBO_arr[i] * np.loadtxt("../" + _sys_3_method_1[i+1] + "/kappa_data/kappa_se.txt")[-1]
+    kBO_arr[i] *= np.loadtxt("../" + _sys_3_method_1[i+1] + "/kappa_data/kappa_avg.txt")[-1]
     kIF_arr[i] = kGR_arr[i] * kBO_arr[i] / (kGR_arr[i] + kBO0)
 
 for i in range(4):
-    knew_arr[i] = np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/tst_data/ktsty.txt")
-    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
-    knew_arr[i] *= np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
+    knew_arr[i] = np.loadtxt("../" + _sys_3_method_3_fix_y[i] + "/tst_data/ktsty.txt")
+    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_3_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
+    knew_arr[i] *= np.loadtxt("../" + _sys_3_method_3_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
 for i in range(4,10):
-    knew_arr[i] = np.loadtxt("../" + _sys_2_method_3_fix_s[i] + "/tst_data/ktsts.txt")
-    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_2_method_3_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
-    knew_arr[i] *= np.loadtxt("../" + _sys_2_method_3_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
+    knew_arr[i] = np.loadtxt("../" + _sys_3_method_3_fix_s[i] + "/tst_data/ktsts.txt")
+    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_3_method_3_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
+    knew_arr[i] *= np.loadtxt("../" + _sys_3_method_3_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
 
 fig, ax = plt.subplots()
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kGR_arr), kGR_arr*0, fmt='o-', markersize=3, linewidth=1, color='r', label=r'$k_\mathrm{GR}$')

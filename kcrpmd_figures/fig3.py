@@ -27,15 +27,19 @@ set_style()
 
 calc_dirs = [d for d in os.listdir('../') if d.startswith('_sys_')]
 _sys_1_method_1 = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_1")], key=lambda s: float(s.split('_')[8]))
-_sys_1_method_2_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_fix_y")], key=lambda s: float(s.split('_')[8]))
-_sys_1_method_2_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_fix_s")], key=lambda s: float(s.split('_')[8]))
+_sys_1_method_2_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_a_0.1_fix_y")], key=lambda s: float(s.split('_')[10]))
+_sys_1_method_2_a_1_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2") and "_a_0.1" not in k and "_fix_y" in k], key=lambda s: float(s.split('_')[10]))
+_sys_1_method_2_a_1_fix_y = _sys_1_method_2_fix_y[:(len(_sys_1_method_2_fix_y)-len(_sys_1_method_2_a_1_fix_y))]+_sys_1_method_2_a_1_fix_y
+_sys_1_method_2_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_a_0.1_fix_s")], key=lambda s: float(s.split('_')[10]))
+_sys_1_method_2_a_1_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2") and "_a_0.1" not in k and "_fix_s" in k], key=lambda s: float(s.split('_')[10]))
+_sys_1_method_2_a_1_fix_s = _sys_1_method_2_fix_s[:(len(_sys_1_method_2_fix_s)-len(_sys_1_method_2_a_1_fix_s))]+_sys_1_method_2_a_1_fix_s
 _sys_1_method_3_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_3_fix_y")], key=lambda s: float(s.split('_')[8]))
 _sys_1_method_3_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_3_fix_s")], key=lambda s: float(s.split('_')[8]))
 
 with open("../" + _sys_1_method_1[0] + "/_model_params.txt") as f:
     model_params = eval(f.read())
 
-with open("../" + _sys_1_method_1[0] + "/_control_params.txt") as f:
+with open("../" + _sys_1_method_1[0] + "/_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
 
 # ======= Pull in all the rate data =======
@@ -55,6 +59,8 @@ kIF_arr = np.zeros(K0_arr.shape)
 kIF_se_arr = np.zeros(K0_arr.shape)
 kold_arr = np.zeros(K0_arr.shape)
 kold_se_arr = np.zeros(K0_arr.shape)
+kolda1_arr = np.zeros(K0_arr.shape)
+kolda1_se_arr = np.zeros(K0_arr.shape)
 knew_arr = np.zeros(K0_arr.shape)
 knew_se_arr = np.zeros(K0_arr.shape)
 
@@ -69,31 +75,44 @@ for i in range(5):
     kold_arr[i] = np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/tst_data/ktsty.txt")
     kold_se_arr[i] = kold_arr[i] * np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
     kold_arr[i] *= np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
+    #kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/tst_data/ktsty.txt")
+    #kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
+    #kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
     knew_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/tst_data/ktsty.txt")
     knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
     knew_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
-for i in range(5,9):
+for i in range(5,10):
     kold_arr[i] = np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/tst_data/ktsts.txt")
     kold_se_arr[i] = kold_arr[i] * np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
     kold_arr[i] *= np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
+    #kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/tst_data/ktsts.txt")
+    #kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
+    #kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
     knew_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/tst_data/ktsts.txt")
     knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
     knew_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
 
-#for i in range(9):
-#    kold_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/tst_data/ktsty.txt")
-#    #kold_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
-#    kold_se_arr[i] = 0*kold_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
-#    knew_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/tst_data/ktsts.txt")
-#    #knew_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
-#    knew_se_arr[i] =0* knew_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
+for i in range(7):
+    kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/tst_data/ktsty.txt")
+    kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
+    kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
+for i in range(7,10):
+    kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/tst_data/ktsts.txt")
+    kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
+    kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
 
+print(kolda1_arr)
+print(kolda1_se_arr)
+print("a = 0.1")
+print(kold_arr)
+print(kold_se_arr)
 
 fig, ax = plt.subplots()
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kGR_arr), kGR_arr*0, fmt='o-', markersize=3, linewidth=1, color='r', label=r'$k_\mathrm{GR}$')
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kBO_arr), kBO_se_arr / (kBO_arr * np.log(10)), fmt='o-', markersize=3, linewidth=1, color='b', label=r'$k_\mathrm{BO}$')
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kIF_arr), kIF_se_arr, fmt='^-', markersize=3, linewidth=1, color='k', label=r'$k_\mathrm{IF}$')
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kold_arr), kold_se_arr / (kold_arr * np.log(10)), fmt='s-', markersize=3, linewidth=1, color='g', label=r'$k_\mathrm{original}$')
+ax.errorbar(np.log10(beta * K0_arr[:7]), np.log10(kolda1_arr[:7]), kolda1_se_arr[:7] / (kolda1_arr[:7] * np.log(10)), fmt='s-', markersize=3, linewidth=1, color='orange', label=r'$k_\mathrm{original}; a=1.0$')
 ax.errorbar(np.log10(beta * K0_arr), np.log10(knew_arr), knew_se_arr / (knew_arr * np.log(10)), fmt='*-', markersize=3, linewidth=1, color='gold', label=r'$k_\mathrm{new}$')
 #ax.set_xlim(-0.3,1.3)
 #ax.set_ylim(-8.0,5.0)

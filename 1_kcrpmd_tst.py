@@ -40,7 +40,9 @@ if (args.sys == 1 or args.sys == 2):
     else:
         pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}"
 else:
-    if (args.method == 2):
+    if (args.method == 1):
+        pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}_leps_{args.leps:.2e}_hw_{args.hw}"
+    elif (args.method == 2):
         pref = F"_sys_{args.sys}_method_{args.method}_a_{args.a}_fix_{args.fix}_leps_{args.leps:.2e}_hw_{args.hw}"
     else:
         pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_leps_{args.leps:.2e}_hw_{args.hw}"
@@ -194,10 +196,10 @@ dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000,
 def load_adiabatic(dyn_general, args):
     dyn_general.update({"rep_tdse":1}) # adiabatic representation, wfc
     dyn_general.update({"ham_update_method":1})  # recompute only diabatic Hamiltonian
-    dyn_general.update({"ham_transform_method":1 }) # diabatic->adiabatic according to internal diagonalization
+    dyn_general.update({"ham_transform_method":1}) # diabatic->adiabatic according to internal diagonalization
     dyn_general.update({"rep_force":1} ) # adiabatic
     dyn_general.update({"force_method":1} ) # state-specific  as in the TSH or adiabatic
-    dyn_general.update({"time_overlap_method":1 }) # explicitly compute it from the wavefunction info
+    dyn_general.update({"time_overlap_method":1}) # explicitly compute it from the wavefunction info
     dyn_general.update({"isNBRA":0}) # no NBRA - Hamiltonians for all trajectories are computed explicitly [ default ]
     dyn_general.update({"Temperature":args.temp}) #Temperature of the system [ default ]
     dyn_general.update({"electronic_integrator":-1}) # No propagation

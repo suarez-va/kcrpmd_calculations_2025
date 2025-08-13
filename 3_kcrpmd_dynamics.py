@@ -35,10 +35,10 @@ else:
 
 # ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS =======
 
-with open("_control_params_dynamics.txt") as f:
+with open("../_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
 
-with open("_model_params.txt") as f:
+with open("../_model_params.txt") as f:
     model_params = eval(f.read())
 
 model_params.update({"hw": 0})
@@ -56,8 +56,8 @@ beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
 p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
 
-nucl_params = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
-               "ntraj":control_params["ntraj"], "ndof": len(q)}
+init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
+             "ntraj":control_params["ntraj"], "ndof": len(q)}
 
 if "use_kcrpmd" in control_params:
     my = control_params["kcrpmd_my"]
@@ -66,14 +66,14 @@ if "use_kcrpmd" in control_params:
     control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
     py = np.random.normal(scale = np.sqrt(my / beta))
 
-    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
-                   "rep":1, "ntraj":control_params["ntraj"],
-                   "ndia":control_params["nstates"], "nadi":control_params["nstates"],
-                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
+    init_elec = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
+                  "rep":1, "ntraj":control_params["ntraj"],
+                  "ndia":control_params["nstates"], "nadi":control_params["nstates"],
+                  "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
 else:
-    elec_params = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
-                   "rep":1, "ntraj":control_params["ntraj"],
-                   "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
+    init_elec = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
+                  "rep":1, "ntraj":control_params["ntraj"],
+                  "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
 
 rnd = Random()
 

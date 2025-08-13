@@ -1,19 +1,10 @@
 import sys
-import cmath
-import math
 import os
 import h5py
-import matplotlib.pyplot as plt   # plots
 import numpy as np
-from scipy.interpolate import griddata
-import argparse
 
 from liblibra_core import *
 import util.libutil as comn
-from libra_py import units
-from libra_py import data_conv
-import libra_py.dynamics.tsh.compute as tsh_dynamics
-import libra_py.data_savers as data_savers
 
 N_blocks = 10
 
@@ -26,14 +17,15 @@ else:
     print("not in correct directory, directory should start with '_sys_'.")
     exit()
 
-itraj_dirs = sorted([d for d in os.listdir('.') if d.startswith('_itraj_')])
+itraj_dirs = sorted([d for d in os.listdir('libra_data/') if d.startswith('_itraj_')])
+print(itraj_dirs)
 
 pos_data_list = []
 mom_data_list = []
 # ======= READING IN TRANSMISSION TRAJECTORY DATA =======
 for i, d in enumerate(itraj_dirs):
     if fix == 's':
-        with h5py.File(d + "/mem_data.hdf", 'r') as f:
+        with h5py.File("libra_data/" + d + "/mem_data.hdf", 'r') as f:
             time = f["time/data"][:]
             s = f["q/data"][:, 0, 0]
             #y = f["y_aux_var/data"][:, 0]
@@ -45,7 +37,7 @@ for i, d in enumerate(itraj_dirs):
         pos_data_list.append(s)
         mom_data_list.append(ps)
     elif fix == 'y':
-        with h5py.File(d + "/mem_data.hdf", 'r') as f:
+        with h5py.File("libra_data/" + d + "/mem_data.hdf", 'r') as f:
             time = f["time/data"][:]
             y = f["y_aux_var/data"][:, 0]
             py = f["p_aux_var/data"][:, 0]
@@ -92,9 +84,6 @@ sB = np.std(Den_blocks)
 kappa_avg = A / B
 
 kappa_se = kappa_avg * np.sqrt((sA / A)**2 + (sB / B)**2) / np.sqrt(N_blocks - 1)
-
-print(kappa_avg)
-print(kappa_se)
 
 os.makedirs("kappa_data", exist_ok=True)
 
