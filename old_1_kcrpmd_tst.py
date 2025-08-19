@@ -47,6 +47,10 @@ else:
     else:
         pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_leps_{args.leps:.2e}_hw_{args.hw}"
 
+#######
+#pref = "temp_test_hw_{args.hw}"
+#######
+
 os.makedirs(pref, exist_ok=True)
 
 # ======= TST code to evaluate eta, gamma, and mass of auxiliary variable =======

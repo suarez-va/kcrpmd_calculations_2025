@@ -3,8 +3,8 @@
 #SBATCH -J kcrpmd_therm
 #SBATCH -A gts-jkretchmer3-chemx
 #SBATCH -N 1 --cpus-per-task=1
-#SBATCH --mem-per-cpu=16GB
-#SBATCH -t 1:00:00
+#SBATCH --mem-per-cpu=64GB
+#SBATCH -t 24:00:00
 #SBATCH --output=slurm_output.out
 #SBATCH --error=slurm_error.err
 
@@ -14,4 +14,4 @@ eval "$(/storage/home/hcoda1/8/vsuarez6/p-jkretchmer3-0/MyConda/bin/conda shell.
 export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/p-jkretchmer3-0/libra-code/_build/src:$PYTHONPATH
 conda activate libra
 
-python ../../3_kcrpmd_dynamics.py --itraj=771
+python ../2_kcrpmd_thermalization.py

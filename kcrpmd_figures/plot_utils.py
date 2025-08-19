@@ -23,7 +23,7 @@ from kcrpmd_utils.kcrpmdtst import KcrpmdTst
 
 def set_style():
     plt.rcParams.update({
-        'figure.figsize': (5.0, 3.0),
+        'figure.figsize': (4.0, 3.0),
         'figure.dpi': 150,
         'figure.facecolor': 'white',
         'figure.edgecolor': 'white',

@@ -26,36 +26,130 @@ from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_sys
 set_style()
 
 calc_dirs = [d for d in os.listdir('../') if d.startswith('_sys_')]
-_sys_3_method_1_hw_p1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_1" in k], key=lambda s: float(s.split('_')[8]))
-_sys_3_method_1_hw_n1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_-1" in k], key=lambda s: float(s.split('_')[8]))
-_sys_3_method_3_hw_p1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_1" in k], key=lambda s: float(s.split('_')[8]))
-_sys_3_method_3_hw_n1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_-1" in k], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_1_K0hwp1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_1" in k and "_K0_1.00e-10" in k], key=lambda s: float(s.split('_')[10]))
+_sys_3_method_1_K0hwn1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_-1" in k and "_K0_1.00e-10" in k], key=lambda s: float(s.split('_')[10]))
+_sys_3_method_1_Khwp1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_1" in k and not "_K0_1.00e-10" in k], key=lambda s: float(s.split('_')[10]))
+_sys_3_method_1_Khwn1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_1") and "_hw_-1" in k and not "_K0_1.00e-10" in k], key=lambda s: float(s.split('_')[10]))
+_sys_3_method_3_Khwp1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_1" in k], key=lambda s: float(s.split('_')[8]))
+_sys_3_method_3_Khwn1 = sorted([k for k in calc_dirs if k.startswith("_sys_3_method_3") and "_hw_-1" in k], key=lambda s: float(s.split('_')[8]))
 
-with open("../" + _sys_3_method_1_hw_p1[0] + "/_model_params.txt") as f:
+with open("../" + _sys_3_method_1_K0hwp1[0] + "/_model_params.txt") as f:
     model_params = eval(f.read())
 
-with open("../" + _sys_3_method_1_hw_p1[0] + "/_control_params_dynamics.txt") as f:
+with open("../" + _sys_3_method_1_K0hwp1[0] + "/_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
 
 # ======= Pull in all the rate data =======
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 
-Phw_p1 = np.loadtxt("../" + _sys_3_method_1_hw_p1[0] + "/tst_data/ktsts.txt")
-ktst0 = np.loadtxt("../" + _sys_3_method_1_hw_p1[0] + "/tst_data/ktsts.txt")
-kappa0_avg = np.loadtxt("../" + _sys_3_method_1[0] + "/kappa_data/kappa_avg.txt")[-1]
-kappa0_se = np.loadtxt("../" + _sys_3_method_1[0] + "/kappa_data/kappa_se.txt")[-1]
-kBO0 = ktst0 * kappa0_avg
-kBO0_se = ktst0 * kappa0_se
+leps_arr = np.array([key.split('_')[10] for key in _sys_3_method_1_K0hwp1], dtype=float)[:]
+kBO0_arr = np.zeros(leps_arr.shape)
+kBO0_se_arr = np.zeros(leps_arr.shape)
 
-leps_arr = np.array([key.split('_')[8] for key in _sys_3_method_1_hw_p1], dtype=float)[:]
-K0_arr = np.array([key.split('_')[8] for key in _sys_3_method_1], dtype=float)[1:]
-kGR_arr = np.zeros(K0_arr.shape)
-kBO_arr = np.zeros(K0_arr.shape)
-kBO_se_arr = np.zeros(K0_arr.shape)
-kIF_arr = np.zeros(K0_arr.shape)
-kIF_se_arr = np.zeros(K0_arr.shape)
-knew_arr = np.zeros(K0_arr.shape)
-knew_se_arr = np.zeros(K0_arr.shape)
+kGR_arr = np.zeros(leps_arr.shape)
+kBO_arr = np.zeros(leps_arr.shape)
+kBO_se_arr = np.zeros(leps_arr.shape)
+kIF_arr = np.zeros(leps_arr.shape)
+kIF_se_arr = np.zeros(leps_arr.shape)
+knew_arr = np.zeros(leps_arr.shape)
+knew_se_arr = np.zeros(leps_arr.shape)
+
+for i, d in enumerate(_sys_3_method_1_K0hwp1):
+    #kGR0_arr[i] = np.loadtxt("../" + _sys_3_method_1_K0hwp1[i] + "/tst_data/kGR_full.txt")
+    Phw0_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[i] + "/tst_data/Phw.txt")
+    ktst0_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[i] + "/tst_data/ktsts.txt")
+    #kappa0_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa0_p1 = 1.0 
+    #kappa0_se_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[i] + "/kappa_data/kappa_se.txt")[-1]
+    kappa0_se_p1 = 0.0
+    Phw0_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[i] + "/tst_data/Phw.txt")
+    ktst0_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[i] + "/tst_data/ktsts.txt")
+    #kappa0_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa0_n1 = 1.0 
+    #kappa0_se_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[i] + "/kappa_data/kappa_se.txt")[-1]
+    kappa0_se_n1 = 0.0
+    kBO0_p1 = Phw0_p1 * ktst0_p1 * kappa0_p1
+    kBO0_n1 = Phw0_n1 * ktst0_n1 * kappa0_n1
+    kBO0_se_p1 = Phw0_p1 * ktst0_p1 * kappa0_se_p1
+    kBO0_se_n1 = Phw0_n1 * ktst0_n1 * kappa0_se_n1
+    kBO0_arr[i] = kBO0_p1 + kBO0_n1
+    kBO0_se_arr[i] = np.sqrt(kBO0_se_p1**2 + kBO0_se_n1**2)
+    #print(kBO0_p1, kBO0_se_p1, kBO0_n1, kBO0_se_n1)
+    #######
+    #kBO0_arr[i] = Phw0_p1 * ktst0_p1 + Phw0_n1 * ktst0_n1
+    #kBO0_se_arr[i] = 0.0 
+    #######
+
+#print(_sys_3_method_1_K0hwp1)
+#print(_sys_3_method_1_Khwp1)
+#print(_sys_3_method_1_K0hwn1)
+#print(_sys_3_method_1_Khwn1)
+#exit()
+
+for i, d in enumerate(_sys_3_method_1_Khwp1):
+    kGR_arr[i] = np.loadtxt("../" + _sys_3_method_1_Khwp1[i] + "/tst_data/kGR_full.txt")
+    Phw_p1 = np.loadtxt("../" + _sys_3_method_1_Khwp1[i] + "/tst_data/Phw.txt")
+    ktst_p1 = np.loadtxt("../" + _sys_3_method_1_Khwp1[i] + "/tst_data/ktsts.txt")
+    kappa_p1 = np.loadtxt("../" + _sys_3_method_1_Khwp1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa_se_p1 = np.loadtxt("../" + _sys_3_method_1_Khwp1[i] + "/kappa_data/kappa_se.txt")[-1]
+    Phw_n1 = np.loadtxt("../" + _sys_3_method_1_Khwn1[i] + "/tst_data/Phw.txt")
+    ktst_n1 = np.loadtxt("../" + _sys_3_method_1_Khwn1[i] + "/tst_data/ktsts.txt")
+    kappa_n1 = np.loadtxt("../" + _sys_3_method_1_Khwn1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa_se_n1 = np.loadtxt("../" + _sys_3_method_1_Khwn1[i] + "/kappa_data/kappa_se.txt")[-1]
+    kBO_p1 = Phw_p1 * ktst_p1 * kappa_p1
+    kBO_n1 = Phw_n1 * ktst_n1 * kappa_n1
+    kBO_se_p1 = Phw_p1 * ktst_p1 * kappa_se_p1
+    kBO_se_n1 = Phw_n1 * ktst_n1 * kappa_se_n1
+    kBO_arr[i] = kBO0_p1 + kBO_n1
+    kBO_se_arr[i] = np.sqrt(kBO_se_p1**2 + kBO_se_n1**2)
+
+for i, d in enumerate(_sys_3_method_3_Khwp1):
+    print(d)
+    Phw_p1 = np.loadtxt("../" + _sys_3_method_3_Khwp1[i] + "/tst_data/Phw.txt")
+    ktst_p1 = np.loadtxt("../" + _sys_3_method_3_Khwp1[i] + "/tst_data/ktsts.txt")
+    kappa_p1 = np.loadtxt("../" + _sys_3_method_3_Khwp1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa_se_p1 = np.loadtxt("../" + _sys_3_method_3_Khwp1[i] + "/kappa_data/kappa_se.txt")[-1]
+
+    Phw_n1 = np.loadtxt("../" + _sys_3_method_3_Khwn1[i] + "/tst_data/Phw.txt")
+    ktst_n1 = np.loadtxt("../" + _sys_3_method_3_Khwn1[i] + "/tst_data/ktsty.txt")
+    kappa_n1 = np.loadtxt("../" + _sys_3_method_3_Khwn1[i] + "/kappa_data/kappa_avg.txt")[-1]
+    kappa_se_n1 = np.loadtxt("../" + _sys_3_method_3_Khwn1[i] + "/kappa_data/kappa_se.txt")[-1]
+
+    knew_p1 = Phw_p1 * ktst_p1 * kappa_p1
+    knew_n1 = Phw_n1 * ktst_n1 * kappa_n1
+    knew_se_p1 = Phw_p1 * ktst_p1 * kappa_se_p1
+    knew_se_n1 = Phw_n1 * ktst_n1 * kappa_se_n1
+    knew_arr[i] = knew_p1 + knew_n1
+    knew_se_arr[i] = np.sqrt(knew_se_p1**2 + knew_se_n1**2)
+
+print(kGR_arr)
+print(kBO0_arr)
+print(kBO0_se_arr)
+print(kBO_arr)
+print(kBO_se_arr)
+print(knew_arr)
+print(knew_se_arr)
+exit()
+
+
+
+#for i, d in enumerate(_sys_3_method_1_K0hwp1):
+
+    #ktst0_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[0] + "/tst_data/ktsts.txt")
+    #kappa0_avg_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[0] + "/kappa_data/kappa_avg.txt")[-1]
+    #kappa0_se_p1 = np.loadtxt("../" + _sys_3_method_1_K0hwp1[0] + "/kappa_data/kappa_se.txt")[-1]
+    #kBO0_p1 = ktst0_p1 * kappa0_avg_p1
+    #kBO0_se_p1 = ktst0_p1 * kappa0_se_p1
+    #Phw_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[0] + "/tst_data/Phw.txt")
+    #ktst0_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[0] + "/tst_data/ktsts.txt")
+    #kappa0_avg_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[0] + "/kappa_data/kappa_avg.txt")[-1]
+    #kappa0_se_n1 = np.loadtxt("../" + _sys_3_method_1_K0hwn1[0] + "/kappa_data/kappa_se.txt")[-1]
+    #kBO0_n1 = ktst0_n1 * kappa0_avg_n1
+    #kBO0_se_n1 = ktst0_n1 * kappa0_se_n1
+
+
+#K0_arr = np.array([key.split('_')[8] for key in _sys_3_method_1], dtype=float)[1:]
+
 
 for i, d in enumerate(_sys_3_method_1[1:]):
     kGR_arr[i] = np.loadtxt("../" + _sys_3_method_1[i+1] + "/tst_data/kGR.txt")
@@ -90,7 +184,7 @@ ax.legend(loc='upper left')
 
 plt.tight_layout()
 #plt.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.18)
-plt.savefig('fig4.png')
+plt.savefig('fig5.png')
 
 
 

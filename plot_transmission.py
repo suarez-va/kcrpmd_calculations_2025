@@ -39,10 +39,10 @@ print(np.argwhere((pos_data[:,0] >= -0.5) & (pos_data[:,0] <= 0.5)))
 icutoff = 0
 itraj = 20
 plt.plot(time[icutoff:], pos_data[itraj,icutoff:])
-plt.plot(time[icutoff:], pos_data[0,icutoff:])
-plt.plot(time[icutoff:], pos_data[333,icutoff:])
-plt.plot(time[icutoff:], pos_data[666,icutoff:])
-plt.plot(time[icutoff:], pos_data[999,icutoff:])
+plt.plot(time[icutoff:], pos_data[111,icutoff:])
+plt.plot(time[icutoff:], pos_data[444,icutoff:])
+plt.plot(time[icutoff:], pos_data[777,icutoff:])
+plt.plot(time[icutoff:], pos_data[888,icutoff:])
 plt.show()
 
 gridspec_kw={'left':None,'bottom':None,'right':None,'top':None,'wspace':1.2,'hspace':0.2}

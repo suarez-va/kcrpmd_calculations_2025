@@ -60,7 +60,6 @@ for i, d in enumerate(_sys_2_method_1[1:]):
     kBO_se_arr[i] = kBO_arr[i] * np.loadtxt("../" + _sys_2_method_1[i+1] + "/kappa_data/kappa_se.txt")[-1]
     kBO_arr[i] *= np.loadtxt("../" + _sys_2_method_1[i+1] + "/kappa_data/kappa_avg.txt")[-1]
     kIF_arr[i] = kGR_arr[i] * kBO_arr[i] / (kGR_arr[i] + kBO0)
-
 for i in range(4):
     knew_arr[i] = np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/tst_data/ktsty.txt")
     knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
@@ -72,9 +71,9 @@ for i in range(4,10):
 
 fig, ax = plt.subplots()
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kGR_arr), kGR_arr*0, fmt='o-', markersize=3, linewidth=1, color='r', label=r'$k_\mathrm{GR}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(kBO_arr), kBO_se_arr / (kBO_arr * np.log(10)), fmt='o-', markersize=3, linewidth=1, color='b', label=r'$k_\mathrm{BO}$')
 ax.errorbar(np.log10(beta * K0_arr), np.log10(kIF_arr), kIF_se_arr, fmt='^-', markersize=3, linewidth=1, color='k', label=r'$k_\mathrm{IF}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(knew_arr), knew_se_arr / (knew_arr * np.log(10)), fmt='*-', markersize=3, linewidth=1, color='gold', label=r'$k_\mathrm{new}$')
+ax.errorbar(np.log10(beta * K0_arr), np.log10(kBO_arr), kBO_se_arr / (kBO_arr * np.log(10)), fmt='o-', markersize=3, linewidth=1, color='b', label=r'$k_\mathrm{BO}$')
+ax.errorbar(np.log10(beta * K0_arr), np.log10(knew_arr), knew_se_arr / (knew_arr * np.log(10)), fmt='*-', markersize=3, linewidth=1, color='g', label=r'$k_\mathrm{new}$')
 #ax.set_xlim(-0.3,1.3)
 #ax.set_ylim(-8.0,5.0)
 #ax.set_xticks([0.0, 1.0])
@@ -83,7 +82,7 @@ ax.errorbar(np.log10(beta * K0_arr), np.log10(knew_arr), knew_se_arr / (knew_arr
 ax.set_xlabel(r"log(β$K_0$)", fontsize = 15)
 ax.set_ylabel(r"log($k_{\mathrm{ET}}$)", fontsize = 15)
 ax.set_title("")
-ax.legend(loc='upper left')
+ax.legend(ncol=2, fontsize=8, loc='upper left')
 
 plt.tight_layout()
 #plt.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.18)
