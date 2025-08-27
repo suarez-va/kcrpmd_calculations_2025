@@ -1,118 +1,95 @@
 import sys
-import cmath
-import math
 import os
-import h5py
 import matplotlib.pyplot as plt   # plots
 import numpy as np
-from scipy.interpolate import griddata
 
 from liblibra_core import *
-import util.libutil as comn
 from libra_py import units
-from libra_py import data_conv
-import libra_py.dynamics.tsh.compute as tsh_dynamics
-import libra_py.data_savers as data_savers
 
-from plot_utils import set_style, add_hbar, add_abar
+from plot_utils import set_style
 
-# Add the parent directory to sys.path
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, parent_dir)
 
 from kcrpmd_utils.kcrpmdtst import KcrpmdTst
-from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_system_bath
 
 set_style()
 
-calc_dirs = [d for d in os.listdir('../') if d.startswith('_sys_')]
-_sys_1_method_1 = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_1")], key=lambda s: float(s.split('_')[8]))
-_sys_1_method_2_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_a_0.1_fix_y")], key=lambda s: float(s.split('_')[10]))
-_sys_1_method_2_a_1_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2") and "_a_0.1" not in k and "_fix_y" in k], key=lambda s: float(s.split('_')[10]))
-_sys_1_method_2_a_1_fix_y = _sys_1_method_2_fix_y[:(len(_sys_1_method_2_fix_y)-len(_sys_1_method_2_a_1_fix_y))]+_sys_1_method_2_a_1_fix_y
-_sys_1_method_2_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2_a_0.1_fix_s")], key=lambda s: float(s.split('_')[10]))
-_sys_1_method_2_a_1_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_2") and "_a_0.1" not in k and "_fix_s" in k], key=lambda s: float(s.split('_')[10]))
-_sys_1_method_2_a_1_fix_s = _sys_1_method_2_fix_s[:(len(_sys_1_method_2_fix_s)-len(_sys_1_method_2_a_1_fix_s))]+_sys_1_method_2_a_1_fix_s
-_sys_1_method_3_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_3_fix_y")], key=lambda s: float(s.split('_')[8]))
-_sys_1_method_3_fix_s = sorted([k for k in calc_dirs if k.startswith("_sys_1_method_3_fix_s")], key=lambda s: float(s.split('_')[8]))
+T = 300.0
+beta = units.hartree / (units.boltzmann * T)
+a = 0.1
+b = 1000.0
+c = 0.5
+d = 3.0
 
-with open("../" + _sys_1_method_1[0] + "/_model_params.txt") as f:
-    model_params = eval(f.read())
+ms = 1836.0
+ws = 2.28e-3
+s0 = -2.4
+s1 = 2.4
+eps = 0.0
 
-with open("../" + _sys_1_method_1[0] + "/_control_params_dynamics.txt") as f:
-    control_params = eval(f.read())
+#K0_low = 4.0e-5
+#K0_high = 4.0e-3
+#K0_high = 7.62e-3
+K0_low = 9.55e-05
+#K0_high = 4.47e-03
+K0_high = 6.46e-03
+#K0_high = 9.33e-03
+bq = 0.0
+mq = 5e4
+wq = 5e-4
 
-# ======= Pull in all the rate data =======
-beta = units.hartree / (units.boltzmann * control_params["Temperature"])
+Kq_low = lambda q: K0_low * np.exp(-bq * q)
+Kq_high = lambda q: K0_high * np.exp(-bq * q)
+Vq = lambda q: 0.5 * mq * wq**2 * q**2
 
-ktst0 = np.loadtxt("../" + _sys_1_method_1[0] + "/tst_data/ktsts.txt")
-kappa0_avg = np.loadtxt("../" + _sys_1_method_1[0] + "/kappa_data/kappa_avg.txt")[-1]
-kappa0_se = np.loadtxt("../" + _sys_1_method_1[0] + "/kappa_data/kappa_se.txt")[-1]
-kBO0 = ktst0 * kappa0_avg
-kBO0_se = ktst0 * kappa0_se
+adiabatic_tst_low = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_low,Vq) 
+newkcrpmd_tst_low = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_low,Vq); newkcrpmd_tst_low.set_eta_my_gammay() 
+oldkcrpmd_tst_low = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_low,Vq); oldkcrpmd_tst_low.set_eta_my_gammay()
+oldkcrpmd_tst_low.eta = 2 * oldkcrpmd_tst_low.eta - np.sqrt(np.pi / oldkcrpmd_tst_low.a)
+oldkcrpmd_tst_low.a = 2 * oldkcrpmd_tst_low.a; oldkcrpmd_tst_low.c = 0.0; oldkcrpmd_tst_low.d = 0.0
 
-K0_arr = np.array([key.split('_')[8] for key in _sys_1_method_1], dtype=float)[1:]
-kGR_arr = np.zeros(K0_arr.shape)
-kBO_arr = np.zeros(K0_arr.shape)
-kBO_se_arr = np.zeros(K0_arr.shape)
-kIF_arr = np.zeros(K0_arr.shape)
-kIF_se_arr = np.zeros(K0_arr.shape)
-kold_arr = np.zeros(K0_arr.shape)
-kold_se_arr = np.zeros(K0_arr.shape)
-kolda1_arr = np.zeros(K0_arr.shape)
-kolda1_se_arr = np.zeros(K0_arr.shape)
-knew_arr = np.zeros(K0_arr.shape)
-knew_se_arr = np.zeros(K0_arr.shape)
+adiabatic_tst_high = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_high,Vq) 
+newkcrpmd_tst_high = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_high,Vq); newkcrpmd_tst_high.set_eta_my_gammay() 
+oldkcrpmd_tst_high = KcrpmdTst(beta,a,b,c,d,1.,ms,ws,s0,s1,eps,Kq_high,Vq); oldkcrpmd_tst_high.set_eta_my_gammay()
+oldkcrpmd_tst_high.eta = 2 * oldkcrpmd_tst_high.eta - np.sqrt(np.pi / oldkcrpmd_tst_high.a)
+oldkcrpmd_tst_high.a = 2 * oldkcrpmd_tst_high.a; oldkcrpmd_tst_high.c = 0.0; oldkcrpmd_tst_high.d = 0.0
+oldkcrpmda1_tst_high = KcrpmdTst(beta,1.0,b,c,d,1.,ms,ws,s0,s1,eps,Kq_high,Vq); oldkcrpmda1_tst_high.set_eta_my_gammay()
+oldkcrpmda1_tst_high.eta = 2 * oldkcrpmda1_tst_high.eta - np.sqrt(np.pi / oldkcrpmda1_tst_high.a)
+oldkcrpmda1_tst_high.a = 2 * oldkcrpmda1_tst_high.a; oldkcrpmda1_tst_high.c = 0.0; oldkcrpmda1_tst_high.d = 0.0
 
-for i, d in enumerate(_sys_1_method_1[1:]):
-    kGR_arr[i] = np.loadtxt("../" + _sys_1_method_1[i+1] + "/tst_data/kGR.txt")
-    kBO_arr[i] = np.loadtxt("../" + _sys_1_method_1[i+1] + "/tst_data/ktsts.txt")
-    kBO_se_arr[i] = kBO_arr[i] * np.loadtxt("../" + _sys_1_method_1[i+1] + "/kappa_data/kappa_se.txt")[-1]
-    kBO_arr[i] *= np.loadtxt("../" + _sys_1_method_1[i+1] + "/kappa_data/kappa_avg.txt")[-1]
-    kIF_arr[i] = kGR_arr[i] * kBO_arr[i] / (kGR_arr[i] + kBO0)
+s_ar = np.linspace(-5.0, 5.0, 1000)
 
-for i in range(5):
-    kold_arr[i] = np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/tst_data/ktsty.txt")
-    kold_se_arr[i] = kold_arr[i] * np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
-    kold_arr[i] *= np.loadtxt("../" + _sys_1_method_2_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
-    knew_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/tst_data/ktsty.txt")
-    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
-    knew_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
-for i in range(5,10):
-    kold_arr[i] = np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/tst_data/ktsts.txt")
-    kold_se_arr[i] = kold_arr[i] * np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
-    kold_arr[i] *= np.loadtxt("../" + _sys_1_method_2_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
-    knew_arr[i] = np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/tst_data/ktsts.txt")
-    knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
-    knew_arr[i] *= np.loadtxt("../" + _sys_1_method_3_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
+Fgs_low = adiabatic_tst_low.Fgs(s_ar)
+newFs_low = newkcrpmd_tst_low.Fs(s_ar)
+oldFs_low = oldkcrpmd_tst_low.Fs(s_ar)
 
-for i in range(7):
-    kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/tst_data/ktsty.txt")
-    kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
-    kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_y[i] + "/kappa_data/kappa_avg.txt")[-1]
-for i in range(7,10):
-    kolda1_arr[i] = np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/tst_data/ktsts.txt")
-    kolda1_se_arr[i] = kolda1_arr[i] * np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_se.txt")[-1]
-    kolda1_arr[i] *= np.loadtxt("../" + _sys_1_method_2_a_1_fix_s[i] + "/kappa_data/kappa_avg.txt")[-1]
+Fgs_high = adiabatic_tst_high.Fgs(s_ar)
+newFs_high = newkcrpmd_tst_high.Fs(s_ar)
+oldFs_high = oldkcrpmd_tst_high.Fs(s_ar)
+oldFsa1_high = oldkcrpmda1_tst_high.Fs(s_ar)
 
-fig, ax = plt.subplots()
-ax.errorbar(np.log10(beta * K0_arr), np.log10(kGR_arr), kGR_arr*0, fmt='o-', markersize=3, linewidth=1, color='r', label=r'$k_\mathrm{GR}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(knew_arr), knew_se_arr / (knew_arr * np.log(10)), fmt='*-', markersize=3, linewidth=1, color='g', label=r'$k_\mathrm{new}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(kBO_arr), kBO_se_arr / (kBO_arr * np.log(10)), fmt='o-', markersize=3, linewidth=1, color='b', label=r'$k_\mathrm{BO}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(kold_arr), kold_se_arr / (kold_arr * np.log(10)), fmt='s-', markersize=3, linewidth=1, color='gold', label=r'$k_\mathrm{old}$')
-ax.errorbar(np.log10(beta * K0_arr), np.log10(kIF_arr), kIF_se_arr, fmt='^-', markersize=3, linewidth=1, color='k', label=r'$k_\mathrm{IF}$')
-ax.errorbar(np.log10(beta * K0_arr[:7]), np.log10(kolda1_arr[:7]), kolda1_se_arr[:7] / (kolda1_arr[:7] * np.log(10)), fmt='s-', markersize=3, linewidth=1, color='orange', label=r'$k_\mathrm{old}; a=1.0$')
-#ax.set_xlim(-0.3,1.3)
-#ax.set_ylim(-8.0,5.0)
-#ax.set_xticks([0.0, 1.0])
-#ax.set_yticks([0])
-#ax.set_xticklabels([r'$0$', r'$q_0$'])
-ax.set_xlabel(r"log(β$K_0$)", fontsize = 15)
-ax.set_ylabel(r"log($k_{\mathrm{ET}}$)", fontsize = 15)
-ax.set_title("")
-ax.legend(ncol=3, fontsize=8, loc='upper left')
+fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(4.0, 4.0), sharex=True, sharey=False, dpi=300)
+ax1.text(-0.1, 0.92, "(a)", transform=ax1.transAxes, fontsize=12)
+ax2.text(-0.1, 0.92, "(b)", transform=ax2.transAxes, fontsize=12)
+ax1.plot(s_ar, Fgs_low, color='k', label='adiabatic', dashes=[4, 1], zorder=3)
+ax1.plot(s_ar, newFs_low, color='g', label='new', zorder=2)
+ax1.plot(s_ar, oldFs_low, color='darkorange', label='ori', zorder=1)
+ax2.plot(s_ar, Fgs_high, color='k', label='adiabatic', dashes=[4, 1], zorder=4)
+ax2.plot(s_ar, newFs_high, color='g', label='new', zorder=3)
+ax2.plot(s_ar, oldFs_high, color='darkorange', label='ori', zorder=2)
+ax2.plot(s_ar, oldFsa1_high, color='blueviolet', label='ori*', zorder=1)
+ax1.set_xlim(-4.7,4.7)
+ax1.set_ylim(-0.002,0.03)
+ax2.set_ylim(-0.002,0.03)
+ax1.set_yticks([0.0, 0.01, 0.02])
+ax2.set_xticks([-4, -2, 0, 2, 4])
+ax2.set_yticks([0.0, 0.01, 0.02])
+ax2.set_xlabel(r"$s$")
+ax1.set_ylabel(r"$\Delta F(s)$")
+ax2.set_ylabel(r"$\Delta F(s)$")
+ax1.set_title("")
 
-plt.tight_layout()
-#plt.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.18)
+plt.subplots_adjust(hspace=0.05, left=0.18, right=0.98, top=0.98, bottom=0.12)
 plt.savefig('fig3.png')
 

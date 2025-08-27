@@ -92,7 +92,11 @@ elif args.sys == 3:
 kcrpmd_tst = KcrpmdTst(beta, a, b, c, d, 1., ms, ws, s0, s1, eps, Kq, Vq)
 ydag = kcrpmd_tst.ydag
 sdag = kcrpmd_tst.sdag
-kcrpmd_tst.set_eta_my_gammay()
+if args.hw != 0:
+    q_low_cp = kcrpmd_tst.q_low
+    kcrpmd_tst.q_low = qhw
+    kcrpmd_tst.set_eta_my_gammay()
+    kcrpmd_tst.q_low = q_low_cp
 
 if args.method == 2:
     kcrpmd_tst.eta = 2 * kcrpmd_tst.eta - np.sqrt(np.pi / kcrpmd_tst.a)

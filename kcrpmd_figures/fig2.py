@@ -45,6 +45,6 @@ ax = add_abar(ax, (1.0, -7), (1.0, 0.0), label=r'$ϵ$', mutation_scale=10, label
 ax = add_abar(ax, (0.39, 0.0), (0.39, 3.0), label=r'$E_a$', mutation_scale=10, label_offset=0.075, linewidth=1.5, fontsize=15)
 
 plt.tight_layout()
-plt.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.18)
+plt.subplots_adjust(left=0.12, right=0.98, top=0.98, bottom=0.18)
 
 plt.savefig('fig2.png')

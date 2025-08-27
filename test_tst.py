@@ -47,8 +47,41 @@ Vq = lambda q: np.piecewise(q, [q >= 0., q < 0.],
 
 kcrpmd_tst = KcrpmdTst(beta, a, b, c, d, 1., ms, ws, s0, s1, eps, Kq, Vq)
 kcrpmd_tst.set_eta_my_gammay()
+print(kcrpmd_tst.eta, kcrpmd_tst.my)
+#kGR = kcrpmd_tst.kGR()
+#ktsty = kcrpmd_tst.tst_y()
+#print(kGR, ktsty)
 
+print("progress 1")
 hw = -1
+if hw != 0:
+    q_low_cp = kcrpmd_tst.q_low
+    print(q_low_cp)
+    kcrpmd_tst.q_low = qhw
+    print(kcrpmd_tst.q_low)
+    kcrpmd_tst.set_eta_my_gammay()
+    kcrpmd_tst.q_low = q_low_cp
+    print(q_low_cp)
+    print(kcrpmd_tst.q_low)
+
+print(kcrpmd_tst.eta, kcrpmd_tst.my)
+kGR = kcrpmd_tst.kGR()
+ktsty = kcrpmd_tst.tst_y()
+print(kGR, ktsty)
+
+exit()
+
+
+kcrpmd_tst.set_eta_my_gammay()
+print(kcrpmd_tst.eta, kcrpmd_tst.my)
+kcrpmd_tst.q_low = qhw
+kcrpmd_tst.set_eta_my_gammay()
+print(kcrpmd_tst.eta, kcrpmd_tst.my)
+kGR = kcrpmd_tst.kGR()
+ktsty = kcrpmd_tst.tst_y()
+print(kGR, ktsty)
+
+
 if hw == -1:
     kcrpmd_tst.q_low = qhw - (100 / (khw * beta))**(1/6)
     Vhw = lambda q: np.piecewise(q, [q >= qhw, q < qhw], [lambda q: np.full_like(q, 0.), lambda q: khw * (q - qhw)**6])

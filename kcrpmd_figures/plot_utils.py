@@ -39,8 +39,8 @@ def set_style():
         'ytick.major.width': 1.5,
         'xtick.major.size': 4,
         'ytick.major.size': 4,
-        'xtick.labelsize': 15,
-        'ytick.labelsize': 15,
+        'xtick.labelsize': 12,
+        'ytick.labelsize': 12,
         'legend.fontsize': 11,
         'legend.frameon': False,
     })
