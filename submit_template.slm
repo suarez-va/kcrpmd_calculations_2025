@@ -10,8 +10,8 @@
 
 cd $SLURM_SUBMIT_DIR
 
-eval "$(/storage/home/hcoda1/8/vsuarez6/p-jkretchmer3-0/MyConda/bin/conda shell.bash hook)"
-export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/p-jkretchmer3-0/libra-code/_build/src:$PYTHONPATH
+eval "$(/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/MyConda/bin/conda shell.bash hook)"
+export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/libra-code/_build/src:$PYTHONPATH
 conda activate libra
 
-python ../4_kcrpmd_kappa.py
+python 1_kcrpmd_tst.py --sys=2 --method=2 --fix=y --a=0.05 --K0=1.0e-03
