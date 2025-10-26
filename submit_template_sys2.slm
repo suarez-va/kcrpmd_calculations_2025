@@ -14,4 +14,4 @@ eval "$(/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/MyConda/bin/conda shell.
 export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/libra-code/_build/src:$PYTHONPATH
 conda activate libra
 
-python ../../3_kcrpmd_dynamics.py --itraj=72
+python ../../3_kcrpmd_dynamics.py --itraj=179

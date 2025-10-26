@@ -55,7 +55,7 @@ beta = units.hartree / (units.boltzmann * T)
 a = args.a
 b = 1000.0
 c = 0.5
-d = 3.0
+d = 0.5
 
 ms = 1836.0
 ws = 2.28e-3
