@@ -2,7 +2,7 @@ import numpy as np
 
 class KcrpmdTst:
 
-    def __init__(self, beta, a, b, c, d, e, ms, ws, s0, s1, eps, Kq, Vq):
+    def __init__(self, beta, a, b, c, ms, ws, s0, s1, eps, Kq, Vq):
 
         """
         effective solvent coordinate factored 2-state spin-boson model as defined in KC-RPMD paper
@@ -19,8 +19,6 @@ class KcrpmdTst:
             a ( double ): KC-RPMD kinetic constraint parameter a [ units: a.u. ]
             b ( double ): KC-RPMD heavy-side parameter b [ units: a.u. ]
             c ( double ): KC-RPMD kinetic constraint switching parameter c [ units: a.u. ]
-            d ( double ): KC-RPMD free energy switching parameter d [ units: a.u. ]
-            e ( double ): KC-RPMD switching parameter center [ units: a.u. ]
             ms ( double ): s coordinate mass [ units: a.u. ]
             ws ( double ): s coordinate angular frequency [ units: a.u. ]
             s0 ( double ): V0 parabola center [ units: a.u. ]
@@ -29,10 +27,6 @@ class KcrpmdTst:
             Kq ( vectorized function ): q coordinate coupling [ units: a.u. ]
             Vq ( vectorized function ): q coordinate potential [ units: a.u. ]
         """
-        #self.lin_pts = 2000
-        #self.log_pts = 2001
-        #self.q_pts = 1500
-        #self.y_pts = 1500
         # grid parameters for s (log points centered around sdagger)
         self.lin_pts = 10000
         self.lin_width = 8
@@ -52,8 +46,6 @@ class KcrpmdTst:
         self.a = a
         self.b = b
         self.c = c
-        self.d = d
-        self.e = e
         self.ms = ms 
         self.ws = ws 
         self.s0 = s0 
@@ -203,13 +195,13 @@ class KcrpmdTst:
         K = self.K(s, q)
 
         A = np.zeros_like(K)
-        mask_ad = (self.beta * K > self.e)
-        mask_nad = (self.beta * K <= self.e)
+        mask_ad = (self.beta * K > 1.0)
+        mask_nad = (self.beta * K <= 1.0)
 
-        A[mask_ad] = (self.a * np.exp(-2 * self.c * (self.beta * K[mask_ad] - self.e))
-                      / (1 + np.exp(-2 * self.c * (self.beta * K[mask_ad] - self.e))))
+        A[mask_ad] = (self.a * np.exp(-2 * self.c * (self.beta * K[mask_ad] - 1.0))
+                      / (1 + np.exp(-2 * self.c * (self.beta * K[mask_ad] - 1.0))))
 
-        A[mask_nad] = self.a / (1 + np.exp(2 * self.c * (self.beta * K[mask_nad] - self.e)));
+        A[mask_nad] = self.a / (1 + np.exp(2 * self.c * (self.beta * K[mask_nad] - 1.0)));
 
         return A
 
@@ -217,17 +209,17 @@ class KcrpmdTst:
         K = self.K(s, q)
 
         C = np.zeros_like(K)
-        mask_ad = (self.beta * K > self.e)
-        mask_nad = (self.beta * K <= self.e)
+        mask_ad = (self.beta * K > 1.0)
+        mask_nad = (self.beta * K <= 1.0)
 
-        C[mask_ad] = (1 + (self.eta * np.sqrt(self.a / np.pi) * np.exp(-self.c * (self.beta * K[mask_ad] - self.e))
-                           / np.sqrt(1 + np.exp(-2 * self.c * (self.beta * K[mask_ad] - self.e))) - 1)
-                      * np.exp(-2 * self.d * (self.beta * K[mask_ad] - self.e))
-                      / (1 + np.exp(-2 * self.d * (self.beta * K[mask_ad] - self.e))))
+        C[mask_ad] = (1 + (self.eta * np.sqrt(self.a / np.pi) * np.exp(-self.c * (self.beta * K[mask_ad] - 1.0))
+                           / np.sqrt(1 + np.exp(-2 * self.c * (self.beta * K[mask_ad] - 1.0))) - 1)
+                      * np.exp(-2 * self.c * (self.beta * K[mask_ad] - 1.0))
+                      / (1 + np.exp(-2 * self.c * (self.beta * K[mask_ad] - 1.0))))
 
         C[mask_nad] = (1 + (self.eta * np.sqrt(self.a / np.pi)
-                            / np.sqrt(1 + np.exp(2 * self.c * (self.beta * K[mask_nad] - self.e))) - 1)
-                       / (1 + np.exp(2 * self.d * (self.beta * K[mask_nad] - self.e))))
+                            / np.sqrt(1 + np.exp(2 * self.c * (self.beta * K[mask_nad] - 1.0))) - 1)
+                       / (1 + np.exp(2 * self.c * (self.beta * K[mask_nad] - 1.0))))
 
         return C
 

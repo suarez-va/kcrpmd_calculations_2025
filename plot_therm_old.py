@@ -1,7 +1,21 @@
+import sys
+import cmath
+import math
 import os
 import h5py
 import matplotlib.pyplot as plt   # plots
 import numpy as np
+from scipy.interpolate import griddata
+import argparse
+
+from liblibra_core import *
+import util.libutil as comn
+from libra_py import units
+from libra_py import data_conv
+import libra_py.dynamics.tsh.compute as tsh_dynamics
+import libra_py.data_savers as data_savers
+
+#import json
 
 # Get current directory name (last component of the path)
 current_dir = os.path.basename(os.getcwd())
@@ -52,8 +66,14 @@ elif method == 2 or method == 3:
         Psdagq = Psdagq_data[:,1]
         ktsts = np.loadtxt("tst_data/ktsts.txt")
 
+#icutoff = 24999000
+#print(time[icutoff:].shape)
 icutoff = 0
-
+#plt.plot(time[icutoff:], q[icutoff:,0])
+#plt.plot(time[icutoff:], y[icutoff:])
+#plt.plot(time[icutoff:], q[icutoff:,-1])
+#plt.show()
+#exit()
 if method == 1: 
     gridspec_kw={'left':None,'bottom':None,'right':None,'top':None,'wspace':0.2,'hspace':0.2}
     fig_kw={'figsize':(5.0,3.0),'dpi':150.0,'facecolor':"white",'edgecolor':"white",'linewidth':1}
@@ -102,5 +122,5 @@ else:
         ax2.plot(q_arr, Psdagq, color='k', label='exact', linewidth=2)
 plt.show()
 
-#plt.savefig('free_energy', bbox_inches='tight')
+#plt.savefig('libra', bbox_inches='tight')
 
