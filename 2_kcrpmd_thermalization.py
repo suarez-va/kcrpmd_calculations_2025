@@ -1,6 +1,7 @@
 import sys
 import os
 import argparse
+import numpy as np
 from liblibra_core import *
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 
@@ -39,6 +40,7 @@ with open("_init_elec_thermalization.txt") as f:
     init_elec = eval(f.read())
 
 control_params.update({"nsteps": args.nsteps})
+control_params.update({"nprint": 1})
 control_params.update({"dt": args.dt})
 
 rnd = Random()

@@ -54,8 +54,7 @@ T = args.temp # Temperature in K
 beta = units.hartree / (units.boltzmann * T)
 a = args.a
 b = 1000.0
-c = 0.5
-d = 0.5
+c =1.0
 
 ms = 1836.0
 ws = 2.28e-3
@@ -89,7 +88,7 @@ elif args.sys == 3:
                                 [lambda q: Aq * q**4 + Bq * q**3 + Cq * q**2,
                                  lambda q: Dq * (1 - np.exp(-np.sqrt(Cq / Dq) * q))**2])
 
-kcrpmd_tst = KcrpmdTst(beta, a, b, c, d, 1., ms, ws, s0, s1, eps, Kq, Vq)
+kcrpmd_tst = KcrpmdTst(beta, a, b, c, c, 1., ms, ws, s0, s1, eps, Kq, Vq)
 ydag = kcrpmd_tst.ydag
 sdag = kcrpmd_tst.sdag
 if args.hw == 0:
@@ -197,7 +196,7 @@ with open(pref +  "/_model_params.txt", "w") as f:
 
 # ======= CHOOSE NON-ADIABATIC METHOD =======
 
-dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000,
+dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000, "nprint":1,
               "prefix":"libra_data", "prefix2":"libra_data",
               "hdf5_output_level":-1, "mem_output_level":3, "txt_output_level":-1,
               "use_compression":0, "compression_level":[0,0,0], "progress_frequency":0.05,
@@ -227,7 +226,6 @@ def load_kcrpmd(dyn_general, args, kcrpmd_tst):
     dyn_general.update({"kcrpmd_a":kcrpmd_tst.a})
     dyn_general.update({"kcrpmd_b":kcrpmd_tst.b})
     dyn_general.update({"kcrpmd_c":kcrpmd_tst.c})
-    dyn_general.update({"kcrpmd_d":kcrpmd_tst.d})
     dyn_general.update({"kcrpmd_eta":kcrpmd_tst.eta})
     dyn_general.update({"kcrpmd_gamma":kcrpmd_tst.gammay})
     dyn_general.update({"kcrpmd_gammaKP":0.0})
@@ -266,6 +264,7 @@ if args.fix == 's':
 
 # save control parameters for thermalization as copy
 _control_params_thermalization = dyn_params.copy()
+_control_params_thermalization["nprint"] = 1000
 with open(pref +  "/_control_params_thermalization.txt", "w") as f:
     f.write(str(_control_params_thermalization))
 
