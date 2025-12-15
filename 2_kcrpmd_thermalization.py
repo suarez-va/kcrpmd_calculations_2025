@@ -7,6 +7,7 @@ This script reads in the _control_params_thermalization.txt generated from 1_kcr
 
 import sys
 import os
+import numpy as np
 from liblibra_core import *
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 

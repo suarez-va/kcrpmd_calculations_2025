@@ -31,8 +31,8 @@ from kcrpmd_utils.kcrpmdmodel import kcrpmd_system_bath
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
-parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
-parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
+parser.add_argument('--istart', default=999, type=int, help='thermalization starting index')
+parser.add_argument('--iskip', default=9, type=int, help='thermalization skipping index')
 args = parser.parse_args()
 
 pref = F"_itraj_{args.itraj}"
