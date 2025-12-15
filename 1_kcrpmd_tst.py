@@ -278,8 +278,8 @@ elif (args.method == 2 or args.method == 3):
 # Save control parameters for dynamics as copy before setting thermostat and constraints
 _control_params_dynamics = dyn_params.copy()
 _control_params_dynamics["dt"] = 0.08268
-_control_params_dynamics["nsteps"] = 50000
-_control_params_dynamics["nprint"] = 10
+_control_params_dynamics["nsteps"] = 125000
+_control_params_dynamics["nprint"] = 100
 with open(pref +  "/_control_params_dynamics.txt", "w") as f:
     f.write(str(_control_params_dynamics))
 

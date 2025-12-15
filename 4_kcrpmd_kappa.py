@@ -94,9 +94,11 @@ sB = np.std(Den_blocks)
 
 # Full time dependent kappa coefficient
 kappa_avg = A / B
+kappa_avg[0] = 1.
 
 # Standard error of full time dependent kappa coefficient
 kappa_se = kappa_avg * np.sqrt((sA / A)**2 + (sB / B)**2) / np.sqrt(N_blocks - 1)
+kappa_se[0] = 0.
 
 # Saving kappa transmission coefficient data to kappa_data/ directory
 os.makedirs("kappa_data", exist_ok=True)
