@@ -1,3 +1,17 @@
+"""
+Part 3 of full calculation
+
+This script is takes as argument:
+    --itraj: index of trajectory
+    --istart: starting index of configuration to be pulled from thermalization data
+    --iskip: index spacing between configuration to be pulled from thermalization data separating trajectories
+
+This script reads in the _control_params_dynamics.txt generated from 1_kcrpmd_tst.py,
+then it reads in a configuration from thermalization calculation (part 2).
+From the sampled configurations and the control parameters, dynamical trajectories are generated
+
+"""
+
 import sys
 import os
 import h5py
@@ -19,13 +33,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
 parser.add_argument('--istart', default=1000000, type=int, help='thermalization starting index')
 parser.add_argument('--iskip', default=23999, type=int, help='thermalization skipping index')
-parser.add_argument('--nsteps', default=50000, type=int)
-parser.add_argument('--dt', default=0.08268, type=float)
 args = parser.parse_args()
 
 pref = F"_itraj_{args.itraj}"
 
-# check current directory name
+# Check current directory name
 current_dir = os.path.basename(os.getcwd())
 if current_dir.startswith("libra_data"):
     pass
@@ -33,7 +45,9 @@ else:
     print("not in correct directory, directory should be libra_data")
     exit()
 
-# ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS =======
+#########################################################################
+# ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS ======= #
+#########################################################################
 
 with open("../_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
@@ -42,11 +56,12 @@ with open("../_model_params.txt") as f:
     model_params = eval(f.read())
 
 model_params.update({"hw": 0})
-control_params.update({"nsteps": args.nsteps})
-control_params.update({"dt": args.dt})
 control_params.update({ "prefix":pref, "prefix2":pref })
 
-# ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION =======
+########################################################################################
+# ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION ======= #
+########################################################################################
+
 with h5py.File("mem_data.hdf", 'r') as f:
     q = list(f["q/data"][args.itraj * args.iskip + args.istart, 0, :])
     if "use_kcrpmd" in control_params:

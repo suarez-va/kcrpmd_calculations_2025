@@ -1,7 +1,7 @@
 """
 Part 2 of full calculation
 
-This script reads in the _control_params_dynamics.txt generated from 1_kcrpmd_tst.py, and runs the dynamics
+This script reads in the _control_params_thermalization.txt generated from 1_kcrpmd_tst.py, and runs the dynamics
 
 """
 

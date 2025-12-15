@@ -1,4 +1,6 @@
 """
+Part 1 of full calculation
+
 This script is takes as argument:
     --sys: the system type (A, B or C, see KC-RPMD paper 2025)
     --fix: which reaction coordinate to fix and evaluate rate constants from (either y or s)
