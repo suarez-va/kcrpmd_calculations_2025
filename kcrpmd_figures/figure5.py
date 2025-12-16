@@ -1,6 +1,6 @@
 import sys
 import os
-import matplotlib.pyplot as plt   # plots
+import matplotlib.pyplot as plt
 import numpy as np
 
 from liblibra_core import *
@@ -13,6 +13,7 @@ sys.path.insert(0, parent_dir)
 
 set_style()
 
+# Reading in directories for system 2 (system B)
 calc_dirs = [d for d in os.listdir('../') if d.startswith('_sys_')]
 _sys_2_method_1 = sorted([k for k in calc_dirs if k.startswith("_sys_2_method_1")], key=lambda s: float(s.split('_')[8]))
 _sys_2_method_3_fix_y = sorted([k for k in calc_dirs if k.startswith("_sys_2_method_3_fix_y")], key=lambda s: float(s.split('_')[8]))
@@ -24,16 +25,20 @@ with open("../" + _sys_2_method_1[0] + "/_model_params.txt") as f:
 with open("../" + _sys_2_method_1[0] + "/_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
 
-# ======= Pull in all the rate data =======
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 
+# Reading in and computing Born-Oppenheimer rates for K0=0
 ktst0 = np.loadtxt("../" + _sys_2_method_1[0] + "/tst_data/ktsts.txt")
 kappa0_se = np.loadtxt("../" + _sys_2_method_1[0] + "/kappa_data/kappa_se.txt")[-1]
 kappa0_avg = np.loadtxt("../" + _sys_2_method_1[0] + "/kappa_data/kappa_avg.txt")[-1]
 kBO0_se = ktst0 * kappa0_se
 kBO0 = ktst0 * kappa0_avg
 
+# From directory names, create array for K0 diabatic coupling prefactor parameter
 K0_arr = np.array([key.split('_')[8] for key in _sys_2_method_1], dtype=float)[1:]
+
+# Initialize data arrays for golden rule rate, Born-Oppenheimer rate, interpolation formula,
+# new KC-RPMD implementation rates, and standard errors for all rates.
 kGR_arr = np.zeros(K0_arr.shape)
 kBO_arr = np.zeros(K0_arr.shape)
 kBO_se_arr = np.zeros(K0_arr.shape)
@@ -42,6 +47,7 @@ kIF_se_arr = np.zeros(K0_arr.shape)
 knew_arr = np.zeros(K0_arr.shape)
 knew_se_arr = np.zeros(K0_arr.shape)
 
+# Computing reference rate theories kGR, KBO, and kIF
 for i, d in enumerate(_sys_2_method_1[1:]):
     kGR_arr[i] = np.loadtxt("../" + _sys_2_method_1[i+1] + "/tst_data/kGR.txt")
     kBO_arr[i] = np.loadtxt("../" + _sys_2_method_1[i+1] + "/tst_data/ktsts.txt")
@@ -50,6 +56,7 @@ for i, d in enumerate(_sys_2_method_1[1:]):
     kIF_arr[i] = kGR_arr[i] * kBO_arr[i] / (kGR_arr[i] + kBO0)
     kIF_se_arr[i] = kIF_arr[i] * kBO_se_arr[i] / kBO_arr[i]
 
+# Computing new implementation KC-RPMD rates using y coordinate for first 4 K0 points and s coordinate for last 6 points.
 for i in range(4):
     knew_arr[i] = np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/tst_data/ktsty.txt")
     knew_se_arr[i] = knew_arr[i] * np.loadtxt("../" + _sys_2_method_3_fix_y[i] + "/kappa_data/kappa_se.txt")[-1]
@@ -68,11 +75,12 @@ ax.set_xlim(-2.1,1.1)
 ax.set_ylim(-21.0,-9.0)
 ax.set_xticks([-2, -1, 0, 1])
 ax.set_yticks([-20, -18, -16, -14, -12, -10])
-ax.set_xlabel(r"log(β$K_0$)", fontsize = 15)
-ax.set_ylabel(r"log($k_{\mathrm{ET}}$)", fontsize = 15)
+ax.set_xlabel(r"log(β$K_0$)", fontsize = 17.5)
+ax.set_ylabel(r"log($k_{\mathrm{ET}}$)", fontsize = 17.5)
 ax.set_title("")
 ax.legend(ncol=2, fontsize=10, loc='upper left', handletextpad=0.2,  columnspacing=0.9)
 
-plt.subplots_adjust(left=0.18, right=0.98, top=0.98, bottom=0.17)
+plt.subplots_adjust(left=0.20, right=0.98, top=0.98, bottom=0.19)
 plt.savefig('fig5.png')
+#plt.show()
 

@@ -5,7 +5,7 @@ Plotting script to visualize dynamical transmission trajectories from Part 3
 
 import os
 import h5py
-import matplotlib.pyplot as plt   # plots
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Get current directory name (last component of the path)
@@ -19,7 +19,7 @@ if dir_two_up.startswith("_sys_"):
     method = int(dir_two_up[idx2 + len("_method_")])
     fix = dir_two_up[idx3 + len("_fix_")]
 else:
-    print("Does not start with '_sys_'.")
+    print("Must be in '_sys_.../libra_data/_itraj_...' directory.")
     exit()
 
 if method == 1:
@@ -95,9 +95,8 @@ if method == 2 or method == 3:
     ax3.plot(time, Ekin, color='red', label='Kinetic q', linewidth=2)
     ax3.plot(time, ekin, color='green', label='Kinetic y', linewidth=2)
     ax3.plot(time, E, color='k', label='Total', linewidth=2)
-
 plt.legend()
-plt.show()
 
 plt.savefig('transmission_trajectory', bbox_inches='tight')
+plt.show()
 

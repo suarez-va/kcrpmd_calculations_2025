@@ -5,7 +5,7 @@ Plotting script to visualize NVT configurations from Part 2
 
 import os
 import h5py
-import matplotlib.pyplot as plt   # plots
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Get current directory name (last component of the path)
@@ -18,7 +18,7 @@ if current_dir.startswith("_sys_"):
     method = int(current_dir[idx2 + len("_method_")])
     fix = current_dir[idx3 + len("_fix_")]
 else:
-    print("Does not start with '_sys_'.")
+    print("Current directory must start with '_sys_'.")
     exit()
 
 
@@ -84,7 +84,6 @@ else:
     ax1.spines['bottom'].set(linewidth=3)
     ax1.spines['left'].set(linewidth=3)
     ax1.legend(loc='upper left', fontsize=9, frameon=False)
-    #ax1.set_xlim([-0.01, 0.01])
     ax2.tick_params(axis='both', which='major', direction='in', labelsize = 12, size = 4, width = 1.5)
     ax2.set_ylabel("Probability", fontsize = 15)
     ax2.spines['top'].set(linewidth=3)
@@ -96,7 +95,6 @@ else:
     ax2.hist(q[icutoff:,-1], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
     if fix == "y":
         ax1.set_xlabel("s coordinate", fontsize = 15)
-        #ax1.set_xlim([-0.1,0.1])
         ax1.hist(q[icutoff:,0], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(s_arr, Pydags, color='k', label='exact', linewidth=2)
         ax2.plot(q_arr, Pydagq, color='k', label='exact', linewidth=2)
@@ -105,7 +103,7 @@ else:
         ax1.hist(y[icutoff:], bins=49, density = True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(y_arr, Pysdag, color='k', label='exact', linewidth=2)
         ax2.plot(q_arr, Psdagq, color='k', label='exact', linewidth=2)
-plt.show()
 
 plt.savefig('free_energy', bbox_inches='tight')
+plt.show()
 

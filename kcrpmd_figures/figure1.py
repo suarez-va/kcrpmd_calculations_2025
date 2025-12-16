@@ -3,7 +3,7 @@ import cmath
 import math
 import os
 import h5py
-import matplotlib.pyplot as plt   # plots
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import griddata
 
@@ -16,7 +16,6 @@ import libra_py.data_savers as data_savers
 
 from plot_utils import set_style, add_hbar, add_abar
 
-# Add the parent directory to sys.path
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, parent_dir)
 
@@ -25,6 +24,7 @@ from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC, kcrpmd_sys
 
 set_style()
 
+# Numerically computing system C bias double well parameters Aq, Bq, and Cq, from q0, leps, and Ea
 (A, B, C) = get_ABC(q0=1.0, leps=-7, Ea=3)
 x_ar = np.linspace(-0.5, 1.5, 1000)
 y_ar = A * x_ar**4 + B * x_ar**3 + C * x_ar**2
@@ -45,7 +45,7 @@ ax = add_abar(ax, (1.0, -7), (1.0, 0.0), label=r'$ϵ$', mutation_scale=10, label
 ax = add_abar(ax, (0.39, 0.0), (0.39, 3.0), label=r'$E_\mathrm{a}$', mutation_scale=10, label_offset=0.075, linewidth=1.5, fontsize=15)
 
 plt.tight_layout()
-#plt.subplots_adjust(left=0.12, right=0.98, top=0.98, bottom=0.18)
 plt.subplots_adjust(left=0.14, right=0.98, top=0.98, bottom=0.20)
+plt.savefig('fig1.png')
+#plt.show()
 
-plt.savefig('figure1.png')
