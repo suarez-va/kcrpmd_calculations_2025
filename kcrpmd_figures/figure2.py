@@ -30,7 +30,7 @@ eps = 0.0
 
 # Setting coupling constant values for free energy comparison in the two limiting cases
 K0_low = 9.55e-05
-K0_high = 6.46e-03
+K0_high = 4.75e-03
 bq = 0.0
 mq = 5e4
 wq = 5e-4
@@ -81,19 +81,18 @@ ax2.plot(s_ar, beta * (newFs_high - Fgs_high), color='g', label='$\Delta F_{\mat
 ax2.plot(s_ar, beta * (oldFs_high - Fgs_high), color='darkorange', label=r'$\Delta F_{\mathrm{ori}}$', zorder=2)
 ax2.plot(s_ar, beta * (oldFsa1_high - Fgs_high), color='blueviolet', label=r'$\Delta F_{\mathrm{ori}}^{*}$', zorder=1)
 ax1.set_xlim(-4.7,4.7)
-ax1.set_ylim(-1.58, 2.95)
-ax2.set_ylim(-1.58, 2.95)
-ax1.set_yticks([-1, 0, 1, 2])
+ax1.set_ylim(-1.58, 1.98)
+ax2.set_ylim(-1.58, 1.98)
+ax1.set_yticks([-1, 0, 1])
 ax2.set_xticks([-4, -2, 0, 2, 4])
-ax2.set_yticks([-1, 0, 1, 2])
+ax2.set_yticks([-1, 0, 1])
 ax2.set_xlabel(r"$s$")
 ax1.set_ylabel(r"$\beta\Delta F(s)$", labelpad=1, fontsize = 17.5)
 ax2.set_ylabel(r"$\beta\Delta F(s)$", labelpad=1, fontsize = 17.5)
-ax1.legend(fontsize=11, loc='upper right', handletextpad=0.7)
-ax2.legend(fontsize=10, loc='upper right', handletextpad=0.4)
-plt.legend()
+ax1.legend(fontsize=10.5, loc='upper right', handletextpad=0.7, labelspacing=0.25)
+ax2.legend(fontsize=10.5, loc='upper right', handletextpad=0.7, labelspacing=0.25)
 
-plt.subplots_adjust(hspace=0.05, left=0.17, right=0.98, top=0.98, bottom=0.13)
+plt.subplots_adjust(hspace=0.05, left=0.16, right=0.98, top=0.98, bottom=0.13)
 plt.savefig('fig2.png')
 #plt.show()
 
