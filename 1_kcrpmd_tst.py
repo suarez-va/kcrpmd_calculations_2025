@@ -34,6 +34,7 @@ from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC
 ######################################################
 parser = argparse.ArgumentParser()
 parser.add_argument('--sys', default=1, type=int, help='KCRPMD system type A (1), B (2) or C (3)')
+parser.add_argument('--gam', default=1.0, type=float, help='Ohmic solvent friction ratio gamma/(M*omega_c)')
 parser.add_argument('--fix', default='s', type=str, help='fix y or s')
 parser.add_argument('--method', default=3, type=int, help='Adiabatic (1), Original KC-RPMD (2), New KC-RPMD (3)')
 parser.add_argument('--a', default=0.1, type=float)
@@ -52,9 +53,9 @@ if (args.method != 1 and args.method != 2 and args.method != 3): print("Invalid 
 ###########################################################################
 if (args.sys == 1 or args.sys == 2):
     if (args.method == 2):
-        pref = F"_sys_{args.sys}_method_{args.method}_a_{args.a}_fix_{args.fix}_K0_{args.K0:.2e}"
+        pref = F"_sys_{args.sys}_gam_{args.gam}_method_{args.method}_a_{args.a}_fix_{args.fix}_K0_{args.K0:.2e}"
     else:
-        pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}"
+        pref = F"_sys_{args.sys}_gam_{args.gam}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}"
 else:
     if (args.method == 1):
         pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}_leps_{args.leps:.2e}_hw_{args.hw}"
@@ -80,7 +81,11 @@ s0 = -2.4 # Diabat 0 parabola minima
 s1 = 2.4 # Diabat 1 parabola minima
 eps = 0.0 # Diabat 0 to diabat 1 driving force
 
-wj, cj, mj = gen_kcrpmd_bath_params({"M":1836.0, "wc":2.28e-3, "gam":4.18608, "f":12}) # Ohmic spectral density bath parameters
+M = 1836.0 # Ohmic bath mass
+wc = 2.28e-3 # Ohmic bath cutoff frequency
+gam = args.gam / (M * wc) # Ohmic bath friction coefficient
+tauL = gam/(ws**2*ms) # Debye longitudinal relaxation time for Zusman rate later
+wj, cj, mj = gen_kcrpmd_bath_params({"M":M, "wc":wc, "gam":gam, "f":12}) # Ohmic spectral density bath parameters
 
 K0 = args.K0 # Diabatic coupling constant/prefactor
 bq = 0.0 if (args.sys==1 or K0<=1e-10) else 3.0 # Diabatic coupling q coordinate exponential dependence
@@ -163,11 +168,13 @@ if args.method == 1:
     Fsdagq = kcrpmd_tst.Vg(np.array([sdag]), q_arr) # Adiabatic free energy along q at sdagger
     Psdagq = np.exp(-beta * (Fsdagq - Fsdag))[:,0] # Adiabatic probability along q at sdagger
     kGR = kcrpmd_tst.kGR() # Fermi-golden rule rate
+    kZUS = kcrpmd_tst.kZUS(tauL) # Zusman rate
     ktsts = kcrpmd_tst.kBO() # Adiabatic TST rate along s
     np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
     np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
     np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
     np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
+    np.savetxt(pref + "/tst_data/kZUS.txt", [kZUS])
     np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
 elif args.method == 2 or args.method == 3:
     Phw = np.exp(-beta * (kcrpmd_tst.F() - FKC)) # Hardwall potential probability from 0 to 1
