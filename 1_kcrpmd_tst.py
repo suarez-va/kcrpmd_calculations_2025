@@ -54,16 +54,16 @@ if (args.meth != 1 and args.meth != 2 and args.meth != 3): print("Invalid Method
 ###########################################################################
 if (args.sys == 1 or args.sys == 2):
     if (args.meth == 2):
-        pref = F"_meth_{args.meth}_a_{args.a}_fix_{args.fix}_logK_{args.logK:.2f}"
+        pref = F"_a_{args.a}_fix_{args.fix}_logK_{args.logK:.2f}"
     else:
-        pref = F"_meth_{args.meth}_fix_{args.fix}_logK_{args.logK:.2f}"
+        pref = F"_fix_{args.fix}_logK_{args.logK:.2f}"
 else:
     if (args.meth == 1):
-        pref = F"_meth_{args.meth}_fix_{args.fix}_logK_{args.logK:.2f}_leps_{args.leps:.2f}_hw_{args.hw}"
+        pref = F"_fix_{args.fix}_logK_{args.logK:.2f}_leps_{args.leps:.2f}_hw_{args.hw}"
     elif (args.meth == 2):
-        pref = F"_meth_{args.meth}_a_{args.a}_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
+        pref = F"_a_{args.a}_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
     else:
-        pref = F"_meth_{args.meth}_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
+        pref = F"_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
 
 os.makedirs(pref, exist_ok=True)
 
