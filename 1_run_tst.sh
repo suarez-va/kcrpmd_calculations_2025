@@ -49,7 +49,7 @@ mkdir kcrpmd_new
 cd kcrpmd_new
 for fix in s y; do
   for logK in "${logK_list1[@]}"; do
-    sed -i "s#python.*#python ../1_kcrpmd_tst.py --sys=1 --meth=3 --fix=$fix --a=0.1 --gam=1.0 --logK=$logK #g" ../../submit_template.slm
+    sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=1 --meth=3 --fix=$fix --a=0.1 --gam=1.0 --logK=$logK #g" ../../submit_template.slm
     sbatch ../../submit_template.slm
   done
 done
