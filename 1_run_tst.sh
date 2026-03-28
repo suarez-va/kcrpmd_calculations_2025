@@ -21,7 +21,7 @@ sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=1 --meth=1 --fix=s --gam=1
 #sbatch ../../submit_template.slm
 for logK in "${logK_list1[@]}"; do
   sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=1 --meth=1 --fix=s --gam=1.0 --logK=$logK #g" ../../submit_template.slm
-  #sbatch ../../submit_template.slm
+  sbatch ../../submit_template.slm
 done
 cd ../
 ### Adiabatic BO rates ###
@@ -34,10 +34,10 @@ for fix in s y; do
     logK=${logK_list1[i]}
     a=${a_list1[i]}
     sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=1 --meth=2 --fix=$fix --a=$a --gam=1.0 --logK=$logK #g" ../../submit_template.slm
-    #sbatch ../../submit_template.slm
+    sbatch ../../submit_template.slm
     if [[ "$a" != "0.1" ]]; then
       sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=1 --meth=2 --fix=$fix --a=0.1 --gam=1.0 --logK=$logK #g" ../../submit_template.slm
-      #sbatch ../../submit_template.slm
+      sbatch ../../submit_template.slm
     fi
   done
 done
@@ -50,7 +50,7 @@ cd kcrpmd_new
 for fix in s y; do
   for logK in "${logK_list1[@]}"; do
     sed -i "s#python.*#python ../1_kcrpmd_tst.py --sys=1 --meth=3 --fix=$fix --a=0.1 --gam=1.0 --logK=$logK #g" ../../submit_template.slm
-    #sbatch ../../submit_template.slm
+    sbatch ../../submit_template.slm
   done
 done
 cd ../
