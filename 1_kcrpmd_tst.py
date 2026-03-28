@@ -3,11 +3,12 @@ Part 1 of full calculation
 
 This script is takes as argument:
     --sys: the system type (A, B or C, see KC-RPMD paper 2025)
+    --meth: whether to run 1 = adiabatic, 2 = original KC-RPMD, 3 = new KC-RPMD
     --fix: which reaction coordinate to fix and evaluate rate constants from (either y or s)
-    --method: whether to run 1 = adiabatic, 2 = original KC-RPMD, 3 = new KC-RPMD
     --a: KC-RPMD gaussian restraint parameter (no larger than 0.1, large enough to converge free energy of kinked-pair formation)
-    --K0: diabatic coupling constant (sys A) or prefactor (sys B, C)
-    --leps: donor-acceptor coordinate driving force (sys C only)
+    --gam: Ohmic solvent friction ratio gamma/(M*omega_c)
+    --logK: Diabatic coupling constant (sys A) or prefactor (sys B, C), thermally weighted logorithmic log(beta*K_0)
+    --leps: Donor-acceptor coordinate driving force (sys C only), thermally weighted beta*epsilon
     --hw: whether to include left side hard wall (-1), right side hard wall (1), or no hard wall (0)
 
     From kcrpmd_utils/kcrpmdtst.py code, free energies and KC-RPMD parameters for "eta",
@@ -33,36 +34,36 @@ from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC
 # ======= ARGUMENT PARSER, SEE TOP OF SCRIPT ======= #
 ######################################################
 parser = argparse.ArgumentParser()
-parser.add_argument('--sys', default=1, type=int, help='KCRPMD system type A (1), B (2) or C (3)')
+parser.add_argument('--sys', default=1, type=int, help='System type A (1), B (2) or C (3)')
+parser.add_argument('--meth', default=3, type=int, help='Method: Adiabatic (1), Original KC-RPMD (2), New KC-RPMD (3)')
+parser.add_argument('--fix', default='s', type=str, help='Reaction coordinate to fix: y or s')
+parser.add_argument('--a', default=0.1, type=float, help='KC-RPMD gaussian restraint parameter a')
 parser.add_argument('--gam', default=1.0, type=float, help='Ohmic solvent friction ratio gamma/(M*omega_c)')
-parser.add_argument('--fix', default='s', type=str, help='fix y or s')
-parser.add_argument('--method', default=3, type=int, help='Adiabatic (1), Original KC-RPMD (2), New KC-RPMD (3)')
-parser.add_argument('--a', default=0.1, type=float)
-parser.add_argument('--K0', default=2.85e-3, type=float)
-parser.add_argument('--leps', default=-1.43e-2, type=float)
-parser.add_argument('--hw', default=0, type=int, help='left side (-1), right side (1), no hard wall (0)')
+parser.add_argument('--logK', default=0.5, type=float, help='Diabatic coupling parameter, thermally weighted logorithmic log(beta*K_0)')
+parser.add_argument('--leps', default=15.0, type=float, help='System type C epsilon parameter, thermally weighted beta*epsilon')
+parser.add_argument('--hw', default=0, type=int, help='System type C hard wall, left side (-1), right side (1), no hard wall (0)')
 args = parser.parse_args()
 
 if (args.sys != 1 and args.sys != 2 and args.sys != 3): print("Invalid System Type!"); exit() 
 if (args.fix != 's' and args.fix != 'y'): print("Invalid Reaction Coordinate!"); exit() 
-if (args.fix == 'y' and args.method == 1): print("No y Coordinate For Adiabatic Method!"); exit() 
-if (args.method != 1 and args.method != 2 and args.method != 3): print("Invalid Method!"); exit() 
+if (args.fix == 'y' and args.meth == 1): print("No y Coordinate For Adiabatic Method!"); exit() 
+if (args.meth != 1 and args.meth != 2 and args.meth != 3): print("Invalid Method!"); exit() 
 
 ###########################################################################
 # ======= CREATING WORKING DIRECTORIES FOR CALCULATIONS TO BE RUN ======= #
 ###########################################################################
 if (args.sys == 1 or args.sys == 2):
-    if (args.method == 2):
-        pref = F"_sys_{args.sys}_gam_{args.gam}_method_{args.method}_a_{args.a}_fix_{args.fix}_K0_{args.K0:.2e}"
+    if (args.meth == 2):
+        pref = F"_meth_{args.meth}_a_{args.a}_fix_{args.fix}_logK_{args.logK:.2f}"
     else:
-        pref = F"_sys_{args.sys}_gam_{args.gam}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}"
+        pref = F"_meth_{args.meth}_fix_{args.fix}_logK_{args.logK:.2f}"
 else:
-    if (args.method == 1):
-        pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_K0_{args.K0:.2e}_leps_{args.leps:.2e}_hw_{args.hw}"
-    elif (args.method == 2):
-        pref = F"_sys_{args.sys}_method_{args.method}_a_{args.a}_fix_{args.fix}_leps_{args.leps:.2e}_hw_{args.hw}"
+    if (args.meth == 1):
+        pref = F"_meth_{args.meth}_fix_{args.fix}_logK_{args.logK:.2f}_leps_{args.leps:.2f}_hw_{args.hw}"
+    elif (args.meth == 2):
+        pref = F"_meth_{args.meth}_a_{args.a}_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
     else:
-        pref = F"_sys_{args.sys}_method_{args.method}_fix_{args.fix}_leps_{args.leps:.2e}_hw_{args.hw}"
+        pref = F"_meth_{args.meth}_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
 
 os.makedirs(pref, exist_ok=True)
 
@@ -84,16 +85,16 @@ eps = 0.0 # Diabat 0 to diabat 1 driving force
 M = 1836.0 # Ohmic bath mass
 wc = 2.28e-3 # Ohmic bath cutoff frequency
 gam = args.gam / (M * wc) # Ohmic bath friction coefficient
-tauL = gam/(ws**2*ms) # Debye longitudinal relaxation time for Zusman rate later
+tauL = gam / (ws**2 * ms) # Debye longitudinal relaxation time for Zusman rate later
 wj, cj, mj = gen_kcrpmd_bath_params({"M":M, "wc":wc, "gam":gam, "f":12}) # Ohmic spectral density bath parameters
 
-K0 = args.K0 # Diabatic coupling constant/prefactor
+K0 = 10**(args.logK) / beta # Diabatic coupling constant/prefactor
 bq = 0.0 if (args.sys==1 or K0<=1e-10) else 3.0 # Diabatic coupling q coordinate exponential dependence
 mq = 5.0e4 # q coordinate mass
 wq = 5.0e-4 # q coordinate frequency
 Dq = 1.0e-4 if args.sys==2 else 1.0e-3 # q coordinate morse potential parameter
-(q0, Ea, leps) = (2.1, 6.65e-3, args.leps) # System C q coordinate double well parameters
-(Aq, Bq, Cq) = get_ABC(q0, leps, Ea) # Numerically computing Aq, Bq, Cq from q0, leps, Ea
+(q0, leps, Ea) = (2.1, args.leps / beta, 6.65e-3) # System C q coordinate double well parameters
+(Aq, Bq, Cq) = get_ABC(q0, -leps, Ea) # Numerically computing Aq, Bq, Cq from q0, leps, Ea
 qhw = 1.0 # Hard wall potential location
 khw = 1.0e5 # Hard wall potential strength
 
@@ -131,7 +132,7 @@ else:
     kcrpmd_tst.q_low = q_low_cp
 
 # This is a cheap and dirty fix to recover original KC-RPMD using new KC-RPMD formalism.
-if args.method == 2:
+if args.meth == 2:
     kcrpmd_tst.eta = 2 * kcrpmd_tst.eta - np.sqrt(np.pi / kcrpmd_tst.a)
     kcrpmd_tst.a = 2 * kcrpmd_tst.a
     kcrpmd_tst.c = 0.0
@@ -161,7 +162,7 @@ y_arr = kcrpmd_tst.y_array()
 
 # Now we calculate absolutely everything that might be useful later
 # Hardwall influence if it's turned on, sys C only
-if args.method == 1:
+if args.meth == 1:
     Phw = np.exp(-beta * (kcrpmd_tst.Fg() - Fg)) # Hardwall potential probability from 0 to 1
     Fsq = kcrpmd_tst.Vg(s_arr, q_arr) # Adiabatic free energy along s and q
     Fsdag = kcrpmd_tst.Fgs(np.array([sdag])) # Adiabatic free energy at sdagger
@@ -176,7 +177,7 @@ if args.method == 1:
     np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
     np.savetxt(pref + "/tst_data/kZUS.txt", [kZUS])
     np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
-elif args.method == 2 or args.method == 3:
+elif args.meth == 2 or args.meth == 3:
     Phw = np.exp(-beta * (kcrpmd_tst.F() - FKC)) # Hardwall potential probability from 0 to 1
     Fys = kcrpmd_tst.Fys(y_arr, s_arr) # KC-RPMD free energy along y and s
     Fyq = kcrpmd_tst.Fyq(y_arr, q_arr) # KC-RPMD free energy along y and q
@@ -275,10 +276,10 @@ def load_langevin(dyn_general, _ndof):
     dyn_general.update({"thermostat_dofs":list(range(_ndof))})
 
 # Load in control parameter recipe
-if args.method == 1:
+if args.meth == 1:
     load_adiabatic(dyn_params, T)
     dyn_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave"]})
-elif (args.method == 2 or args.method == 3):
+elif (args.meth == 2 or args.meth == 3):
     load_kcrpmd(dyn_params, kcrpmd_tst, T)
     dyn_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave", "y_aux_var","p_aux_var", "f_aux_var", "ekin_aux_var"]})
 

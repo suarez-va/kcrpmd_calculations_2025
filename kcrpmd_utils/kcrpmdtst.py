@@ -60,6 +60,9 @@ class KcrpmdTst:
         self.V0s = lambda s: 0.5 * self.ms * self.ws**2 * (s - self.s0)**2
         self.V1s = lambda s: 0.5 * self.ms * self.ws**2 * (s - self.s1)**2 + self.eps
 
+    def update(self):
+        self.__init__(self.beta, self.a, self.b, self.c, self.ms, self.ws, self.s0, self.s1, self.eps, self.Kq, self.Vq)
+
     def log_array(self, base, pts):
         log_ar = np.zeros(2 * pts - 1)
         a = np.log(np.linspace(base**(-1), 1., pts)) / np.log(base)
