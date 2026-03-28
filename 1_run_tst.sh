@@ -191,11 +191,11 @@ mkdir kcrpmd_new
 cd kcrpmd_new
 for leps in "${leps_list[@]}"; do
   for hw in 1 -1; do
-    if [[ "$hw" -= "1" ]]; then
+    if [[ "$hw" == "1" ]]; then
       sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=3 --meth=3 --fix=s --gam=1.0 --logK=0.50 --leps=$leps --hw=$hw #g" ../../submit_template.slm
       sbatch ../../submit_template.slm
     fi
-    if [[ "$hw" -= "-1" ]]; then
+    if [[ "$hw" == "-1" ]]; then
       sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=3 --meth=3 --fix=y --gam=1.0 --logK=0.50 --leps=$leps --hw=$hw #g" ../../submit_template.slm
       sbatch ../../submit_template.slm
     fi

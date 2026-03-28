@@ -14,4 +14,4 @@ eval "$(/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/MiniConda/bin/conda shel
 export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/repos/libra-code/_build/src:$PYTHONPATH
 conda activate libra
 
-python ../1_kcrpmd_tst.py --sys=1 --meth=3 --fix=y --a=0.1 --gam=1.0 --logK=0.98 
+python ../../1_kcrpmd_tst.py --sys=3 --meth=3 --fix=y --gam=1.0 --logK=0.50 --leps=16.00 --hw=-1 
