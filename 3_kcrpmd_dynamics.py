@@ -12,20 +12,14 @@ From the sampled configurations and the control parameters, dynamical trajectori
 
 """
 
-import sys
 import os
 import h5py
 import numpy as np
 import argparse
 
 from liblibra_core import *
-import util.libutil as comn
 from libra_py import units
 import libra_py.dynamics.tsh.compute as tsh_dynamics
-
-# Add the parent directory to sys.path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
-sys.path.insert(0, parent_dir)
 
 from kcrpmd_utils.kcrpmdmodel import kcrpmd_system_bath
 
@@ -45,9 +39,9 @@ else:
     print("not in correct directory, directory should be libra_data")
     exit()
 
-#########################################################################
-# ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS ======= #
-#########################################################################
+###################################################################################
+# ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS: DYNAMICS ======= #
+###################################################################################
 
 with open("../_control_params_dynamics.txt") as f:
     control_params = eval(f.read())
@@ -69,9 +63,10 @@ with h5py.File("mem_data.hdf", 'r') as f:
 
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
+q = [float(q[i]) for i in range(len(q))]
 p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
 
-init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0] * len(q), "init_type":0,
+init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0.0] * len(q), "init_type":0,
              "ntraj":control_params["ntraj"], "ndof": len(q)}
 
 if "use_kcrpmd" in control_params:
@@ -93,4 +88,90 @@ else:
 rnd = Random()
 
 res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, init_elec, init_nucl, rnd)
+
+
+# ======= PLOT THE RESULTS =======
+import h5py
+import matplotlib.pyplot as plt
+from scipy.integrate import trapezoid, cumulative_trapezoid
+
+plt.rcParams.update({
+    'figure.figsize': (8.0, 4.0),
+    'figure.dpi': 300,
+    'figure.facecolor': 'white',
+    'figure.edgecolor': 'white',
+    'lines.linewidth': 2,
+    'axes.linewidth': 3,
+    'axes.labelsize': 15,
+    'axes.titlesize': 15,
+    'xtick.direction': 'in',
+    'xtick.top': True,
+    'ytick.direction': 'in',
+    'ytick.right': True,
+    'xtick.major.width': 1.5,
+    'ytick.major.width': 1.5,
+    'xtick.major.size': 4,
+    'ytick.major.size': 4,
+    'xtick.labelsize': 12,
+    'ytick.labelsize': 12,
+    'legend.fontsize': 11,
+    'legend.frameon': False,
+})
+
+# Get current directory name (last component of the path)
+current_dir = os.path.basename(os.getcwd())
+parent_dir = os.path.basename(os.path.dirname(os.getcwd()))
+grandparent_dir = os.path.basename(os.path.dirname(os.path.dirname(os.getcwd())))
+
+fix = parent_dir[parent_dir.find("_fix_") + len("_fix_")]
+
+if grandparent_dir == "adiabatic":
+    fig, ((ax1, ax2)) = plt.subplots(2,1,sharex=True)
+    plt.subplots_adjust(hspace=0.1)
+    with h5py.File(pref + "/mem_data.hdf", 'r') as f:
+        t = f["time/data"][:]
+        q = f["q/data"][:,0,:]
+
+    s_low = model_params["s0"]
+    s_high = model_params["s1"]
+    ax1.set_ylabel(r"s (a.u.)")
+    ax1.set_ylim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
+    ax1.axhline(y=s_low, color='k', linestyle='--')
+    ax1.axhline(y=s_high, color='k', linestyle='--')
+    ax1.plot(t, q[:,0], color='k')
+
+    ax2.set_xlabel(r"t (a.u.)")
+    ax2.set_ylabel(r"q (a.u.)")
+    ax2.plot(t, q[:,-1], color='k')
+
+if grandparent_dir == "kcrpmd_ori" or grandparent_dir == "kcrpmd_new":
+    plt.rcParams.update({'figure.figsize': (8.0, 6.0)})
+    fig, ((ax1, ax2, ax3)) = plt.subplots(3,1,sharex=True)
+    plt.subplots_adjust(hspace=0.1)
+    with h5py.File(pref + "/mem_data.hdf", 'r') as f:
+        t = f["time/data"][:]
+        y = f["y_aux_var/data"][:,0]
+        q = f["q/data"][:,0,:]
+
+    ax1.set_ylabel(r"y (a.u.)")
+    ax2.set_ylim([-1.9, 1.9])
+    ax1.axhline(y=-1.5, color='k', linestyle='--')
+    ax1.axhline(y=-0.5, color='k', linestyle='--')
+    ax1.axhline(y=0.5, color='k', linestyle='--')
+    ax1.axhline(y=1.5, color='k', linestyle='--')
+    ax1.plot(t, y, color='k')
+
+    s_low = model_params["s0"]
+    s_high = model_params["s1"]
+    ax2.set_ylabel(r"s (a.u.)")
+    ax2.set_ylim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
+    ax2.axhline(y=s_low, color='k', linestyle='--')
+    ax2.axhline(y=s_high, color='k', linestyle='--')
+    ax2.plot(t, q[:,0], color='k')
+
+    ax3.set_xlabel(r"t (a.u.)")
+    ax3.set_ylabel(r"q (a.u.)")
+    ax3.plot(t, q[:,-1], color='k')
+
+plt.savefig(pref + '/dynamics', bbox_inches='tight')
 
