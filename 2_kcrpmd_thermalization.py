@@ -28,7 +28,7 @@ with open("_init_elec_thermalization.txt") as f:
     init_elec = eval(f.read())
 
 rnd = Random()
-control_params["nsteps"] = 1000000
+
 res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, init_elec, init_nucl, rnd)
 
 
@@ -78,7 +78,7 @@ if parent_dir == "adiabatic":
         q_low = q_arr[np.where(Isdagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Isdagq_arr >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"q (a.u.)")
-        ax1.set_xlim([q_low-1.0*(q_high-q_low), q_high+1.0*(q_high-q_low)])
+        ax1.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax1.set_ylabel("P(q)dq (a.u.)")
         ax1.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(q_arr, Psdagq_arr, color='k', label='exact')
@@ -100,14 +100,14 @@ if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
         q_low = q_arr[np.where(Isdagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Isdagq_arr >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"y (a.u.)")
-        ax1.set_xlim([y_low-1.0*(y_high-y_low), y_high+1.0*(y_high-y_low)])
+        ax1.set_xlim([y_low-0.75*(y_high-y_low), y_high+0.75*(y_high-y_low)])
         ax1.set_ylabel("P(y)dy (a.u.)")
         ax1.hist(y[icutoff:], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(y_arr, Pysdag_arr, color='k', label='exact')
         ax1.legend(loc='upper left')
 
         ax2.set_xlabel(r"q (a.u.)")
-        ax2.set_xlim([q_low-1.0*(q_high-q_low), q_high+1.0*(q_high-q_low)])
+        ax2.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax2.set_ylabel("P(q)dq (a.u.)")   
         ax2.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
         ax2.plot(q_arr, Psdagq_arr, color='k', label='exact')
@@ -122,14 +122,14 @@ if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
         q_low = q_arr[np.where(Iydagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Iydagq_arr >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"s (a.u.)")
-        ax1.set_xlim([s_low-1.0*(s_high-s_low), s_high+1.0*(s_high-s_low)])
+        ax1.set_xlim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
         ax1.set_ylabel("P(s)ds (a.u.)")
         ax1.hist(q[icutoff:,0], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
         ax1.plot(s_arr, Pydags_arr, color='k', label='exact')
         ax1.legend(loc='upper left')
 
         ax2.set_xlabel(r"q (a.u.)")
-        ax2.set_xlim([q_low-1.0*(q_high-q_low), q_high+1.0*(q_high-q_low)])
+        ax2.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax2.set_ylabel("P(q)dq (a.u.)")   
         ax2.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
         ax2.plot(q_arr, Pydagq_arr, color='k', label='exact')
