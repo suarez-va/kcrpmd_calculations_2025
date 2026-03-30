@@ -6,24 +6,20 @@ from the ensemble of trajectories, the transmission coefficient is computed and 
 
 """
 
-import sys
 import os
 import h5py
 import numpy as np
-
 from liblibra_core import *
-import util.libutil as comn
 
 # Number of blocks for standard error analysis
 N_blocks = 10
 
 # Check current directory name
 current_dir = os.path.basename(os.getcwd())
-if current_dir.startswith("_sys_"):
-    idx = current_dir.find("_fix_")
-    fix = current_dir[idx + len("_fix_")]
+if current_dir.startswith("_fix_"):
+    fix = current_dir[current_dir.find("_fix_") + len("_fix_")]
 else:
-    print("not in correct directory, directory should start with '_sys_'.")
+    print("not in correct directory, directory should start with '_fix_'.")
     exit()
 
 # Sorting itraj directories by value
@@ -39,6 +35,8 @@ for i, d in enumerate(itraj_dirs):
             time = f["time/data"][:]
             s = f["q/data"][:, 0, 0]
             ps = f["p/data"][:, 0, 0]
+        if (ps[0]>0.0 and s[-1]<0.0):
+            print(d)
         pos_data_list.append(s)
         mom_data_list.append(ps)
     elif fix == 'y':
@@ -68,21 +66,19 @@ block_index = block_index.reshape(N_blocks, int(xi_pts / N_blocks))
 # then the denominator average is taken at the end which is time independent Den_blocks[i] -> ().
 # the time dependent kappa coefficeint of each block i is then kappa_i(t) = Num_blocks[i,:] / Den_blocks[i]
 for i in range(N_blocks):
-    for j in range(t_pts):
-        Num = 0.
-        for k in block_index[i]:
-            st = pos_data[k,j]
-            if st >= 0.:
-                Num += mom_data[k,0]
-        Num_blocks[i,j] = Num
-
     Den = 0.
     for k in block_index[i]:
         if mom_data[k,0] >= 0.:
             Den += mom_data[k,0]
-
     Den_blocks[i] = Den
 
+    for j in range(t_pts):
+        Num = 0.
+        for k in block_index[i]:
+            xit = pos_data[k,j]
+            if xit >= 0.:
+                Num += mom_data[k,0]
+        Num_blocks[i,j] = Num
 
 # Taking average over blocks, the full kappa coefficient is then kappa(t) = A / B
 A = np.mean(Num_blocks, axis = 0)
@@ -108,4 +104,44 @@ np.savetxt("kappa_data/pos.txt", pos_data)
 np.savetxt("kappa_data/mom.txt", mom_data)
 np.savetxt("kappa_data/kappa_avg.txt", kappa_avg)
 np.savetxt("kappa_data/kappa_se.txt", kappa_se)
+
+
+# ======= PLOT THE RESULTS =======
+import matplotlib.pyplot as plt
+
+Nbars = 9
+se_idx = (np.arange(1,Nbars) * np.floor(len(time) / Nbars)).astype(int)
+
+plt.rcParams.update({
+    'figure.figsize': (8.0, 4.0),
+    'figure.dpi': 300,
+    'figure.facecolor': 'white',
+    'figure.edgecolor': 'white',
+    'lines.linewidth': 2,
+    'axes.linewidth': 3,
+    'axes.labelsize': 15,
+    'axes.titlesize': 15,
+    'xtick.direction': 'in',
+    'xtick.top': True,
+    'ytick.direction': 'in',
+    'ytick.right': True,
+    'xtick.major.width': 1.5,
+    'ytick.major.width': 1.5,
+    'xtick.major.size': 4,
+    'ytick.major.size': 4,
+    'xtick.labelsize': 12,
+    'ytick.labelsize': 12,
+    'legend.fontsize': 11,
+    'legend.frameon': False,
+})
+
+fig, ((ax1)) = plt.subplots(1,1)
+ax1.set_xlabel("t (a.u.)")
+ax1.set_xlim([0.0, time[-1]])
+ax1.set_ylabel(r"$\kappa$(t)")
+ax1.set_ylim([-0.09, 1.19])
+ax1.axhline(y=0.0, color='k', linestyle='--')
+ax1.plot(time, kappa_avg, color='k')
+ax1.errorbar(time[se_idx], kappa_avg[se_idx], np.absolute(kappa_se[se_idx]), fmt='none', ecolor='k', elinewidth=1)
+plt.savefig('transmission', bbox_inches='tight')
 
