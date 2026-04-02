@@ -28,7 +28,7 @@ for dir1 in _sys_*/; do
             break
           else
             echo "hold on one sec..."
-            sleep 10
+            sleep 5
           fi
         done
       done
@@ -57,7 +57,7 @@ for dir1 in _sys_*/; do
             break
           else
             echo "hold on one sec..."
-            sleep 10
+            sleep 5
           fi
         done
       done
@@ -86,7 +86,7 @@ for dir1 in _sys_*/; do
             break
           else
             echo "hold on one sec..."
-            sleep 10
+            sleep 5
           fi
         done
       done
@@ -94,6 +94,7 @@ for dir1 in _sys_*/; do
     done
     cd ../
   fi
+
   cd ../
 done
 

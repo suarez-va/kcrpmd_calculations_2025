@@ -1,7 +1,8 @@
 #!/bin/bash
 
-for dir1 in _sys_*/; do
+for dir1 in _sys_A*/; do
   cd $dir1
+  pwd
 
   if [ -d "adiabatic" ]; then
     cd adiabatic

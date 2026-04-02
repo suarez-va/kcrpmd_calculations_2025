@@ -85,8 +85,9 @@ eps = 0.0 # Diabat 0 to diabat 1 driving force
 M = 1836.0 # Ohmic bath mass
 wc = 2.28e-3 # Ohmic bath cutoff frequency
 gam = args.gam * (M * wc) # Ohmic bath friction coefficient
+f = 12 if (args.gam<=3) else 32 # Number of harmonic bath modes
 tauL = gam / (ws**2 * ms) # Debye longitudinal relaxation time for Zusman rate later
-wj, cj, mj = gen_kcrpmd_bath_params({"M":M, "wc":wc, "gam":gam, "f":12}) # Ohmic spectral density bath parameters
+wj, cj, mj = gen_kcrpmd_bath_params({"M":M, "wc":wc, "gam":gam, "f":f}) # Ohmic spectral density bath parameters
 
 K0 = 10**(args.logK) / beta # Diabatic coupling constant/prefactor
 bq = 0.0 if (args.sys==1 or K0<=1e-10) else 3.0 # Diabatic coupling q coordinate exponential dependence

@@ -7,7 +7,7 @@ for dir1 in _sys_*/; do
     cd adiabatic
     for dir2 in _fix_*/; do
       cd $dir2
-      sed -i "s#python.*#python ../../../2_kcrpmd_thermalization.py #g" ../../../submit_template.slm
+      sed -i "s|python.*|python ../../../2_kcrpmd_thermalization.py |g" ../../../submit_template.slm
       sbatch ../../../submit_template.slm
       cd ../
     done
@@ -18,7 +18,7 @@ for dir1 in _sys_*/; do
     cd kcrpmd_ori
     for dir2 in _fix_*/; do
       cd $dir2
-      sed -i "s#python.*#python ../../../2_kcrpmd_thermalization.py #g" ../../../submit_template.slm
+      sed -i "s|python.*|python ../../../2_kcrpmd_thermalization.py |g" ../../../submit_template.slm
       sbatch ../../../submit_template.slm
       cd ../
     done
@@ -29,7 +29,7 @@ for dir1 in _sys_*/; do
     cd kcrpmd_new
     for dir2 in _fix_*/; do
       cd $dir2
-      sed -i "s#python.*#python ../../../2_kcrpmd_thermalization.py #g" ../../../submit_template.slm
+      sed -i "s|python.*|python ../../../2_kcrpmd_thermalization.py |g" ../../../submit_template.slm
       sbatch ../../../submit_template.slm
       cd ../
     done
