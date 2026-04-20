@@ -27,15 +27,16 @@ import argparse
 from liblibra_core import *
 from libra_py import units
 
-from kcrpmd_utils.kcrpmdtst import KcrpmdTst
-from kcrpmd_utils.kcrpmdmodel import gen_kcrpmd_bath_params, get_ABC
+from kcrpmd_utils.Spin_Boson_Conventional import gen_bath_params_conventional
+from kcrpmd_utils.KCRPMD_System_Bath import get_ABC, kcrpmd_system_bath
+from kcrpmd_utils.KCRPMD_TST import KCRPMD_TST
 
 ######################################################
 # ======= ARGUMENT PARSER, SEE TOP OF SCRIPT ======= #
 ######################################################
 parser = argparse.ArgumentParser()
-parser.add_argument('--sys', default=1, type=int, help='System type A (1), B (2) or C (3)')
-parser.add_argument('--meth', default=3, type=int, help='Method: Adiabatic (1), Original KC-RPMD (2), New KC-RPMD (3)')
+parser.add_argument('--sys', default='A', type=str, help='System type A, B or C')
+parser.add_argument('--meth', default='adi', type=str, help='Method: Adiabatic (adi), Original KC-RPMD (ori), New KC-RPMD (new)')
 parser.add_argument('--fix', default='s', type=str, help='Reaction coordinate to fix: y or s')
 parser.add_argument('--a', default=0.1, type=float, help='KC-RPMD gaussian restraint parameter a')
 parser.add_argument('--gam', default=1.0, type=float, help='Ohmic solvent friction ratio gamma/(M*omega_c)')
@@ -44,23 +45,23 @@ parser.add_argument('--leps', default=15.0, type=float, help='System type C epsi
 parser.add_argument('--hw', default=0, type=int, help='System type C hard wall, left side (-1), right side (1), no hard wall (0)')
 args = parser.parse_args()
 
-if (args.sys != 1 and args.sys != 2 and args.sys != 3): print("Invalid System Type!"); exit() 
+if (args.sys != 'A' and args.sys != 'B' and args.sys != 'C'): print("Invalid System Type!"); exit() 
 if (args.fix != 's' and args.fix != 'y'): print("Invalid Reaction Coordinate!"); exit() 
 if (args.fix == 'y' and args.meth == 1): print("No y Coordinate For Adiabatic Method!"); exit() 
-if (args.meth != 1 and args.meth != 2 and args.meth != 3): print("Invalid Method!"); exit() 
+if (args.meth != 'adi' and args.meth != 'ori' and args.meth != 'new'): print("Invalid Method!"); exit() 
 
 ###########################################################################
 # ======= CREATING WORKING DIRECTORIES FOR CALCULATIONS TO BE RUN ======= #
 ###########################################################################
-if (args.sys == 1 or args.sys == 2):
-    if (args.meth == 2):
+if (args.sys == 'A' or args.sys == 'B'):
+    if (args.meth == 'ori'):
         pref = F"_fix_{args.fix}_a_{args.a}_logK_{args.logK:.2f}"
     else:
         pref = F"_fix_{args.fix}_logK_{args.logK:.2f}"
 else:
-    if (args.meth == 1):
+    if (args.meth == 'adi'):
         pref = F"_fix_{args.fix}_logK_{args.logK:.2f}_leps_{args.leps:.2f}_hw_{args.hw}"
-    elif (args.meth == 2):
+    elif (args.meth == 'ori'):
         pref = F"_fix_{args.fix}_a_{args.a}_leps_{args.leps:.2f}_hw_{args.hw}"
     else:
         pref = F"_fix_{args.fix}_leps_{args.leps:.2f}_hw_{args.hw}"
@@ -71,7 +72,7 @@ os.makedirs(pref, exist_ok=True)
 # ======= ASSIGNING PARAMETERS FOR SYSTEM ======= #
 ###################################################
 T = 300.0 # Temperature in K
-beta = units.hartree / (units.boltzmann * T)
+beta = units.hartree/(units.boltzmann*T)
 a = args.a # KC-RPMD parameter a
 b = 1000.0 # KC-RPMD parameter b
 c = 1.0 # KC-RPMD parameter c
@@ -84,18 +85,18 @@ eps = 0.0 # Diabat 0 to diabat 1 driving force
 
 M = 1836.0 # Ohmic bath mass
 wc = 2.28e-3 # Ohmic bath cutoff frequency
-gam = args.gam * (M * wc) # Ohmic bath friction coefficient
+gam = args.gam*(M*wc) # Ohmic bath friction coefficient
 f = 12 if (args.gam<=3) else 32 # Number of harmonic bath modes
-tauL = gam / (ws**2 * ms) # Debye longitudinal relaxation time for Zusman rate later
-wj, cj, mj = gen_kcrpmd_bath_params({"M":M, "wc":wc, "gam":gam, "f":f}) # Ohmic spectral density bath parameters
+tauL = gam/(ws**2*ms) # Debye longitudinal relaxation time for Zusman rate later
+wj, cj, mj = gen_bath_params_conventional({"gam": gam, "wc": wc, "m": M, "f": f}) # Ohmic spectral density bath parameters
 
-K0 = 10**(args.logK) / beta # Diabatic coupling constant/prefactor
-bq = 0.0 if (args.sys==1 or K0<=1e-10) else 3.0 # Diabatic coupling q coordinate exponential dependence
+K0 = 10**(args.logK)/beta # Diabatic coupling constant/prefactor
+bq = 0.0 if args.sys=='A' else 3.0 # Diabatic coupling q coordinate exponential dependence
+aq = 0.0 if args.sys=='A' else 8.0 if args.sys=='B' else 6.0 # q coordinate morse exponential parameter 
 mq = 5.0e4 # q coordinate mass
 wq = 5.0e-4 # q coordinate frequency
-Dq = 1.0e-4 if args.sys==2 else 1.0e-3 # q coordinate morse potential parameter
 (q0, leps, Ea) = (2.1, args.leps / beta, 6.65e-3) # System C q coordinate double well parameters
-(Aq, Bq, Cq) = get_ABC(q0, -leps, Ea) # Numerically computing Aq, Bq, Cq from q0, leps, Ea
+(Aq, Bq, Cq) = get_ABC(q0, leps, Ea) # Numerically computing Aq, Bq, Cq from q0, leps, Ea
 qhw = 1.0 # Hard wall potential location
 khw = 1.0e5 # Hard wall potential strength
 
@@ -103,111 +104,103 @@ khw = 1.0e5 # Hard wall potential strength
 # ======= NOW CALLING ON TST CODE TO COMPUTE FREE ENERGIES AND KC-RPMD PARAMETERS ======= #
 ###########################################################################################
 
-# Defining Kq and Vq functions of system for TST code
-if args.sys == 1:
-    Kq = lambda q: np.full_like(q, K0)
-    Vq = lambda q: 0.5 * mq * wq**2 * q**2
-elif args.sys == 2:
-    Kq = lambda q: K0 * np.exp(-bq * q)
-    Vq = lambda q: np.piecewise(q, [q >= 0., q < 0.],
-                                [lambda q: 0.5 * mq * wq**2 * q**2,
-                                 lambda q: Dq * (1 - np.exp(-np.sqrt(0.5 * mq * wq**2 / Dq) * q))**2])
-elif args.sys == 3:
-    Kq = lambda q: K0 * np.exp(-bq * q)
-    Vq = lambda q: np.piecewise(q, [q >= 0., q < 0.],
-                                [lambda q: Aq * q**4 + Bq * q**3 + Cq * q**2,
-                                 lambda q: Dq * (1 - np.exp(-np.sqrt(Cq / Dq) * q))**2])
+# Computing full fermi-golden rule rate saving to _sys_*/tst_data (no hardwall influence)
+os.makedirs(pref + "/tst_data", exist_ok=True)
 
-# Instantiation tst code object, computing eta, my, and gammay
-kcrpmd_tst = KcrpmdTst(beta, a, b, c, ms, ws, s0, s1, eps, Kq, Vq)
+# Defining Kq and Vq functions of system for TST code
+if args.sys == 'A':
+    Vq = lambda q: 0.5*mq*wq**2*q**2
+elif args.sys == 'B':
+    Vq = lambda q: np.piecewise(q,[q >= 0.,q < 0.],
+                                [lambda q: 0.5*mq*wq**2*q**2,
+                                 lambda q: 0.5*mq*wq**2*(np.expm1(-aq*q)/aq)**2])
+elif args.sys == 'C':
+    Vq = lambda q: np.piecewise(q,[q >= 0.,q < 0.],
+                                [lambda q: Aq*q**4 + Bq*q**3 + Cq*q**2,
+                                 lambda q: Cq*(np.expm1(-aq*q)/aq)**2])
+
+# Instantiation TST code object, computing eta, my, and gammay
+qmin = -1.9
+qmax = 3.0
+kcrpmd_tst = KCRPMD_TST(beta, a, b, c, ms, ws, s0, s1, eps, K0, bq, Vq, qmin, qmax)
+
 ydag = kcrpmd_tst.ydag
 sdag = kcrpmd_tst.sdag
+
 # IMPORTANT! without the hardwall separation we use eta, my, gammay computed for the whole system without hardwall potential.
-# with the hard wall (sys C), instead eta, my, and gammay are computed from the right side lower well with lower diabatic coupling.
-if args.hw == 0:
+# with the hard wall (sys C), instead eta, my, and gammay are computed from the right side lower well with the smaller diabatic coupling.
+if args.hw != 0:
+    print('Recomputing KC-RPMD parameters for system C using adiabatic well:')
+    qmin_cp = kcrpmd_tst.qmin
+    kcrpmd_tst.qmin = qhw
     kcrpmd_tst.set_eta_my_gammay()
-else:
-    q_low_cp = kcrpmd_tst.q_low
-    kcrpmd_tst.q_low = qhw
-    kcrpmd_tst.set_eta_my_gammay()
-    kcrpmd_tst.q_low = q_low_cp
+    kcrpmd_tst.qmin = qmin_cp
 
 # This is a cheap and dirty fix to recover original KC-RPMD using new KC-RPMD formalism.
-if args.meth == 2:
-    kcrpmd_tst.eta = 2 * kcrpmd_tst.eta - np.sqrt(np.pi / kcrpmd_tst.a)
-    kcrpmd_tst.a = 2 * kcrpmd_tst.a
+if args.meth == 'ori':
+    kcrpmd_tst.eta = 2*kcrpmd_tst.eta - np.sqrt(np.pi/kcrpmd_tst.a)
+    kcrpmd_tst.a = 2*kcrpmd_tst.a
     kcrpmd_tst.c = 0.0
 
 # Computing ground state free energy and KC-RPMD free energy (fully integrated)
-Fg = kcrpmd_tst.Fg(); FKC = kcrpmd_tst.F()
+FBO_full = kcrpmd_tst.FBO()[0]; FKC_full = kcrpmd_tst.FKC()[0]; kcrpmd_tst.reset()
 
-# Computing full fermi-golden rule rate saving to _sys_*/tst_data (no hardwall influence)
-os.makedirs(pref + "/tst_data", exist_ok=True)
-kGR_full = kcrpmd_tst.kGR()
-np.savetxt(pref + "/tst_data/kGR_full.txt", [kGR_full])
-
-# Now we add hardwall potential to evaluate free energies and rates of each half separately (sys C only)
+# Now we add hardwall potential restriction to evaluate free energies and rates of each half separately (sys C only)
 if args.hw == -1:
-    kcrpmd_tst.q_low = qhw - (100 / (khw * beta))**(1/6)
-    Vhw = lambda q: np.piecewise(q, [q >= qhw, q < qhw], [lambda q: np.full_like(q, 0.), lambda q: khw * (q - qhw)**6])
-    kcrpmd_tst.Vq = lambda q: Vq(q) + Vhw(q) 
+    kcrpmd_tst.qmin = qhw
 elif args.hw == 1:
-    kcrpmd_tst.q_high = qhw + (100 / (khw * beta))**(1/6)
-    Vhw = lambda q: np.piecewise(q, [q >= qhw, q < qhw], [lambda q: khw * (q - qhw)**6, lambda q: np.full_like(q, 0.)])
-    kcrpmd_tst.Vq = lambda q: Vq(q) + Vhw(q) 
+    kcrpmd_tst.qmax = qhw
 
-# Coordinate arrays used in numerical integration and plotting for later
-s_arr = kcrpmd_tst.s_array()
-q_arr = kcrpmd_tst.q_array()
-y_arr = kcrpmd_tst.y_array()
+# Coordinate arrays used to generate probability distributions for comparisions
+# logfocus concentrates points around the center mu, used to resolve sharp kinetic constraint in plots
+def logfocus(xmin, xmax, xpts, mu, sig, aexp):
+    dx = (xmax - xmin)/(xpts - 1)
+    uhop = sig + 2*np.expm1(-0.5*aexp*sig)/aexp
+    umin = xmin - 0.5*uhop
+    umax = xmax + 0.5*uhop
+    upts = xpts + int(np.ceil(uhop/dx))
+    u_ar = np.linspace(umin, umax, upts)
+    x_ar = np.piecewise(u_ar,
+                       [abs(u_ar - mu) <= 0.5*sig,
+                        abs(u_ar - mu) > 0.5*sig],
+                       [lambda u: mu + np.exp(-0.5*aexp*sig)/aexp*np.sign(u - mu)*(np.expm1(aexp*abs(u - mu))),
+                        lambda u: u - np.sign(u - mu)*(0.5*sig + np.expm1(-0.5*aexp*sig)/aexp)])
+    return x_ar
+s_ar = logfocus(-7.0,7.0,1111,sdag,5.0,5.0)
+q_ar = np.linspace(kcrpmd_tst.qmin,kcrpmd_tst.qmax,1357)
+y_ar = np.linspace(-1.6,1.6,999)
 
 # Now we calculate absolutely everything that might be useful later
 # Hardwall influence if it's turned on, sys C only
-if args.meth == 1:
-    Phw = np.exp(-beta * (kcrpmd_tst.Fg() - Fg)) # Hardwall potential probability from 0 to 1
-    Fsq = kcrpmd_tst.Vg(s_arr, q_arr) # Adiabatic free energy along s and q
-    Fsdag = kcrpmd_tst.Fgs(np.array([sdag])) # Adiabatic free energy at sdagger
-    Fsdagq = kcrpmd_tst.Vg(np.array([sdag]), q_arr) # Adiabatic free energy along q at sdagger
-    Psdagq = np.exp(-beta * (Fsdagq - Fsdag))[:,0] # Adiabatic probability along q at sdagger
+if args.meth == 'adi':
+    Phw = np.exp(-beta*(kcrpmd_tst.FBO()[0] - FBO_full)) # Hardwall potential probability from 0 to 1
+    Pq_sdag = kcrpmd_tst.PBOq_s(sdag, q_ar) # Born-Oppenheimer probability along q at sdagger
     kGR = kcrpmd_tst.kGR() # Fermi-golden rule rate
     kZUS = kcrpmd_tst.kZUS(tauL) # Zusman rate
-    ktsts = kcrpmd_tst.kBO() # Adiabatic TST rate along s
-    np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
-    np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
-    np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
+    kBOs = kcrpmd_tst.kBOs() # Born-Oppenheimer TST rate
+    np.savetxt(pref + "/tst_data/Pq_sdag.txt", np.column_stack((q_ar, Pq_sdag)))
     np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
     np.savetxt(pref + "/tst_data/kZUS.txt", [kZUS])
-    np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
-elif args.meth == 2 or args.meth == 3:
-    Phw = np.exp(-beta * (kcrpmd_tst.F() - FKC)) # Hardwall potential probability from 0 to 1
-    Fys = kcrpmd_tst.Fys(y_arr, s_arr) # KC-RPMD free energy along y and s
-    Fyq = kcrpmd_tst.Fyq(y_arr, q_arr) # KC-RPMD free energy along y and q
-    Fsq = kcrpmd_tst.Fsq(s_arr, q_arr) # KC-RPMD free energy along s and q
+    np.savetxt(pref + "/tst_data/kBOs.txt", [kBOs])
     np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
-    np.savetxt(pref + "/tst_data/Fys.txt", Fys)
-    np.savetxt(pref + "/tst_data/Fyq.txt", Fyq)
-    np.savetxt(pref + "/tst_data/Fsq.txt", Fsq)
+elif args.meth == 'ori' or args.meth == 'new':
+    Phw = np.exp(-beta*(kcrpmd_tst.FKC()[0] - FKC_full)) # Hardwall potential probability from 0 to 1
     if args.fix == "y":
-        Fydag = kcrpmd_tst.Fy(np.array([ydag])) # KC-RPMD free energy at ydagger
-        np.savetxt(pref + "/tst_data/Fydag.txt", [Fydag])
-        Fydags = kcrpmd_tst.Fys(np.array([ydag]), s_arr) # KC-RPMD free energy along s at ydagger
-        Fydagq = kcrpmd_tst.Fyq(np.array([ydag]), q_arr) # KC-RPMD free energy along q at ydagger
-        Pydags = np.exp(-beta * (Fydags - Fydag))[:,0] # KC-RPMD probability along s at ydagger
-        Pydagq = np.exp(-beta * (Fydagq - Fydag))[:,0] # KC-RPMD probability along q at ydagger
-        ktsty = kcrpmd_tst.tst_y() # KC-RPMD TST rate along y
-        np.savetxt(pref + "/tst_data/Pydags.txt", np.column_stack((s_arr, Pydags)))
-        np.savetxt(pref + "/tst_data/Pydagq.txt", np.column_stack((q_arr, Pydagq)))
-        np.savetxt(pref + "/tst_data/ktsty.txt", [ktsty])
+        Ps_ydag = kcrpmd_tst.PKCs_y(ydag, s_ar) # KC-RPMD probability along s at ydagger
+        Pq_ydag = kcrpmd_tst.PKCq_y(ydag, q_ar) # KC-RPMD probability along q at ydagger
+        kKCy = kcrpmd_tst.kKCy() # KC-RPMD TST rate along y
+        np.savetxt(pref + "/tst_data/Ps_ydag.txt", np.column_stack((s_ar, Ps_ydag)))
+        np.savetxt(pref + "/tst_data/Pq_ydag.txt", np.column_stack((q_ar, Pq_ydag)))
+        np.savetxt(pref + "/tst_data/kKCy.txt", [kKCy])
+        np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
     elif args.fix == "s":
-        Fsdag = kcrpmd_tst.Fs(np.array([sdag])) # KC-RPMD free energy at sdagger
-        Fysdag = kcrpmd_tst.Fys(y_arr, np.array([sdag])) # KC-RPMD free energy along y at sdagger
-        Fsdagq = kcrpmd_tst.Fsq(np.array([sdag]), q_arr) # KC-RPMD free energy along q at sdagger
-        Pysdag = np.exp(-beta * (Fysdag - Fsdag))[0,:] # KC-RPMD probability along y at sdagger
-        Psdagq = np.exp(-beta * (Fsdagq - Fsdag))[:,0] # KC-RPMD probability along q at sdagger
-        ktsts = kcrpmd_tst.tst_s() # KC-RPMD TST rate along s
-        np.savetxt(pref + "/tst_data/Pysdag.txt", np.column_stack((y_arr, Pysdag)))
-        np.savetxt(pref + "/tst_data/Psdagq.txt", np.column_stack((q_arr, Psdagq)))
-        np.savetxt(pref + "/tst_data/ktsts.txt", [ktsts])
+        Py_sdag = kcrpmd_tst.PKCy_s(y_ar, sdag) # KC-RPMD probability along y at sdagger
+        Pq_sdag = kcrpmd_tst.PKCq_s(sdag, q_ar) # KC-RPMD probability along q at sdagger
+        kKCy = kcrpmd_tst.kKCy() # KC-RPMD TST rate along y
+        np.savetxt(pref + "/tst_data/Py_sdag.txt", np.column_stack((y_ar, Py_sdag)))
+        np.savetxt(pref + "/tst_data/Pq_sdag.txt", np.column_stack((q_ar, Pq_sdag)))
+        np.savetxt(pref + "/tst_data/kKCs.txt", [kKCy])
+        np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
 
 ######################################################################################################################
 # ======= NOW CREATING AND SAVING LIBRA CONTROL PARAMETERS FOR THERMALIZATION (PART 2) AND DYNAMICS (PART 3) ======= #
@@ -215,14 +208,14 @@ elif args.meth == 2 or args.meth == 3:
 nstates = 2
 ndia = 2
 nadi = 2
-ndof = 1 + len(mj) + int(args.sys != 0)
+ndof = 2 + len(mj)
 ntraj = 1
 
 # Save model parameters
 _model_params = {"ms":ms, "ws":ws, "s0":s0, "s1":s1, "eps":eps,
                  "wj":wj, "cj":cj, "Mj":mj, "K0":K0,
-                 "sys_type":args.sys, "mq":mq, "wq":wq, "bq":bq,
-                 "Aq":Aq, "Bq":Bq, "Cq":Cq, "Dq":Dq,
+                 "bq":bq, "aq":aq, "sys_type":args.sys, "mq":mq, "wq":wq,
+                 "Aq":Aq, "Bq":Bq, "Cq":Cq,
                  "hard_wall":args.hw, "qhw":qhw, "khw":khw,
                  "model":1, "model0":1, "nstates": nstates}
 
@@ -237,7 +230,7 @@ dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000, "nprin
               "ntraj":ntraj, "nstates":nstates}
 
 # General Adiabatic recipe
-def load_adiabatic(dyn_general, temp=300.0):
+def load_adiabatic(dyn_general, temp):
     dyn_general.update({"rep_tdse":1}) # adiabatic representation, wfc
     dyn_general.update({"ham_update_method":1})  # recompute only diabatic Hamiltonian
     dyn_general.update({"ham_transform_method":1}) # diabatic->adiabatic according to internal diagonalization
@@ -249,7 +242,7 @@ def load_adiabatic(dyn_general, temp=300.0):
     dyn_general.update({"electronic_integrator":-1}) # No propagation
 
 # KC-RPMD recipe
-def load_kcrpmd(dyn_general, kcrpmd_tst, temp=300.0):
+def load_kcrpmd(dyn_general, kcrpmd_tst, temp):
     dyn_general.update({"rep_tdse":0}) #diabatic representation, wfc
     dyn_general.update({"ham_update_method":1})  # recompute only diabatic Hamiltonian
     dyn_general.update({"ham_transform_method":0}) # don't do any transforms
@@ -277,10 +270,10 @@ def load_langevin(dyn_general, _ndof):
     dyn_general.update({"thermostat_dofs":list(range(_ndof))})
 
 # Load in control parameter recipe
-if args.meth == 1:
+if args.meth == 'adi':
     load_adiabatic(dyn_params, T)
     dyn_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave"]})
-elif (args.meth == 2 or args.meth == 3):
+elif (args.meth == 'ori' or args.meth == 'new'):
     load_kcrpmd(dyn_params, kcrpmd_tst, T)
     dyn_params.update({"properties_to_save":["timestep","time","q","p","f","Epot_ave","Ekin_ave","Etot_ave", "y_aux_var","p_aux_var", "f_aux_var", "ekin_aux_var"]})
 
@@ -295,11 +288,12 @@ with open(pref +  "/_control_params_dynamics.txt", "w") as f:
 # Load Langevin thermostat for thermalization
 load_langevin(dyn_params, ndof)
 if args.fix == 's':
-    dyn_params.update({"kcrpmd_gamma":0.003})
-    dyn_params.update({"kcrpmd_gammaKP":0.003})
     dyn_params.update({"constrained_dofs":[0]})
     dyn_params.update({"quantum_dofs":[]})
     dyn_params["thermostat_dofs"].pop(0)
+    if (args.meth == 'ori' or args.meth == 'new'):
+        dyn_params.update({"kcrpmd_gamma":0.003})
+        dyn_params.update({"kcrpmd_gammaKP":0.003})
 
 # Save control parameters for thermalization as copy
 _control_params_thermalization = dyn_params.copy()
@@ -314,24 +308,27 @@ with open(pref +  "/_control_params_thermalization.txt", "w") as f:
 # We choose masses so that the harmoic frequencies match the timestep.
 # n_therm is redundancy factor, mass of s coordinate will either follow harmonic V0(s), or gaussian restraint for small beta*K0
 n_therm = 1000
-if args.sys == 3 and args.hw == -1:
-    Kref = K0 * np.exp(-bq * 2.1)
+if args.sys == 'C' and args.hw == -1:
+    Kref = K0*np.exp(-bq*2.1)
 else:
     Kref = K0
 ms_therm = [max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)]
 mj_therm = [mj[i]*wj[i]**2*(n_therm*41.34/(2*np.pi))**2 for i in range(len(wj))]
 mq_therm = [mq*wq**2*(n_therm*41.34/(2*np.pi))**2]
 mass_therm = ms_therm + mj_therm + mq_therm
-force_therm = [4 * mass_therm[i] / (beta**2) for i in range(len(mass_therm))]
+force_therm = [4*mass_therm[i]/(beta**2) for i in range(len(mass_therm))]
 my_therm = 500000.0
 
 # Initial conditions and masses of nuclear coordinates for thermalization
 _nucl_params = {"q":[sdag] + [0.0]*(ndof-2) + [qhw], "p":[0.0]*ndof, "mass": mass_therm,
-                "force_constant":force_therm, "init_type":1, "ntraj":ntraj, "ndof": ndof}
+                "force_constant":force_therm, "init_type":1, "ntraj": ntraj, "ndof": ndof}
 
 # Initial conditions and mass of auxiliary coordinate for thermalization
-_elec_params = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi,
-                "y_aux_var":[ydag], "p_aux_var":[0.0], "m_aux_var":[my_therm]}
+_elec_params = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi}
+if (args.meth == 'ori' or args.meth == 'new'):
+    _elec_params.update({"y_aux_var":[ydag]})
+    _elec_params.update({"p_aux_var":[0.0]})
+    _elec_params.update({"m_aux_var":[my_therm]})
 
 # Saving initial conditions for thermalization
 with open(pref +  "/_init_nucl_thermalization.txt", "w") as f:

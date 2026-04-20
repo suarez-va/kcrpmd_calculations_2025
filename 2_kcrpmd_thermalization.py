@@ -11,7 +11,7 @@ from liblibra_core import *
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 
 
-from kcrpmd_utils.kcrpmdmodel import kcrpmd_system_bath
+from kcrpmd_utils.KCRPMD_System_Bath import kcrpmd_system_bath
 
 # ======= READ IN KC-RPMD RECIPE, MODEL, AND INITIAL CONDITIONS: THERMALIZATION =======
 
@@ -37,7 +37,7 @@ icutoff = 1
 
 import h5py
 import matplotlib.pyplot as plt
-from scipy.integrate import trapezoid, cumulative_trapezoid
+from scipy.integrate import cumulative_trapezoid
 
 plt.rcParams.update({
     'figure.figsize': (8.0, 4.0),
@@ -73,15 +73,15 @@ if parent_dir == "adiabatic":
     with h5py.File("libra_data/mem_data.hdf", 'r') as f:
         q = f["q/data"][:,0,:]
     if fix == "s":
-        Psdagq_data = np.loadtxt("tst_data/Psdagq.txt"); q_arr = Psdagq_data[:,0]; Psdagq_arr = Psdagq_data[:,1]
-        Isdagq_arr = cumulative_trapezoid(Psdagq_arr, q_arr, initial=0)
-        q_low = q_arr[np.where(Isdagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Isdagq_arr >= 0.99)[0][0]]
+        Pq_sdag_data = np.loadtxt("tst_data/Pq_sdag.txt"); q_ar = Pq_sdag_data[:,0]; Pq_sdag_ar = Pq_sdag_data[:,1]
+        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0)
+        q_low = q_ar[np.where(Iq_sdag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_sdag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"q (a.u.)")
         ax1.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax1.set_ylabel("P(q)dq (a.u.)")
         ax1.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
-        ax1.plot(q_arr, Psdagq_arr, color='k', label='exact')
+        ax1.plot(q_ar, Pq_sdag_ar, color='k', label='exact')
         ax1.legend(loc='upper left')
 
 if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
@@ -92,47 +92,47 @@ if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
         q = f["q/data"][:,0,:]
         y = f["y_aux_var/data"][:,0]
     if fix == "s":
-        Pysdag_data = np.loadtxt("tst_data/Pysdag.txt"); y_arr = Pysdag_data[:,0]; Pysdag_arr = Pysdag_data[:,1]
-        Iysdag_arr = cumulative_trapezoid(Pysdag_arr, y_arr, initial=0)
-        y_low = y_arr[np.where(Iysdag_arr <= 0.01)[0][-1]]; y_high = y_arr[np.where(Iysdag_arr >= 0.99)[0][0]]
-        Psdagq_data = np.loadtxt("tst_data/Psdagq.txt"); q_arr = Psdagq_data[:,0]; Psdagq_arr = Psdagq_data[:,1]
-        Isdagq_arr = cumulative_trapezoid(Psdagq_arr, q_arr, initial=0)
-        q_low = q_arr[np.where(Isdagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Isdagq_arr >= 0.99)[0][0]]
+        Py_sdag_data = np.loadtxt("tst_data/Py_sdag.txt"); y_ar = Py_sdag_data[:,0]; Py_sdag_ar = Py_sdag_data[:,1]
+        Iy_sdag_ar = cumulative_trapezoid(Py_sdag_ar, y_ar, initial=0)
+        y_low = y_ar[np.where(Iy_sdag_ar <= 0.01)[0][-1]]; y_high = y_ar[np.where(Iy_sdag_ar >= 0.99)[0][0]]
+        Pq_sdag_data = np.loadtxt("tst_data/Pq_sdag.txt"); q_ar = Pq_sdag_data[:,0]; Pq_sdag_ar = Pq_sdag_data[:,1]
+        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0)
+        q_low = q_ar[np.where(Iq_sdag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_sdag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"y (a.u.)")
         ax1.set_xlim([y_low-0.75*(y_high-y_low), y_high+0.75*(y_high-y_low)])
         ax1.set_ylabel("P(y)dy (a.u.)")
         ax1.hist(y[icutoff:], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
-        ax1.plot(y_arr, Pysdag_arr, color='k', label='exact')
+        ax1.plot(y_ar, Py_sdag_ar, color='k', label='exact')
         ax1.legend(loc='upper left')
 
         ax2.set_xlabel(r"q (a.u.)")
         ax2.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax2.set_ylabel("P(q)dq (a.u.)")   
         ax2.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
-        ax2.plot(q_arr, Psdagq_arr, color='k', label='exact')
+        ax2.plot(q_ar, Pq_sdag_ar, color='k', label='exact')
         ax2.legend(loc='upper left')
 
     if fix == "y":
-        Pydags_data = np.loadtxt("tst_data/Pydags.txt"); s_arr = Pydags_data[:,0]; Pydags_arr = Pydags_data[:,1]
-        Iydags_arr = cumulative_trapezoid(Pydags_arr, s_arr, initial=0)
-        s_low = s_arr[np.where(Iydags_arr <= 0.01)[0][-1]]; s_high = s_arr[np.where(Iydags_arr >= 0.99)[0][0]]
-        Pydagq_data = np.loadtxt("tst_data/Pydagq.txt"); q_arr = Pydagq_data[:,0]; Pydagq_arr = Pydagq_data[:,1]
-        Iydagq_arr = cumulative_trapezoid(Pydagq_arr, q_arr, initial=0)
-        q_low = q_arr[np.where(Iydagq_arr <= 0.01)[0][-1]]; q_high = q_arr[np.where(Iydagq_arr >= 0.99)[0][0]]
+        Ps_ydag_data = np.loadtxt("tst_data/Ps_ydag.txt"); s_ar = Ps_ydag_data[:,0]; Ps_ydag_ar = Ps_ydag_data[:,1]
+        Is_ydag_ar = cumulative_trapezoid(Ps_ydag_ar, s_ar, initial=0)
+        s_low = s_ar[np.where(Is_ydag_ar <= 0.01)[0][-1]]; s_high = s_ar[np.where(Is_ydag_ar >= 0.99)[0][0]]
+        Pq_ydag_data = np.loadtxt("tst_data/Pq_ydag.txt"); q_ar = Pq_ydag_data[:,0]; Pq_ydag_ar = Pq_ydag_data[:,1]
+        Iq_ydag_ar = cumulative_trapezoid(Pq_ydag_ar, q_ar, initial=0)
+        q_low = q_ar[np.where(Iq_ydag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_ydag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"s (a.u.)")
         ax1.set_xlim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
         ax1.set_ylabel("P(s)ds (a.u.)")
         ax1.hist(q[icutoff:,0], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
-        ax1.plot(s_arr, Pydags_arr, color='k', label='exact')
+        ax1.plot(s_ar, Ps_ydag_ar, color='k', label='exact')
         ax1.legend(loc='upper left')
 
         ax2.set_xlabel(r"q (a.u.)")
         ax2.set_xlim([q_low-0.75*(q_high-q_low), q_high+0.75*(q_high-q_low)])
         ax2.set_ylabel("P(q)dq (a.u.)")   
         ax2.hist(q[icutoff:,-1], bins=49, density=True, color='skyblue', edgecolor='black', label='Langevin')
-        ax2.plot(q_arr, Pydagq_arr, color='k', label='exact')
+        ax2.plot(q_ar, Pq_ydag_ar, color='k', label='exact')
         ax2.legend(loc='upper left')
 
 plt.savefig('thermalization', bbox_inches='tight')
