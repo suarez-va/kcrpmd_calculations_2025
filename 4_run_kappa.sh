@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir1 in _sys_A*/; do
+for dir1 in _sys_*/; do
   cd $dir1
   pwd
 

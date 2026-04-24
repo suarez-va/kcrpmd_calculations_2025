@@ -3,7 +3,7 @@ Part 1 of full calculation
 
 This script is takes as argument:
     --sys: the system type (A, B or C, see KC-RPMD paper 2025)
-    --meth: whether to run 1 = adiabatic, 2 = original KC-RPMD, 3 = new KC-RPMD
+    --meth: whether to run adi = adiabatic, ori = original KC-RPMD, new = new KC-RPMD
     --fix: which reaction coordinate to fix and evaluate rate constants from (either y or s)
     --a: KC-RPMD gaussian restraint parameter (no larger than 0.1, large enough to converge free energy of kinked-pair formation)
     --gam: Ohmic solvent friction ratio gamma/(M*omega_c)
@@ -11,7 +11,7 @@ This script is takes as argument:
     --leps: Donor-acceptor coordinate driving force (sys C only), thermally weighted beta*epsilon
     --hw: whether to include left side hard wall (-1), right side hard wall (1), or no hard wall (0)
 
-    From kcrpmd_utils/kcrpmdtst.py code, free energies and KC-RPMD parameters for "eta",
+    From kcrpmd_utils/KCRPMD_TST.py code, free energies and KC-RPMD parameters for "eta",
 mass of auxiliary variable "my", and Langevin frictional coefficient "gammay",
 are computed numerically and saved to _sys_*/tst_data/ for later.
 
@@ -175,9 +175,9 @@ y_ar = np.linspace(-1.6,1.6,999)
 if args.meth == 'adi':
     Phw = np.exp(-beta*(kcrpmd_tst.FBO()[0] - FBO_full)) # Hardwall potential probability from 0 to 1
     Pq_sdag = kcrpmd_tst.PBOq_s(sdag, q_ar) # Born-Oppenheimer probability along q at sdagger
-    kGR = kcrpmd_tst.kGR() # Fermi-golden rule rate
-    kZUS = kcrpmd_tst.kZUS(tauL) # Zusman rate
-    kBOs = kcrpmd_tst.kBOs() # Born-Oppenheimer TST rate
+    kGR = kcrpmd_tst.kGR()[0] # Fermi-golden rule rate
+    kZUS = kcrpmd_tst.kZUS(tauL)[0] # Zusman rate
+    kBOs = kcrpmd_tst.kBOs()[0] # Born-Oppenheimer TST rate
     np.savetxt(pref + "/tst_data/Pq_sdag.txt", np.column_stack((q_ar, Pq_sdag)))
     np.savetxt(pref + "/tst_data/kGR.txt", [kGR])
     np.savetxt(pref + "/tst_data/kZUS.txt", [kZUS])
@@ -188,7 +188,7 @@ elif args.meth == 'ori' or args.meth == 'new':
     if args.fix == "y":
         Ps_ydag = kcrpmd_tst.PKCs_y(ydag, s_ar) # KC-RPMD probability along s at ydagger
         Pq_ydag = kcrpmd_tst.PKCq_y(ydag, q_ar) # KC-RPMD probability along q at ydagger
-        kKCy = kcrpmd_tst.kKCy() # KC-RPMD TST rate along y
+        kKCy = kcrpmd_tst.kKCy()[0] # KC-RPMD TST rate along y
         np.savetxt(pref + "/tst_data/Ps_ydag.txt", np.column_stack((s_ar, Ps_ydag)))
         np.savetxt(pref + "/tst_data/Pq_ydag.txt", np.column_stack((q_ar, Pq_ydag)))
         np.savetxt(pref + "/tst_data/kKCy.txt", [kKCy])
@@ -196,10 +196,10 @@ elif args.meth == 'ori' or args.meth == 'new':
     elif args.fix == "s":
         Py_sdag = kcrpmd_tst.PKCy_s(y_ar, sdag) # KC-RPMD probability along y at sdagger
         Pq_sdag = kcrpmd_tst.PKCq_s(sdag, q_ar) # KC-RPMD probability along q at sdagger
-        kKCy = kcrpmd_tst.kKCy() # KC-RPMD TST rate along y
+        kKCs = kcrpmd_tst.kKCs()[0] # KC-RPMD TST rate along s
         np.savetxt(pref + "/tst_data/Py_sdag.txt", np.column_stack((y_ar, Py_sdag)))
         np.savetxt(pref + "/tst_data/Pq_sdag.txt", np.column_stack((q_ar, Pq_sdag)))
-        np.savetxt(pref + "/tst_data/kKCs.txt", [kKCy])
+        np.savetxt(pref + "/tst_data/kKCs.txt", [kKCs])
         np.savetxt(pref + "/tst_data/Phw.txt", [Phw])
 
 ######################################################################################################################

@@ -97,18 +97,18 @@ cd ../
 ####################################
 
 ######################################
-### System A gamma/(M*omega_c)=250 ###
+### System A gamma/(M*omega_c)=32 ###
 ######################################
-mkdir _sys_A_gam_250
-cd _sys_A_gam_250
+mkdir _sys_A_gam_32
+cd _sys_A_gam_32
 
 ### Adiabatic BO rates ###
 mkdir adiabatic
 cd adiabatic
-sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=adi --fix=s --gam=250.0 --logK=-7.00 #g" ../../submit_template.slm
+sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=adi --fix=s --gam=32.0 --logK=-7.00 #g" ../../submit_template.slm
 sbatch ../../submit_template.slm
 for logK in "${logK_list2[@]}"; do
-  sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=adi --fix=s --gam=250.0 --logK=$logK #g" ../../submit_template.slm
+  sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=adi --fix=s --gam=32.0 --logK=$logK #g" ../../submit_template.slm
   sbatch ../../submit_template.slm
 done
 cd ../
@@ -119,7 +119,7 @@ mkdir kcrpmd_new
 cd kcrpmd_new
 for fix in s y; do
   for logK in "${logK_list2[@]}"; do
-    sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=new --fix=$fix --a=0.1 --gam=250.0 --logK=$logK #g" ../../submit_template.slm
+    sed -i "s#python.*#python ../../1_kcrpmd_tst.py --sys=A --meth=new --fix=$fix --a=0.1 --gam=32.0 --logK=$logK #g" ../../submit_template.slm
     sbatch ../../submit_template.slm
   done
 done
@@ -128,7 +128,7 @@ cd ../
 
 cd ../
 ######################################
-### System A gamma/(M*omega_c)=250 ###
+### System A gamma/(M*omega_c)=32 ###
 ######################################
 
 ################

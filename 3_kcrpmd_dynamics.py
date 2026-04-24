@@ -21,7 +21,7 @@ from liblibra_core import *
 from libra_py import units
 import libra_py.dynamics.tsh.compute as tsh_dynamics
 
-from kcrpmd_utils.kcrpmdmodel import kcrpmd_system_bath
+from kcrpmd_utils.KCRPMD_System_Bath import kcrpmd_system_bath
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
