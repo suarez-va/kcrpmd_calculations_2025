@@ -2,11 +2,10 @@
 Part 1 of full calculation
 
 This script is takes as argument:
-    --sys: the system type (A, B or C, see KC-RPMD paper 2025)
+    --sys: the system type (A1, A2, A3, B, or C, see KC-RPMD paper 2025)
     --meth: whether to run adi = adiabatic, ori = original KC-RPMD, new = new KC-RPMD
     --fix: which reaction coordinate to fix and evaluate rate constants from (either y or s)
     --a: KC-RPMD gaussian restraint parameter (no larger than 0.1, large enough to converge free energy of kinked-pair formation)
-    --gam: Ohmic solvent friction ratio gamma/(M*omega_c)
     --logK: Diabatic coupling constant (sys A) or prefactor (sys B, C), thermally weighted logorithmic log(beta*K_0)
     --leps: Donor-acceptor coordinate driving force (sys C only), thermally weighted beta*epsilon
     --hw: whether to include left side hard wall (-1), right side hard wall (1), or no hard wall (0)
@@ -35,17 +34,16 @@ from kcrpmd_utils.KCRPMD_TST import KCRPMD_TST
 # ======= ARGUMENT PARSER, SEE TOP OF SCRIPT ======= #
 ######################################################
 parser = argparse.ArgumentParser()
-parser.add_argument('--sys', default='A', type=str, help='System type A, B or C')
+parser.add_argument('--sys', default='A1', type=str, help='System type A1, A2, A3, B, or C')
 parser.add_argument('--meth', default='adi', type=str, help='Method: Adiabatic (adi), Original KC-RPMD (ori), New KC-RPMD (new)')
 parser.add_argument('--fix', default='s', type=str, help='Reaction coordinate to fix: y or s')
 parser.add_argument('--a', default=0.1, type=float, help='KC-RPMD gaussian restraint parameter a')
-parser.add_argument('--gam', default=1.0, type=float, help='Ohmic solvent friction ratio gamma/(M*omega_c)')
 parser.add_argument('--logK', default=0.5, type=float, help='Diabatic coupling parameter, thermally weighted logorithmic log(beta*K_0)')
 parser.add_argument('--leps', default=15.0, type=float, help='System type C epsilon parameter, thermally weighted beta*epsilon')
 parser.add_argument('--hw', default=0, type=int, help='System type C hard wall, left side (-1), right side (1), no hard wall (0)')
 args = parser.parse_args()
 
-if (args.sys != 'A' and args.sys != 'B' and args.sys != 'C'): print("Invalid System Type!"); exit() 
+if (args.sys != 'A1' and args.sys != 'A2' and args.sys != 'A3' and args.sys != 'B' and args.sys != 'C'): print("Invalid System Type!"); exit() 
 if (args.fix != 's' and args.fix != 'y'): print("Invalid Reaction Coordinate!"); exit() 
 if (args.fix == 'y' and args.meth == 1): print("No y Coordinate For Adiabatic Method!"); exit() 
 if (args.meth != 'adi' and args.meth != 'ori' and args.meth != 'new'): print("Invalid Method!"); exit() 
@@ -53,7 +51,7 @@ if (args.meth != 'adi' and args.meth != 'ori' and args.meth != 'new'): print("In
 ###########################################################################
 # ======= CREATING WORKING DIRECTORIES FOR CALCULATIONS TO BE RUN ======= #
 ###########################################################################
-if (args.sys == 'A' or args.sys == 'B'):
+if (args.sys == 'A1' or args.sys == 'A2' or args.sys == 'A3' or args.sys == 'B'):
     if (args.meth == 'ori'):
         pref = F"_fix_{args.fix}_a_{args.a}_logK_{args.logK:.2f}"
     else:
@@ -78,24 +76,25 @@ b = 1000.0 # KC-RPMD parameter b
 c = 1.0 # KC-RPMD parameter c
 
 ms = 1836.0 # Mass of s
-ws = 2.28e-3 # Frequency of s
-s0 = -2.4 # Diabat 0 parabola minima
-s1 = 2.4 # Diabat 1 parabola minima
+ws = 2.28e-3 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 4.75e-4 # Frequency of s
+s0 = -2.4 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else -8.3 # Diabat 0 parabola minima
+s1 = 2.4 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 8.3 # Diabat 1 parabola minima
 eps = 0.0 # Diabat 0 to diabat 1 driving force
 
-M = 1836.0 # Ohmic bath mass
-wc = 2.28e-3 # Ohmic bath cutoff frequency
-gam = args.gam*(M*wc) # Ohmic bath friction coefficient
-f = 12 if (args.gam<=3) else 32 # Number of harmonic bath modes
+M = ms # Ohmic bath mass
+wc = ws if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 4*ws # Ohmic bath cutoff frequency
+gam = 1*ms*ws if (args.sys=='A1' or args.sys=='A2' or args.sys=='B' or args.sys=='C') else 32*ms*ws # Ohmic bath friction coefficient
+f = 12 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 32 # Number of harmonic bath modes
 tauL = gam/(ws**2*ms) # Debye longitudinal relaxation time for Zusman rate later
 wj, cj, mj = gen_bath_params_conventional({"gam": gam, "wc": wc, "m": M, "f": f}) # Ohmic spectral density bath parameters
 
+sys = 'A' if (args.sys=='A1' or args.sys=='A2' or args.sys=='A3') else 'B' if args.sys=='B' else 'C' # System type to use in Libra model system
 K0 = 10**(args.logK)/beta # Diabatic coupling constant/prefactor
-bq = 0.0 if args.sys=='A' else 3.0 # Diabatic coupling q coordinate exponential dependence
-aq = 0.0 if args.sys=='A' else 8.0 if args.sys=='B' else 6.0 # q coordinate morse exponential parameter 
+bq = 0.0 if (args.sys=='A1' or args.sys=='A2' or args.sys=='A3') else 3.0 # Diabatic coupling q coordinate exponential dependence
+aq = 0.0 if (args.sys=='A1' or args.sys=='A2' or args.sys=='A3') else 8.0 if args.sys=='B' else 6.0 # q coordinate morse exponential parameter 
 mq = 5.0e4 # q coordinate mass
 wq = 5.0e-4 # q coordinate frequency
-(q0, leps, Ea) = (2.1, args.leps / beta, 6.65e-3) # System C q coordinate double well parameters
+(q0, leps, Ea) = (2.1, args.leps/beta, 6.65e-3) # System C q coordinate double well parameters
 (Aq, Bq, Cq) = get_ABC(q0, leps, Ea) # Numerically computing Aq, Bq, Cq from q0, leps, Ea
 qhw = 1.0 # Hard wall potential location
 khw = 1.0e5 # Hard wall potential strength
@@ -108,13 +107,13 @@ khw = 1.0e5 # Hard wall potential strength
 os.makedirs(pref + "/tst_data", exist_ok=True)
 
 # Defining Kq and Vq functions of system for TST code
-if args.sys == 'A':
+if sys == 'A':
     Vq = lambda q: 0.5*mq*wq**2*q**2
-elif args.sys == 'B':
+elif sys == 'B':
     Vq = lambda q: np.piecewise(q,[q >= 0.,q < 0.],
                                 [lambda q: 0.5*mq*wq**2*q**2,
                                  lambda q: 0.5*mq*wq**2*(np.expm1(-aq*q)/aq)**2])
-elif args.sys == 'C':
+elif sys == 'C':
     Vq = lambda q: np.piecewise(q,[q >= 0.,q < 0.],
                                 [lambda q: Aq*q**4 + Bq*q**3 + Cq*q**2,
                                  lambda q: Cq*(np.expm1(-aq*q)/aq)**2])
@@ -208,13 +207,14 @@ elif args.meth == 'ori' or args.meth == 'new':
 nstates = 2
 ndia = 2
 nadi = 2
-ndof = 2 + len(mj)
+# setting ndof to 2 just for thermalization, bath is added later for dynamical trajectories
+ndof = 2 #; ndof = 2 + len(mj)
 ntraj = 1
 
 # Save model parameters
 _model_params = {"ms":ms, "ws":ws, "s0":s0, "s1":s1, "eps":eps,
                  "wj":wj, "cj":cj, "Mj":mj, "K0":K0,
-                 "bq":bq, "aq":aq, "sys_type":args.sys, "mq":mq, "wq":wq,
+                 "bq":bq, "aq":aq, "sys_type":sys, "mq":mq, "wq":wq,
                  "Aq":Aq, "Bq":Bq, "Cq":Cq,
                  "hard_wall":args.hw, "qhw":qhw, "khw":khw,
                  "model":1, "model0":1, "nstates": nstates}
@@ -308,32 +308,31 @@ with open(pref +  "/_control_params_thermalization.txt", "w") as f:
 # We choose masses so that the harmoic frequencies match the timestep.
 # n_therm is redundancy factor, mass of s coordinate will either follow harmonic V0(s), or gaussian restraint for small beta*K0
 n_therm = 1000
-if args.sys == 'C' and args.hw == -1:
+if sys == 'C' and args.hw == -1:
     Kref = K0*np.exp(-bq*2.1)
 else:
     Kref = K0
-ms_therm = [max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)]
-mj_therm = [mj[i]*wj[i]**2*(n_therm*41.34/(2*np.pi))**2 for i in range(len(wj))]
-mq_therm = [mq*wq**2*(n_therm*41.34/(2*np.pi))**2]
-mass_therm = ms_therm + mj_therm + mq_therm
-force_therm = [4*mass_therm[i]/(beta**2) for i in range(len(mass_therm))]
+ms_therm = max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)
+mq_therm = mq*wq**2*(n_therm*41.34/(2*np.pi))**2
 my_therm = 500000.0
 
 # Initial conditions and masses of nuclear coordinates for thermalization
-_nucl_params = {"q":[sdag] + [0.0]*(ndof-2) + [qhw], "p":[0.0]*ndof, "mass": mass_therm,
-                "force_constant":force_therm, "init_type":1, "ntraj": ntraj, "ndof": ndof}
+_nucl_params_therm = {"q":[sdag,qhw], "p":[0.0,0.0], "mass": [ms_therm,mq_therm],
+                      "force_constant":[4*ms_therm/(beta**2),4*mq_therm/(beta**2)],
+                      "init_type":1, "ntraj": ntraj, "ndof": ndof}
 
 # Initial conditions and mass of auxiliary coordinate for thermalization
-_elec_params = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0, "ntraj":ntraj, "ndia":ndia, "nadi":nadi}
+_elec_params_therm = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0,
+                      "ntraj":ntraj, "ndia":ndia, "nadi":nadi}
 if (args.meth == 'ori' or args.meth == 'new'):
-    _elec_params.update({"y_aux_var":[ydag]})
-    _elec_params.update({"p_aux_var":[0.0]})
-    _elec_params.update({"m_aux_var":[my_therm]})
+    _elec_params_therm.update({"y_aux_var":[ydag]})
+    _elec_params_therm.update({"p_aux_var":[0.0]})
+    _elec_params_therm.update({"m_aux_var":[my_therm]})
 
 # Saving initial conditions for thermalization
 with open(pref +  "/_init_nucl_thermalization.txt", "w") as f:
-    f.write(str(_nucl_params))
+    f.write(str(_nucl_params_therm))
 
 with open(pref +  "/_init_elec_thermalization.txt", "w") as f:
-    f.write(str(_elec_params))
+    f.write(str(_elec_params_therm))
 

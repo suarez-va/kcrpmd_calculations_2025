@@ -29,6 +29,9 @@ with open("_init_elec_thermalization.txt") as f:
 
 rnd = Random()
 
+model_params["wj"]=[]
+model_params["cj"]=[]
+model_params["Mj"]=[]
 res = tsh_dynamics.generic_recipe(control_params, kcrpmd_system_bath, model_params, init_elec, init_nucl, rnd)
 
 
