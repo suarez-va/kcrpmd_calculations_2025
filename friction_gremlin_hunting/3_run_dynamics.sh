@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ntraj=9000
-check_every=50
+ntraj=9999
+check_every=20
 submitted_since_check=0
 njobs=0
 
@@ -11,7 +11,10 @@ for dir1 in _sys_A_gam_32/; do
   if [ -d "adiabatic" ]; then
     cd adiabatic
     for dir2 in _fix_*/; do
-      cd "$dir2/libra_data" || continue
+      cd "$dir2"
+      mkdir libra_data
+      cd libra_data
+      #cd "$dir2/libra_data" || continue
       pwd
       for ((itraj=1; itraj<=ntraj; itraj++)); do
         while true; do
@@ -22,8 +25,8 @@ for dir1 in _sys_A_gam_32/; do
             submitted_since_check=0
           fi
           if (( njobs < 480 )); then
-            sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=1|g" ../../../../submit_template_Ag32_adi.slm
-            sbatch ../../../../submit_template_Ag32_adi.slm
+            sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template.slm
+            sbatch ../../../../submit_template.slm
             ((submitted_since_check++))
             break
           else

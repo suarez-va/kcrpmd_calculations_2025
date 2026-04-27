@@ -29,7 +29,7 @@ sys.path.insert(0, parent_dir)
 from kcrpmd_utils.Spin_Boson_Conventional import spin_boson_conventional
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
+parser.add_argument('--itraj', default=0, type=int, help='transmission trajectory index')
 #parser.add_argument('--istart', default=999, type=int, help='thermalization starting index')
 #parser.add_argument('--iskip', default=9, type=int, help='thermalization skipping index')
 args = parser.parse_args()
@@ -59,14 +59,17 @@ s1 = _model_params["s1"]
 ms = _model_params["ms"]
 ws = _model_params["ws"]
 eps = _model_params["eps"]
-K0 = _model_params["eps"]
+K0 = _model_params["K0"]
 lam = 0.5*ms*ws**2*(s0 - s1)**2
 wj = _model_params["wj"]
 cj = _model_params["cj"]
 Mj = _model_params["Mj"]
+#wj = []
+#cj = []
+#Mj = []
 
 model_params = {"mass0":ms, "omega0":ws, "Lambda":lam, "Delta":K0, "epsilon":eps,
-                      "omega":wj, "coupl":cj, "mass":Mj}
+                      "omega":wj, "coupl":cj, "mass":Mj, "model":1, "model0":1, "nstates":2}
 
 control_params.update({ "prefix":pref, "prefix2":pref })
 
@@ -78,6 +81,10 @@ beta = units.hartree / (units.boltzmann * control_params["Temperature"])
 mass = [ms] + Mj
 q = [0.0] + [np.random.normal(scale = np.sqrt(1 / (beta*Mj[i]*wj[i]**2))) for i in range(len(Mj))]
 p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
+#mass = [ms]
+#q = [0.0]
+#p = [10.0]
+
 
 init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0.0] * len(q), "init_type":0,
              "ntraj":control_params["ntraj"], "ndof": len(q)}
@@ -88,6 +95,8 @@ init_elec = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
 
 rnd = Random()
 
+control_params.update({ "prefix":pref, "prefix2":pref })
+control_params["nsteps"] = 250000
 res = tsh_dynamics.generic_recipe(control_params, spin_boson_conventional, model_params, init_elec, init_nucl, rnd)
 
 
@@ -126,53 +135,33 @@ grandparent_dir = os.path.basename(os.path.dirname(os.path.dirname(os.getcwd()))
 
 fix = parent_dir[parent_dir.find("_fix_") + len("_fix_")]
 
-if grandparent_dir == "adiabatic":
-    fig, ((ax1, ax2)) = plt.subplots(2,1,sharex=True)
-    plt.subplots_adjust(hspace=0.1)
-    with h5py.File(pref + "/mem_data.hdf", 'r') as f:
-        t = f["time/data"][:]
-        q = f["q/data"][:,0,:]
+plt.rcParams.update({'figure.figsize': (8.0, 6.0)})
+fig, ((ax1, ax2, ax3)) = plt.subplots(3,1,sharex=True)
+plt.subplots_adjust(hspace=0.1)
+with h5py.File(pref + "/mem_data.hdf", 'r') as f:
+    t = f["time/data"][:]
+    q = f["q/data"][:,0,:]
+    Ekin = f["Ekin_ave/data"][:]
+    Epot = f["Epot_ave/data"][:]
+    Etot = f["Etot_ave/data"][:]
 
-    s_low = model_params["s0"]
-    s_high = model_params["s1"]
-    ax1.set_ylabel(r"s (a.u.)")
-    ax1.set_ylim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
-    ax1.axhline(y=s_low, color='k', linestyle='--')
-    ax1.axhline(y=s_high, color='k', linestyle='--')
-    ax1.plot(t, q[:,0], color='k')
+ax1.set_ylabel(r"Energy (a.u.)")
+ax1.plot(t, Etot, color='k')
+ax1.plot(t, Epot, color='r')
+ax1.plot(t, Ekin, color='b')
 
-    ax2.set_xlabel(r"t (a.u.)")
-    ax2.set_ylabel(r"q (a.u.)")
-    ax2.plot(t, q[:,-1], color='k')
+s_low = s0 
+s_high = s1 
+ax2.set_ylabel(r"s (a.u.)")
+ax2.set_ylim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
+ax2.axhline(y=s_low, color='k', linestyle='--')
+ax2.axhline(y=s_high, color='k', linestyle='--')
+ax2.plot(t, q[:,0], color='k')
 
-if grandparent_dir == "kcrpmd_ori" or grandparent_dir == "kcrpmd_new":
-    plt.rcParams.update({'figure.figsize': (8.0, 6.0)})
-    fig, ((ax1, ax2, ax3)) = plt.subplots(3,1,sharex=True)
-    plt.subplots_adjust(hspace=0.1)
-    with h5py.File(pref + "/mem_data.hdf", 'r') as f:
-        t = f["time/data"][:]
-        y = f["y_aux_var/data"][:,0]
-        q = f["q/data"][:,0,:]
-
-    ax1.set_ylabel(r"y (a.u.)")
-    ax2.set_ylim([-1.9, 1.9])
-    ax1.axhline(y=-1.5, color='k', linestyle='--')
-    ax1.axhline(y=-0.5, color='k', linestyle='--')
-    ax1.axhline(y=0.5, color='k', linestyle='--')
-    ax1.axhline(y=1.5, color='k', linestyle='--')
-    ax1.plot(t, y, color='k')
-
-    s_low = model_params["s0"]
-    s_high = model_params["s1"]
-    ax2.set_ylabel(r"s (a.u.)")
-    ax2.set_ylim([s_low-0.75*(s_high-s_low), s_high+0.75*(s_high-s_low)])
-    ax2.axhline(y=s_low, color='k', linestyle='--')
-    ax2.axhline(y=s_high, color='k', linestyle='--')
-    ax2.plot(t, q[:,0], color='k')
-
-    ax3.set_xlabel(r"t (a.u.)")
-    ax3.set_ylabel(r"q (a.u.)")
-    ax3.plot(t, q[:,-1], color='k')
+ax3.set_xlabel(r"t (a.u.)")
+ax3.set_ylabel(r"x (a.u.)")
+for i in range(1,13):
+    ax3.plot(t, q[:,i])
 
 plt.savefig(pref + '/dynamics', bbox_inches='tight')
 
