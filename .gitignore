@@ -1,5 +1,7 @@
 **/__pycache__/
 **/libra_data/
 **/_itraj_*/
+pos.txt
+mom.txt
 *.err
 *.out
