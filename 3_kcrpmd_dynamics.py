@@ -24,9 +24,11 @@ import libra_py.dynamics.tsh.compute as tsh_dynamics
 from kcrpmd_utils.KCRPMD_System_Bath import kcrpmd_system_bath
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--itraj', default=1, type=int, help='transmission trajectory index')
+parser.add_argument('--itraj', default=0, type=int, help='transmission trajectory index')
 parser.add_argument('--istart', default=999, type=int, help='thermalization starting index')
-parser.add_argument('--iskip', default=9, type=int, help='thermalization skipping index')
+parser.add_argument('--iskip', default=49, type=int, help='thermalization skipping index')
+parser.add_argument('--nsteps', default=125000, type=int, help='total number of timesteps')
+parser.add_argument('--nprint', default=100, type=int, help='number of timesteps between prints')
 args = parser.parse_args()
 
 pref = F"_itraj_{args.itraj}"
@@ -51,39 +53,53 @@ with open("../_model_params.txt") as f:
 
 model_params.update({"hw": 0})
 control_params.update({ "prefix":pref, "prefix2":pref })
+control_params.update({ "nsteps":args.nsteps, "nprint":args.nprint })
 
 ########################################################################################
 # ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION ======= #
 ########################################################################################
 
 with h5py.File("mem_data.hdf", 'r') as f:
-    q = list(f["q/data"][args.itraj * args.iskip + args.istart, 0, :])
+    t = f["time/data"][:]
+    q = list(f["q/data"][args.itraj*args.iskip + args.istart, 0, :])
     if "use_kcrpmd" in control_params:
-        y = f["y_aux_var/data"][args.itraj * args.iskip + args.istart, 0]
+        y = f["y_aux_var/data"][args.itraj*args.iskip + args.istart, 0]
 
 beta = units.hartree / (units.boltzmann * control_params["Temperature"])
-mass = [model_params["ms"]] + model_params["Mj"] + [model_params["mq"]]
-q = [float(q[i]) for i in range(len(q))]
+ms = model_params["ms"]
+Mj = model_params["Mj"]
+wj = model_params["wj"]
+cj = model_params["cj"]
+mq = model_params["mq"]
+
+nstates = control_params["nstates"]
+ntraj = control_params["ntraj"]
+ndof = 2 + len(Mj)
+
+mass = [ms] + Mj + [mq]
+q = [q[0]] + [np.random.normal(loc=cj[j]*q[0]/(Mj[j]*wj[j]**2), scale=np.sqrt(1/(beta*Mj[j]*wj[j]**2))) for j in range(len(Mj))] + [q[-1]]
 p = [np.random.normal(scale = np.sqrt(mass[i] / beta)) for i in range(len(mass))]
 
-init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0.0] * len(q), "init_type":0,
-             "ntraj":control_params["ntraj"], "ndof": len(q)}
+init_nucl = {"q":q, "p":p, "mass":mass, "force_constant":[0.0] * ndof, "init_type":0,
+             "ntraj":ntraj, "ndof": ndof}
 
+# Here we set the dynamical mass of y coordinate to 10 if the true TST mass is below 10.
+# In this case, th final transmission coefficeint value is unchanged.
 if "use_kcrpmd" in control_params:
     my = control_params["kcrpmd_my"]
     if my < 10.:
         my = 10.
-    control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"] / my) * control_params["kcrpmd_gamma"]
-    py = np.random.normal(scale = np.sqrt(my / beta))
+    control_params["kcrpmd_gamma"] = np.sqrt(control_params["kcrpmd_my"]/my)*control_params["kcrpmd_gamma"]
+    py = np.random.normal(scale=np.sqrt(my/beta))
 
-    init_elec = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
-                  "rep":1, "ntraj":control_params["ntraj"],
-                  "ndia":control_params["nstates"], "nadi":control_params["nstates"],
+    init_elec = {"init_type":0, "nstates":nstates, "istate":0,
+                  "rep":1, "ntraj":ntraj,
+                  "ndia":nstates, "nadi":nstates,
                   "y_aux_var":[y], "p_aux_var":[py], "m_aux_var":[my]}
 else:
-    init_elec = {"init_type":0, "nstates":control_params["nstates"], "istate":0,
-                  "rep":1, "ntraj":control_params["ntraj"],
-                  "ndia":control_params["nstates"], "nadi":control_params["nstates"]}
+    init_elec = {"init_type":0, "nstates":nstates, "istate":0,
+                  "rep":1, "ntraj":ntraj,
+                  "ndia":nstates, "nadi":nstates}
 
 rnd = Random()
 

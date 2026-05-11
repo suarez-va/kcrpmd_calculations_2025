@@ -223,7 +223,7 @@ with open(pref +  "/_model_params.txt", "w") as f:
     f.write(str(_model_params))
 
 # Default parameters for thermalization calculation (dt, nsteps, and nprint will change for dynamics)
-dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":25000000, "nprint":2500,
+dyn_params = {"dt":41.34, "num_electronic_substeps":1, "nsteps":50000000, "nprint":1000,
               "prefix":"libra_data", "prefix2":"libra_data",
               "hdf5_output_level":-1, "mem_output_level":3, "txt_output_level":-1,
               "use_compression":0, "compression_level":[0,0,0], "progress_frequency":0.05,
@@ -314,12 +314,12 @@ else:
     Kref = K0
 ms_therm = max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)
 mq_therm = mq*wq**2*(n_therm*41.34/(2*np.pi))**2
-my_therm = 500000.0
+my_therm = 250000.0
 
 # Initial conditions and masses of nuclear coordinates for thermalization
 _nucl_params_therm = {"q":[sdag,qhw], "p":[0.0,0.0], "mass": [ms_therm,mq_therm],
                       "force_constant":[4*ms_therm/(beta**2),4*mq_therm/(beta**2)],
-                      "init_type":1, "ntraj": ntraj, "ndof": ndof}
+                      "init_type":1, "ntraj": ntraj, "ndof": 2}
 
 # Initial conditions and mass of auxiliary coordinate for thermalization
 _elec_params_therm = {"init_type":0, "nstates":nstates, "rep":1, "istate": 0,

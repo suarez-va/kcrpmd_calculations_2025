@@ -1,2 +1,5 @@
-**/_sys_*/
 **/__pycache__/
+**/libra_data/
+**/_itraj_*/
+*.err
+*.out

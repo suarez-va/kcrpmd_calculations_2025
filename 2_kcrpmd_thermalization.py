@@ -77,7 +77,7 @@ if parent_dir == "adiabatic":
         q = f["q/data"][:,0,:]
     if fix == "s":
         Pq_sdag_data = np.loadtxt("tst_data/Pq_sdag.txt"); q_ar = Pq_sdag_data[:,0]; Pq_sdag_ar = Pq_sdag_data[:,1]
-        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0)
+        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0); Iq_sdag_ar *= 1/Iq_sdag_ar[-1]
         q_low = q_ar[np.where(Iq_sdag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_sdag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"q (a.u.)")
@@ -96,10 +96,11 @@ if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
         y = f["y_aux_var/data"][:,0]
     if fix == "s":
         Py_sdag_data = np.loadtxt("tst_data/Py_sdag.txt"); y_ar = Py_sdag_data[:,0]; Py_sdag_ar = Py_sdag_data[:,1]
-        Iy_sdag_ar = cumulative_trapezoid(Py_sdag_ar, y_ar, initial=0)
+        Iy_sdag_ar = cumulative_trapezoid(Py_sdag_ar, y_ar, initial=0); Iy_sdag_ar *= 1/Iy_sdag_ar[-1]
         y_low = y_ar[np.where(Iy_sdag_ar <= 0.01)[0][-1]]; y_high = y_ar[np.where(Iy_sdag_ar >= 0.99)[0][0]]
+
         Pq_sdag_data = np.loadtxt("tst_data/Pq_sdag.txt"); q_ar = Pq_sdag_data[:,0]; Pq_sdag_ar = Pq_sdag_data[:,1]
-        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0)
+        Iq_sdag_ar = cumulative_trapezoid(Pq_sdag_ar, q_ar, initial=0); Iq_sdag_ar *= 1/Iq_sdag_ar[-1]
         q_low = q_ar[np.where(Iq_sdag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_sdag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"y (a.u.)")
@@ -118,10 +119,11 @@ if parent_dir == "kcrpmd_ori" or parent_dir == "kcrpmd_new":
 
     if fix == "y":
         Ps_ydag_data = np.loadtxt("tst_data/Ps_ydag.txt"); s_ar = Ps_ydag_data[:,0]; Ps_ydag_ar = Ps_ydag_data[:,1]
-        Is_ydag_ar = cumulative_trapezoid(Ps_ydag_ar, s_ar, initial=0)
+        Is_ydag_ar = cumulative_trapezoid(Ps_ydag_ar, s_ar, initial=0); Is_ydag_ar *= 1/Is_ydag_ar[-1]
         s_low = s_ar[np.where(Is_ydag_ar <= 0.01)[0][-1]]; s_high = s_ar[np.where(Is_ydag_ar >= 0.99)[0][0]]
+
         Pq_ydag_data = np.loadtxt("tst_data/Pq_ydag.txt"); q_ar = Pq_ydag_data[:,0]; Pq_ydag_ar = Pq_ydag_data[:,1]
-        Iq_ydag_ar = cumulative_trapezoid(Pq_ydag_ar, q_ar, initial=0)
+        Iq_ydag_ar = cumulative_trapezoid(Pq_ydag_ar, q_ar, initial=0); Iq_ydag_ar *= 1/Iq_ydag_ar[-1]
         q_low = q_ar[np.where(Iq_ydag_ar <= 0.01)[0][-1]]; q_high = q_ar[np.where(Iq_ydag_ar >= 0.99)[0][0]]
 
         ax1.set_xlabel(r"s (a.u.)")

@@ -70,7 +70,7 @@ cd _sys_A2
 ### Adiabatic BO rates ###
 mkdir adiabatic
 cd adiabatic
-sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A2 --meth=adi --fix=s --logK=-3.00 #g" ../../submit_template.slm
+sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A2 --meth=adi --fix=s --logK=-3.00 |g" ../../submit_template.slm
 sbatch ../../submit_template.slm
 for logK in "${logK_list2[@]}"; do
   sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A2 --meth=adi --fix=s --logK=$logK |g" ../../submit_template.slm
@@ -105,7 +105,7 @@ cd _sys_A3
 ### Adiabatic BO rates ###
 mkdir adiabatic
 cd adiabatic
-sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A3 --meth=adi --fix=s --logK=-3.00 #g" ../../submit_template.slm
+sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A3 --meth=adi --fix=s --logK=-3.00 |g" ../../submit_template.slm
 sbatch ../../submit_template.slm
 for logK in "${logK_list2[@]}"; do
   sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=A3 --meth=adi --fix=s --logK=$logK |g" ../../submit_template.slm
