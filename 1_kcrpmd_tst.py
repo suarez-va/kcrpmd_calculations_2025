@@ -312,7 +312,9 @@ if sys == 'C' and args.hw == -1:
     Kref = K0*np.exp(-bq*2.1)
 else:
     Kref = K0
-ms_therm = max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)
+lam = ms*ws**2*(s0-s1)**2/2
+ms_therm = ms*max(ws, np.sqrt(4*a*lam/(beta*Kref**2))*ws)**2*(n_therm*41.34/(2*np.pi))**2
+#ms_therm = max(ms*ws**2*(n_therm*41.34/(2*np.pi))**2, 2*a*beta*(n_therm*ms*ws**2*(s0-s1)*41.34/(2*np.pi*beta*Kref))**2)
 mq_therm = mq*wq**2*(n_therm*41.34/(2*np.pi))**2
 my_therm = 250000.0
 
