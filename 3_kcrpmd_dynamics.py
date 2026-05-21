@@ -28,7 +28,7 @@ parser.add_argument('--itraj', default=0, type=int, help='transmission trajector
 parser.add_argument('--istart', default=999, type=int, help='thermalization starting index')
 parser.add_argument('--iskip', default=49, type=int, help='thermalization skipping index')
 parser.add_argument('--nsteps', default=125000, type=int, help='total number of timesteps')
-parser.add_argument('--nprint', default=100, type=int, help='number of timesteps between prints')
+parser.add_argument('--nprint', default=500, type=int, help='number of timesteps between prints')
 args = parser.parse_args()
 
 pref = F"_itraj_{args.itraj}"

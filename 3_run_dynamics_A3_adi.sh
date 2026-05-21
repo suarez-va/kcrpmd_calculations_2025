@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ntraj=12250
-check_every=20
+check_every=5
 submitted_since_check=0
 njobs=0
 
@@ -20,8 +20,8 @@ if [ -d "adiabatic" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 449 )); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4 --nsteps=625000 --nprint=500|g" ../../../../submit_template_A3_adi.slm
+        if (( njobs < 489 )); then
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template_A3_adi.slm
           sbatch ../../../../submit_template_A3_adi.slm
           ((submitted_since_check++))
           break

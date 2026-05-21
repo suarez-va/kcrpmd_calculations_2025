@@ -82,9 +82,9 @@ s1 = 2.4 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 8.3 # Diabat
 eps = 0.0 # Diabat 0 to diabat 1 driving force
 
 M = ms # Ohmic bath mass
-wc = ws if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 4*ws # Ohmic bath cutoff frequency
+wc = ws if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 25*ws # Ohmic bath cutoff frequency
 gam = 1*ms*ws if (args.sys=='A1' or args.sys=='A2' or args.sys=='B' or args.sys=='C') else 32*ms*ws # Ohmic bath friction coefficient
-f = 12 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 32 # Number of harmonic bath modes
+f = 12 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 128 # Number of harmonic bath modes
 tauL = gam/(ws**2*ms) # Debye longitudinal relaxation time for Zusman rate later
 wj, cj, mj = gen_bath_params_conventional({"gam": gam, "wc": wc, "m": M, "f": f}) # Ohmic spectral density bath parameters
 
@@ -281,7 +281,7 @@ elif (args.meth == 'ori' or args.meth == 'new'):
 _control_params_dynamics = dyn_params.copy()
 _control_params_dynamics["dt"] = 0.08268
 _control_params_dynamics["nsteps"] = 125000
-_control_params_dynamics["nprint"] = 100
+_control_params_dynamics["nprint"] = 500
 with open(pref +  "/_control_params_dynamics.txt", "w") as f:
     f.write(str(_control_params_dynamics))
 
