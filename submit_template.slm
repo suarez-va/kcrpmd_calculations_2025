@@ -14,4 +14,4 @@ eval "$(/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/MiniConda/bin/conda shel
 export PYTHONPATH=/storage/home/hcoda1/8/vsuarez6/r-jkretchmer3-0/repos/libra-code/_build/src:$PYTHONPATH
 conda activate libra
 
-python ../../../2_kcrpmd_thermalization.py 
+python ../../../4_kcrpmd_kappa.py 
