@@ -35,8 +35,6 @@ for i, d in enumerate(itraj_dirs):
             time = f["time/data"][:]
             s = f["q/data"][:, 0, 0]
             ps = f["p/data"][:, 0, 0]
-        if (ps[0]>0.0 and s[-1]<0.0):
-            print(d)
         pos_data_list.append(s)
         mom_data_list.append(ps)
     elif fix == 'y':
