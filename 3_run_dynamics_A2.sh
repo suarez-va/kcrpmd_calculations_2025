@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ntraj=1000
-check_every=10
+check_every=20
 submitted_since_check=0
 njobs=0
 
@@ -12,17 +12,17 @@ if [ -d "adiabatic" ]; then
   for dir2 in _fix_*/; do
     cd "$dir2/libra_data" || continue
     pwd
-    for ((itraj=1; itraj<=ntraj; itraj++)); do
+    for ((itraj = 1; itraj <= ntraj; itraj++)); do
       while true; do
-        [ -f "_itraj_$itraj/mem_data.hdf" ] && break 
+        [ -f "_itraj_$itraj/mem_data.hdf" ] && break
         # Only check the queue every N submissions
-        if (( submitted_since_check % check_every == 0 )); then
+        if ((submitted_since_check % check_every == 0)); then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 489 )); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A2.slm
-          sbatch ../../../../submit_template_A2.slm
+        if ((njobs < 479)); then
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_tamplate.slm
+          sbatch ../../../../submit_tamplate.slm
           ((submitted_since_check++))
           break
         else
@@ -41,17 +41,17 @@ if [ -d "kcrpmd_ori" ]; then
   for dir2 in _fix_*/; do
     cd "$dir2/libra_data" || continue
     pwd
-    for ((itraj=1; itraj<=ntraj; itraj++)); do
+    for ((itraj = 1; itraj <= ntraj; itraj++)); do
       while true; do
-        [ -f "_itraj_$itraj/mem_data.hdf" ] && break 
+        [ -f "_itraj_$itraj/mem_data.hdf" ] && break
         # Only check the queue every N submissions
-        if (( submitted_since_check % check_every == 0 )); then
+        if ((submitted_since_check % check_every == 0)); then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 489 )); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A2.slm
-          sbatch ../../../../submit_template_A2.slm
+        if ((njobs < 479)); then
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_tamplate.slm
+          sbatch ../../../../submit_tamplate.slm
           ((submitted_since_check++))
           break
         else
@@ -70,17 +70,17 @@ if [ -d "kcrpmd_new" ]; then
   for dir2 in _fix_*/; do
     cd "$dir2/libra_data" || continue
     pwd
-    for ((itraj=1; itraj<=ntraj; itraj++)); do
+    for ((itraj = 1; itraj <= ntraj; itraj++)); do
       while true; do
-        [ -f "_itraj_$itraj/mem_data.hdf" ] && break 
+        [ -f "_itraj_$itraj/mem_data.hdf" ] && break
         # Only check the queue every N submissions
-        if (( submitted_since_check % check_every == 0 )); then
+        if ((submitted_since_check % check_every == 0)); then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 489 )); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A2.slm
-          sbatch ../../../../submit_template_A2.slm
+        if ((njobs < 479)); then
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_tamplate.slm
+          sbatch ../../../../submit_tamplate.slm
           ((submitted_since_check++))
           break
         else
@@ -93,4 +93,3 @@ if [ -d "kcrpmd_new" ]; then
   done
   cd ../
 fi
-
