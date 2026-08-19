@@ -26,6 +26,8 @@ else:
 itraj_dirs = sorted([d for d in os.listdir('libra_data/') if d.startswith('_itraj_')])
 
 # Initializing position and momentum data list of reaction coordinate (s or y)
+del_later = ''
+vel_later = 0.0
 pos_data_list = []
 mom_data_list = []
 # Loop through _itraj_* directories and collect reaction coordinate data
@@ -35,8 +37,10 @@ for i, d in enumerate(itraj_dirs):
             time = f["time/data"][:]
             s = f["q/data"][:, 0, 0]
             ps = f["p/data"][:, 0, 0]
-        if (ps[0]>0.0 and s[-1]<0.0):
-            print(d)
+        #if not ((ps[0]>0.0 and s[-1]<0.0) or (ps[0]<0.0 and s[-1]>0.0)):
+        if True:
+            if (np.random.random() <= 0.30):
+                del_later += d + ' '
         pos_data_list.append(s)
         mom_data_list.append(ps)
     elif fix == 'y':
@@ -44,10 +48,17 @@ for i, d in enumerate(itraj_dirs):
             time = f["time/data"][:]
             y = f["y_aux_var/data"][:, 0]
             py = f["p_aux_var/data"][:, 0]
+        #if not ((py[0]>0.0 and y[-1]<0.0) or (py[0]<0.0 and y[-1]>0.0)):
+        if True:
+            if (np.random.random() <= 0.20):
+                del_later += d + ' '
+        vel_later += py[0]
         pos_data_list.append(y)
         mom_data_list.append(py)
 
 # Stacking list of arrays to be 2D array where axis 0 are the trajectories and axis 1 are the time points
+print('rm -r -- ' + del_later)
+print(vel_later)
 pos_data = np.vstack(pos_data_list)
 mom_data = np.vstack(mom_data_list)
 

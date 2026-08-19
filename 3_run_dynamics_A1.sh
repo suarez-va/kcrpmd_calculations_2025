@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ntraj=1000
-check_every=20
+check_every=10
 submitted_since_check=0
 njobs=0
 
@@ -20,7 +20,7 @@ if [ -d "adiabatic" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 449 )); then
+        if (( njobs < 489 )); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A1.slm
           sbatch ../../../../submit_template_A1.slm
           ((submitted_since_check++))
@@ -49,7 +49,7 @@ if [ -d "kcrpmd_ori" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 449 )); then
+        if (( njobs < 489 )); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A1.slm
           sbatch ../../../../submit_template_A1.slm
           ((submitted_since_check++))
@@ -78,7 +78,7 @@ if [ -d "kcrpmd_new" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if (( njobs < 449 )); then
+        if (( njobs < 489 )); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj|g" ../../../../submit_template_A1.slm
           sbatch ../../../../submit_template_A1.slm
           ((submitted_since_check++))
