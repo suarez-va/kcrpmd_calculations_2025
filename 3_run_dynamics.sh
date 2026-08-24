@@ -5,7 +5,7 @@ check_every=50
 submitted_since_check=0
 njobs=0
 
-for dir1 in _sys_*/; do
+for dir1 in _sys_B_*/; do
   cd $dir1
 
   if [ -d "adiabatic" ]; then

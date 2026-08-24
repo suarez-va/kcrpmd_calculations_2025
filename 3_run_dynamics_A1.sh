@@ -5,7 +5,7 @@ check_every=10
 submitted_since_check=0
 njobs=0
 
-cd _sys_A1
+cd _sys_A1_oldgamma
 
 if [ -d "adiabatic" ]; then
   cd adiabatic

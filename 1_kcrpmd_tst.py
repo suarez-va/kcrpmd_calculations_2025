@@ -38,6 +38,7 @@ parser.add_argument('--sys', default='A1', type=str, help='System type A1, A2, A
 parser.add_argument('--meth', default='adi', type=str, help='Method: Adiabatic (adi), Original KC-RPMD (ori), New KC-RPMD (new)')
 parser.add_argument('--fix', default='s', type=str, help='Reaction coordinate to fix: y or s')
 parser.add_argument('--a', default=0.1, type=float, help='KC-RPMD gaussian restraint parameter a')
+parser.add_argument('--c', default=1.0, type=float, help='KC-RPMD restraint switching parameter c')
 parser.add_argument('--logK', default=0.5, type=float, help='Diabatic coupling parameter, thermally weighted logorithmic log(beta*K_0)')
 parser.add_argument('--leps', default=15.0, type=float, help='System type C epsilon parameter, thermally weighted beta*epsilon')
 parser.add_argument('--hw', default=0, type=int, help='System type C hard wall, left side (-1), right side (1), no hard wall (0)')
@@ -73,7 +74,7 @@ T = 300.0 # Temperature in K
 beta = units.hartree/(units.boltzmann*T)
 a = args.a # KC-RPMD parameter a
 b = 1000.0 # KC-RPMD parameter b
-c = 1.0 # KC-RPMD parameter c
+c = args.c # KC-RPMD parameter c
 
 ms = 1836.0 # Mass of s
 ws = 2.28e-3 if (args.sys=='A1' or args.sys=='B' or args.sys=='C') else 4.75e-4 # Frequency of s

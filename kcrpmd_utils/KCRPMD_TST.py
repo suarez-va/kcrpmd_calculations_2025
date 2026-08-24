@@ -146,10 +146,13 @@ class KCRPMD_TST:
         self.eta = 2*np.pi*Kavg*K2avg/K3avg
         self.my = self.beta**3/(2*np.pi)*Kavg**2
         self.gammay = np.sqrt(np.pi/2)*np.sqrt(1 + np.abs(-2*np.log(np.sqrt(self.a/np.pi)*self.eta*self.beta**2) - 4*lnKavg))/(self.beta**2*Kavg)
+        #sqrtarg = 1 - 2*np.log(np.sqrt(self.a/np.pi)*self.eta*self.beta**2) - 4*lnKavg
+        #self.gammay = np.sqrt(np.pi/2)*np.sqrt(sqrtarg)/(self.beta**2*Kavg) if sqrtarg > 0.0 else 0.0
 
         eta_err = self.eta*np.sqrt((Kerr/Kavg)**2 + (K2err/K2avg)**2 + (K3err/K3avg)**2)
         my_err = self.my*2*(Kerr/Kavg)
         gammay_err = self.gammay*np.sqrt((2*lnKerr/(1 + np.abs(-2*np.log(np.sqrt(self.a/np.pi)*self.eta*self.beta**2) - 4*lnKavg)))**2 + (Kerr/Kavg)**2)
+        #gammay_err = self.gammay*np.sqrt((2*lnKerr/sqrtarg)**2 + (Kerr/Kavg)**2) if sqrtarg > 0.0 else 0.0 
 
         print(f'KC-RPMD TST: η = {self.eta}, δη = {eta_err}')
         print(f'KC-RPMD TST: m = {self.my}, δm = {my_err}')

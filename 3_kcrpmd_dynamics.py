@@ -29,6 +29,7 @@ parser.add_argument('--istart', default=999, type=int, help='thermalization star
 parser.add_argument('--iskip', default=49, type=int, help='thermalization skipping index')
 parser.add_argument('--nsteps', default=125000, type=int, help='total number of timesteps')
 parser.add_argument('--nprint', default=500, type=int, help='number of timesteps between prints')
+parser.add_argument('--oldgamma', default=False, type=bool, help='if you want to include langevin at -0.5<y<0.5')
 args = parser.parse_args()
 
 pref = F"_itraj_{args.itraj}"
@@ -54,6 +55,8 @@ with open("../_model_params.txt") as f:
 model_params.update({"hw": 0})
 control_params.update({ "prefix":pref, "prefix2":pref })
 control_params.update({ "nsteps":args.nsteps, "nprint":args.nprint })
+if args.oldgamma:
+    control_params.update({"kcrpmd_gammaKP":control_params["kcrpmd_gamma"]})
 
 ########################################################################################
 # ======= INITIALIZE TRANSMISSION TRAJECTORIES FROM THERMALIZATION CALCULATION ======= #
