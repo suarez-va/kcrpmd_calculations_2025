@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir1 in _sys_A1_*/; do
+for dir1 in _sys_B_a0.1_c2*/; do
   cd $dir1
 
   if [ -d "adiabatic" ]; then

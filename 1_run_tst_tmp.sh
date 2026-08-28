@@ -44,18 +44,64 @@ a_list1=(0.1 0.1 0.1 0.3 1.0 1.0 1.0 1.0 1.0 1.0)
 #### System A1 old gamma ###
 ############################
 
+###############################
+#### System B a=1.0, c=1.0 ###
+###############################
+#mkdir _sys_B_a1.0_c1.0
+#cd _sys_B_a1.0_c1.0
+#
+#### New KC-RPMD rates ###
+#mkdir kcrpmd_new
+#cd kcrpmd_new
+#for fix in s y; do
+#  for logK in "${logK_list1[@]}"; do
+#    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=1.0 --c=1.0 --logK=$logK |g" ../../submit_template.slm
+#    sbatch ../../submit_template.slm
+#  done
+#done
+#cd ../
+#### New KC-RPMD rates ###
+#
+#cd ../
+###############################
+#### System B a=1.0, c=1.0 ###
+###############################
+#
+###############################
+#### System B a=0.1, c=0.1 ###
+###############################
+#mkdir _sys_B_a0.1_c0.1
+#cd _sys_B_a0.1_c0.1
+#
+#### New KC-RPMD rates ###
+#mkdir kcrpmd_new
+#cd kcrpmd_new
+#for fix in s y; do
+#  for logK in "${logK_list1[@]}"; do
+#    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=0.1 --c=0.1 --logK=$logK |g" ../../submit_template.slm
+#    sbatch ../../submit_template.slm
+#  done
+#done
+#cd ../
+#### New KC-RPMD rates ###
+#
+#cd ../
+###############################
+#### System B a=0.1, c=0.1 ###
+###############################
+
 ##############################
-### System B a=1.0, c=1.0 ###
+### System B a=0.1, c=2.0 ###
 ##############################
-mkdir _sys_B_a1.0_c1.0
-cd _sys_B_a1.0_c1.0
+mkdir _sys_B_a0.1_c2.0
+cd _sys_B_a0.1_c2.0
 
 ### New KC-RPMD rates ###
 mkdir kcrpmd_new
 cd kcrpmd_new
 for fix in s y; do
   for logK in "${logK_list1[@]}"; do
-    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=1.0 --c=1.0 --logK=$logK |g" ../../submit_template.slm
+    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=0.1 --c=2.0 --logK=$logK |g" ../../submit_template.slm
     sbatch ../../submit_template.slm
   done
 done
@@ -64,53 +110,7 @@ cd ../
 
 cd ../
 ##############################
-### System B a=1.0, c=1.0 ###
-##############################
-
-##############################
-### System B a=0.1, c=0.1 ###
-##############################
-mkdir _sys_B_a0.1_c0.1
-cd _sys_B_a0.1_c0.1
-
-### New KC-RPMD rates ###
-mkdir kcrpmd_new
-cd kcrpmd_new
-for fix in s y; do
-  for logK in "${logK_list1[@]}"; do
-    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=0.1 --c=0.1 --logK=$logK |g" ../../submit_template.slm
-    sbatch ../../submit_template.slm
-  done
-done
-cd ../
-### New KC-RPMD rates ###
-
-cd ../
-##############################
-### System B a=0.1, c=0.1 ###
-##############################
-
-##############################
-### System B a=0.1, c=5.0 ###
-##############################
-mkdir _sys_B_a0.1_c5.0
-cd _sys_B_a0.1_c5.0
-
-### New KC-RPMD rates ###
-mkdir kcrpmd_new
-cd kcrpmd_new
-for fix in s y; do
-  for logK in "${logK_list1[@]}"; do
-    sed -i "s|python.*|python ../../1_kcrpmd_tst.py --sys=B --meth=new --fix=$fix --a=0.1 --c=5.0 --logK=$logK |g" ../../submit_template.slm
-    sbatch ../../submit_template.slm
-  done
-done
-cd ../
-### New KC-RPMD rates ###
-
-cd ../
-##############################
-### System B a=0.1, c=5.0 ###
+### System B a=0.1, c=2.0 ###
 ##############################
 
 

@@ -21,8 +21,8 @@ if [ -d "adiabatic" ]; then
           submitted_since_check=0
         fi
         if ((njobs < 479)); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_tamplate.slm
-          sbatch ../../../../submit_tamplate.slm
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
+          sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
           break
         else
@@ -50,8 +50,8 @@ if [ -d "kcrpmd_ori" ]; then
           submitted_since_check=0
         fi
         if ((njobs < 479)); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_tamplate.slm
-          sbatch ../../../../submit_tamplate.slm
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
+          sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
           break
         else
@@ -79,8 +79,8 @@ if [ -d "kcrpmd_new" ]; then
           submitted_since_check=0
         fi
         if ((njobs < 479)); then
-          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_tamplate.slm
-          sbatch ../../../../submit_tamplate.slm
+          sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
+          sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
           break
         else
