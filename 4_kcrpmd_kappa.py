@@ -39,7 +39,7 @@ for i, d in enumerate(itraj_dirs):
             ps = f["p/data"][:, 0, 0]
         #if not ((ps[0]>0.0 and s[-1]<0.0) or (ps[0]<0.0 and s[-1]>0.0)):
         if True:
-            if (np.random.random() <= 0.25):
+            if (np.random.random() <= 0.50):
                 del_later += d + ' '
         pos_data_list.append(s)
         mom_data_list.append(ps)
