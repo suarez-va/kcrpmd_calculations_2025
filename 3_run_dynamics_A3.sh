@@ -20,7 +20,7 @@ if [ -d "adiabatic" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if ((njobs < 479)); then
+        if ((njobs < 459)); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
           sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
@@ -49,7 +49,7 @@ if [ -d "kcrpmd_ori" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if ((njobs < 479)); then
+        if ((njobs < 459)); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
           sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
@@ -78,7 +78,7 @@ if [ -d "kcrpmd_new" ]; then
           njobs=$(squeue -u "$USER" | tail -n +2 | wc -l)
           submitted_since_check=0
         fi
-        if ((njobs < 479)); then
+        if ((njobs < 459)); then
           sed -i "s|python.*|python ../../../../3_kcrpmd_dynamics.py --itraj=$itraj --iskip=4|g" ../../../../submit_template.slm
           sbatch ../../../../submit_template.slm
           ((submitted_since_check++))
